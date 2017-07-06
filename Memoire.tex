@@ -60,90 +60,63 @@
 \begin{document}
 
 \maketitle
-\tableofcontents
 \newpage
 
-\section{Classes d'isogénies de courbes elliptiques CM}
+\section{Introduction}
 
-\subsection{Courbes elliptiques}
+Le point de départ de ce document est une proposition de Jean-Marc Couveignes \cite{Couv} d'utiliser certains espaces principaux homogènes pour un groupe fini donné comme une source de protocoles cryptographiques : la condition étant que connaissant $g$ et $x$, le calcul de $g\cdot x$ soit facile, mais que connaissant $x$ et $g\cdot x$, retrouver $g$ soit une opération coûteuse.
 
-Rappels de définitions et des notations du cours ?
+Couveignes suggère d'appliquer ce principe général au calcul d'isogénies entre courbes elliptiques sur un corps fini, dont il est conjecturé qu'il vérifie les propriétés ci-dessus. Le but de ce mémoire est donc triple : d'une part introduire le cadre de ce problème et les propriétés des courbes elliptiques sur lesquels il se fonde : cela passe par une présentation  Dans un second temps, détailler et prouver les algorithmes qu'il met en jeu, qui apparaissent souvent disséminés dans la littérature. Enfin, du côté des considérations pratiques, en discuter la complexité, son implémentation, déterminer des paramètres visant à satisfaire les standards de sécurité actuels et comment les obtenir.
 
-\begin{prop}[Résultats du cours de courbes elliptiques]
-Soit $k$ un corps et $E,\ E_1,\ E_2/k$ des courbes elliptiques. 
-\begin{enumerate}
+Dans le but d'être le plus accessible possible, on revient rapidement dans la première section sur les propriétés basiques des courbes elliptiques. Le cadre complexe est explicite et facile, mais beaucoup de résultats vrais sur $\C$ le sont également sur un corps fini, et un des objectifs de ce mémoire est de donner une intuition de la provenance de ce fait \og bien connu \fg. La construction des courbes modulaires en deuxième partie en est un exemple : on fait appel pour cela au langage moderne de la géométrie algébrique, celui des schémas. Bien entendu le sujet des courbes modulaires n'est qu'effleuré, on se contente de les définir et de les construire : les étudier sur $\Q$ ou sur un corps de nombres est une direction de recherche très profonde et féconde. C'est par exemple la preuve par Andrew Wiles du fait que toutes les courbes elliptiques sur $\Q$ sont obtenues comme quotient d'une courbe modulaire qui a permis d'avancer de façon décisive dans la preuve du dernier théorème de Fermat.
 
-\item L'application
+Dans la troisième partie, l'aspect véritablement pratique entre en jeu. Le protocole cryptographique y est exposé, ainsi que les différentes stratégies de calcul utilisées, plus ou moins intelligentes et optimisées. Lorsque cela est pertinent, les aspects terre-à-terre d'implémentation sont parfois détaillés, et même des \emph{mesures} des différentes stratégies !  L'un des objectifs de ce mémoire sera atteint si le lecteur ressort convaincu que l'interaction des aspects théoriques et pratiques est digne d'intérêt en mathématiques, et ailleurs qu'en analyse numérique.
+
+Je remercie vivement \ldots.
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Courbes elliptiques}
+
+\subsection{Définitions et propriétés basiques}
+
+Une \emph{courbe elliptique} $E$ sur un corps $K$ est une courbe algébrique propre et lisse définie sur $k$ et de genre 1, munie d'un point fixé $\O_E$. Le théorème de Riemann--Roch implique alors que l'on dispose d'un unique isomorphisme entre la courbe $E$ et sa jacobienne, envoyant $\O_E$ sur zéro, ce qui permet de munir l'ensemble $E(L)$ d'une structure de groupe pour toute extension $L/K$, dont l'élément neutre est $\O_E$. Le théorème de Riemann--Roch implique également que toute courbe elliptique sur $K$ admet une équation plane, dite sous \emph{forme de Weierstrass} :
+$$y^2 + a_1xy = x^3 + a_2x^2 + a_4 x + a_6.$$
+
+Une \emph{isogénie} de $E$ vers $E'$ est une application rationnelle \emph{surjective} envoyant $\O_E$ sur $\O_{E'}$, et est automatiquement un morphisme de groupes. Chez les courbes, un morphisme est surjectif si et seulement s'il est non nul, mais cette définition est la bonne si l'on souhaite l'étendre à des variétés abéliennes de dimension supérieure. Notons $\End(E)$ l'anneau d'endomorphismes de $E$ : la structure de groupe donne une flèche
 $$\begin{aligned}
 &\Z &\longrightarrow&\ &\End(E) &\\
-&n &\longmapsto& &[n]_E \ \ &
+&n &\longmapsto& &[n]_E .\ \ &
 \end{aligned}$$
-est injective.
 
-\item Pour toute isogénie $\phi\de E_1\vers E_2$ de degré $m$, il existe une unique isogénie notée $\widehat{\phi}\de E_2\vers E_1$ de degré $m$ telle que $\phi\widehat{\phi}=[m]_{E_2}$ et $\widehat{\phi}\phi=[m]_{E_1}$.
-De plus, on a les relations suivantes lorsqu'elles ont un sens :
-$$\widehat{\phi+\psi}=\widehat{\phi}+\widehat{\psi},\quad \widehat{\phi\psi}=\widehat{\psi}\widehat{\phi}.$$
-En particulier, deg : $\End(E)\vers \End(E)$ est une forme quadratique et $[m]_E$ est de degré $m^2$.
+Pour en dire plus sur la structure de $\End(E)$, on peut montrer que pour toute isogénie $\phi\de E_1\vers E_2$ de degré $m$, il existe une unique isogénie notée $\widehat{\phi}\de E_2\vers E_1$ de degré $m$ telle que $\phi\widehat{\phi}=[m]_{E_2}$ et $\widehat{\phi}\phi=[m]_{E_1}$, que l'on appelle \emph{duale} de $\phi$. En particulier, $\deg \de\End(E)\vers \End(E)$ est une forme quadratique et $[m]_E$ est de degré $m^2$, donc la flèche précédente est injective.
 
-\item On a l'alternative suivante : $\End(E)$ est soit $\Z$, soit un ordre dans un corps quadratique imaginaire, soit un ordre dans une algèbre de quaternions sur $\Q$. De plus, le dernier cas ne survient qu'en caractéristique positive. Si $k$ est un corps fini, alors on est dans le second cas lorsque $E$ est ordinaire, et dans le troisième cas si $E$ est supersingulière.
+On peut alors en déduire que l'on est dans l'alternative suivante : $\End(E)$ est soit $\Z$, soit un ordre dans un corps quadratique imaginaire, soit un ordre dans une algèbre de quaternions sur $\Q$ : un \emph{ordre} est un sous-anneau qui est de type fini sur $\Z$ et engendre tout l'espace comme $\Q$-espace vectoriel. Le dernier cas ne survient qu'en caractéristique positive. Si $K = \F_p$, on dit que $E$ est \emph{ordinaire} dans le second cas et que $E$ est \emph{supersingulière} dans le troisième, le premier cas étant exclu par la présence du morphisme de Frobenius
+$$\pi_E\de x\mapsto x^p$$
+qui est de degré $p$, donc n'est pas un élément de $\Z$.
 
-\end{enumerate}
-\end{prop}
+Le cas des courbes elliptiques complexes est particulier, et servira de motivation à certaines constructions dans ce mémoire. En effet, si $E/\C$ est une courbe elliptique, c'est en particulier une surface de Riemann,  et on peut montrer qu'il existe un $\tau\in \H$, le demi-plan de Poincaré tel que l'on ait un isomorphisme
+$$\C/\Lambda_\tau \overset{\sim}{\vers} E,$$
+où $\Lambda_\tau = \Z\oplus \Z\tau$, donné par la fonction $\wp$ de Weierstrass. Le nombre $\tau$ est déterminé uniquement modulo l'action de $\Gamma(1) = \mathrm{SL}_2(\Z)$, et on aura l'occasion d'y revenir. Dans celle description, une isogénie $E\vers E'$ est simplement la multiplication par un $\alpha\in \C^*$ tel que $\alpha \Lambda_\tau \subset \Lambda_\tau'$ : avec cette description explicite, il est facile de vérifier les différentes propriétés exposées ci-dessus. Le cas de la caractéristique zéro en découle facilement par le principe de plongement de Lefschetz, mais le passage à la caractéristique quelconque semble toujours faire intervenir une preuve non triviale : voir par exemple \cite{Nekovar}.
 
-
-Dans la suite de ce document, on s'intéresse à des courbes elliptiques ordinaires sur un corps fini : on étudie donc plus en détail le cas de la multiplication complexe par un ordre dans un corps quadratique imaginaire. Pour cela, quelques résultats liminaires sur les ordres quadratiques.
-
-
-\begin{defi}
-Soit $K$ un corps de nombres. Un \emph{ordre} de $K$ est un sous-anneau $\O$ de $K$ qui est un $\Z$-module de type fini et engendre $K$ comme $\Q$-espace vectoriel. En particulier, $\O\subset \O_K$, $\O$ est un $\Z$-module libre de rang $[K:\Q]$, et $\O$ est d'indice fini dans $\O_K$.
-
-On dit que $\O_K$ est \emph{l'ordre maximal} de $K$.
-\end{defi}
-
-\begin{prop}
-Avec ces notations, $\O$ est un anneau noethérien de dimension 1. En revanche, si $\O\neq \O_K$ alors $\O$ n'est pas intégralement clos.
-\end{prop}
-
-Dans le cas des corps quadratiques, les ordres ont une description particulièrement simple.
-
-\begin{defi}
-Soit $\O$ un ordre d'un corps quadratique $K$ On appelle $f=[\O_K:\O]$ le \emph{conducteur} de $\O$, et on a alors $\O=\Z+f \O_K$. On définit de plus le \emph{discriminant} $D$ de $\O$ de la même façon que celui de $\O_K$ : on a donc $D=f^2 D_K$.
-\end{defi}
-
-\begin{defi}
-Idéaux d'un ordre quadratique. Norme. Idéaux propres. Idéaux fractionnaires. Dans le cas d'un corps quadratique, les idéaux fractionnaires propres sont les idéaux fractionnaires inversibles. Les idéaux fractionnaires principaux sont inversibles. Groupe de classe de $\O$, noté $\Cl(\O)$.
-\end{defi}
-
-\begin{defi}
-Idéaux premiers au conducteur. Ce sont des idéaux propres. Le groupe de classe reste le même si l'on se restreint aux idéaux premiers au conducteur.
-\end{defi}
-
+Dans la suite de ce document, on s'intéresse à des courbes elliptiques ordinaires sur un corps fini et à l'action d'un certain groupe de classes sur celles-ci : on étudie donc plus en détail le cas où $\End(E)$ est un ordre dans un corps quadratique imaginaire, en commençant par le cas complexe, plus facile et qui fournit une bonne intuition; c'est là aussi que l'on trouve l'origine du terme utilisé pour désigner habituellement ces courbes, dites \emph{à multiplication complexe}.
 
 
 \subsection{Multiplication complexe sur $\C$}
 
 
-Ce thème étant déjà traité en détail dans Silverman, on se contente ici de donner les résultats importants. Dans cette section, on fixe un ordre $\O$ dans un corps quadratique $K\subset \C$, et l'on note $\Ell_\C(\O)$ l'ensemble des courbes elliptiques sur $\C$ (à isomorphisme près) ayant multiplication complexe par $\O$. Comme d'habitude, on identifiera un élément de cet ensemble avec ses représentants.
+Ce thème étant plutôt élémentaire et déjà traité en détail dans \cite{Sil2}, on se contente ici de résumer les résultats importants. Dans cette section, on fixe un ordre $\O$ dans un corps quadratique $K\subset \C$, et l'on note $\Ell_\C(\O)$ l'ensemble des courbes elliptiques sur $\C$ (à isomorphisme près) ayant multiplication complexe par $\O$. On identifiera un élément de cet ensemble avec ses représentants. Dans \cite{Sil2}, on suppose que $\O$ est l'anneau d'entiers de $K$, mais cette supposition n'est pas essentielle. Dans le cas général, $\O$ n'est pas un anneau de Dedekind (n'étant pas intégralement clos) mais reste un anneau n\oe thérien de dimension 1.
 
-Dans Silverman, on suppose que $\O$ est l'ordre maximal, mais cette supposition n'est pas essentielle.
+La première étape est de fixer un isomorphisme $[\,\cdot\,]\de \O\vers \End(E)$ pour toute courbe $E\in \Ell_\C(\O)$ afin de pouvoir identifier ces anneaux. On fait cela en regardant l'action sur le $\C$-espace vectoriel de dimension 1  $H^0(E,\Omega^1)$ des formes différentielles sur $E$, en imposant
+$$\forall \omega\in H^0(E,\Omega^1),\ \forall\,\alpha\in\O,\ [\alpha]^*\omega = \alpha \omega.$$
 
-\begin{prop}
+Le but est maintenant de définir une action du groupe de classes de $\O$. Si $\O_K$ désigne l'anneau d'entiers de $K$, on appelle $f=[\O:\O_K]$ le \emph{conducteur} de $\O$, et l'on a $\O = \Z  + f \O_K$. Le discriminant de $\O$ est alors $D = f^2 D_K$. Les idéaux de $\O$ premiers à $f$ engendrent un groupe d'idéaux fractionnaires, que l'on quotiente par les idéaux principaux pour obtenir le \emph{groupe de classes} $\Cl(\O)$ de $\O$.
 
-Soit $E\in \Ell_\C(\O)$. Alors il existe un isomorphisme canonique
-
-$$[\,\cdot\,]\de \O\vers \End(E)$$
-
-tel que l'on ait pour tout $\omega\in H^0(E,\Omega^1)$ :
-
-$$\forall\,\alpha\in\O,\ [\alpha]^*\omega = \alpha \omega.$$
-
-\end{prop}
-
-On dit qu'un tel isomorphisme est \emph{normalisé}, et on l'utilisera silencieusement dans la suite pour identifier $\O$ et $\End(E)$. On rappelle au passage que $H^0(E,\Omega^1)$ est un $\C$-espace vectoriel de dimension 1.
-
-\begin{prop}
-Pour tout sous-groupe fini $S$ de $E$, il existe une isogénie $E\vers E'$ de noyau $S$, et celle-ci est unique à isomorphisme près.
-\end{prop}
+Au niveau des idéaux, on procède de la manière suivante: soit $E\in \Ell_\C(\O)$. En raisonnant en termes de réseaux, on voit que pour tout sous-groupe fini $S$ de $E$, il existe une isogénie $E\vers E'$ de noyau $S$, et celle-ci est unique à isomorphisme près (on déclare que deux isogénies sont isomorphes si elles diffèrent d'un isomorphisme à l'arrivée).
 
 \begin{defi}
 Soit $\frak a$ un idéal inversible de $\O$. On définit
