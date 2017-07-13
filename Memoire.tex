@@ -37,6 +37,7 @@
 \newcommand{\Hom}{\mathrm{Hom}}
 \newcommand{\Ell}{\mathrm{Ell}}
 \newcommand{\Spec}{\mathrm{Spec}\,}
+\newcommand{\Ker}{\mathrm{Ker}\,}
 \renewcommand{\frak}{\mathfrak}
 \newcommand{\de}{\,:\,}
 \newcommand{\id}{\mathrm{id}}
@@ -84,8 +85,9 @@ Je remercie vivement \ldots.
 
 \subsection{Définitions et propriétés basiques}
 
-Une \emph{courbe elliptique} $E$ sur un corps $K$ est une courbe algébrique propre et lisse définie sur $k$ et de genre 1, munie d'un point fixé $\O_E$. Le théorème de Riemann--Roch implique alors que l'on dispose d'un unique isomorphisme entre la courbe $E$ et sa jacobienne, envoyant $\O_E$ sur zéro, ce qui permet de munir l'ensemble $E(L)$ d'une structure de groupe pour toute extension $L/K$, dont l'élément neutre est $\O_E$. Le théorème de Riemann--Roch implique également que toute courbe elliptique sur $K$ admet une équation plane, dite sous \emph{forme de Weierstrass} :
+Une \emph{courbe elliptique} $E$ sur un corps $K$ est une courbe algébrique propre et lisse définie sur $k$ et de genre 1, munie d'un point fixé $\O_E$. Le théorème de Riemann--Roch implique alors que l'on dispose d'un unique isomorphisme entre la courbe $E$ et sa jacobienne, envoyant $\O_E$ sur zéro, ce qui permet de munir $E$ d'une structure de \emph{schéma en groupes}, en particulier de munir l'ensemble $E(L)$ d'une structure de groupe pour toute extension $L/K$, dont l'élément neutre est $\O_E$. Le théorème de Riemann--Roch implique également que toute courbe elliptique sur $K$ admet une équation plane, dite sous \emph{forme de Weierstrass} :
 $$y^2 + a_1xy = x^3 + a_2x^2 + a_4 x + a_6.$$
+Bien sûr, on peut donner une courbe elliptique par d'autres équations. Si la caractéristique de $K$ est différente de 2 et 3, on peut de plus choisir $a_1 = a_2 = a_3 = 0$, et l'on obtient alors une forme de Weierstrass dite \emph{réduite} ou \emph{courte}.
 
 Une \emph{isogénie} de $E$ vers $E'$ est une application rationnelle \emph{surjective} envoyant $\O_E$ sur $\O_{E'}$, et est automatiquement un morphisme de groupes. Chez les courbes, un morphisme est surjectif si et seulement s'il est non nul, mais cette définition est la bonne si l'on souhaite l'étendre à des variétés abéliennes de dimension supérieure. Notons $\End(E)$ l'anneau d'endomorphismes de $E$ : la structure de groupe donne une flèche
 $$\begin{aligned}
@@ -97,61 +99,52 @@ Pour en dire plus sur la structure de $\End(E)$, on peut montrer que pour toute 
 
 On peut alors en déduire que l'on est dans l'alternative suivante : $\End(E)$ est soit $\Z$, soit un ordre dans un corps quadratique imaginaire, soit un ordre dans une algèbre de quaternions sur $\Q$ : un \emph{ordre} est un sous-anneau qui est de type fini sur $\Z$ et engendre tout l'espace comme $\Q$-espace vectoriel. Le dernier cas ne survient qu'en caractéristique positive. Si $K = \F_p$, on dit que $E$ est \emph{ordinaire} dans le second cas et que $E$ est \emph{supersingulière} dans le troisième, le premier cas étant exclu par la présence du morphisme de Frobenius
 $$\pi_E\de x\mapsto x^p$$
-qui est de degré $p$, donc n'est pas un élément de $\Z$.
+qui est de degré $p$, donc n'est pas un élément de $\Z$. La théorie de Hasse nous dit, de plus, que $\pi_E$ vérifie une équation de la forme
+$$\pi_E^2 - t \pi_E + p = 0.$$
+On a l'inégalité $|t|\leq 2\sqrt{p}$, et on peut montrer que le cardinal de l'ensemble $E(\F_p)$ est donné par
+$$\# E(\F_p) = p + 1 - t,$$
+d'où les \emph{bornes de Hasse} :
+$$p + 1 - 2\sqrt{p} \leq \#E(\F_p) \leq p + 1 + 2\sqrt{p}$$
+qui jouent un rôle important en pratique dans le calcul de $\# E(\F_p)$, et nous y reviendrons.
 
 Le cas des courbes elliptiques complexes est particulier, et servira de motivation à certaines constructions dans ce mémoire. En effet, si $E/\C$ est une courbe elliptique, c'est en particulier une surface de Riemann,  et on peut montrer qu'il existe un $\tau\in \H$, le demi-plan de Poincaré tel que l'on ait un isomorphisme
 $$\C/\Lambda_\tau \overset{\sim}{\vers} E,$$
 où $\Lambda_\tau = \Z\oplus \Z\tau$, donné par la fonction $\wp$ de Weierstrass. Le nombre $\tau$ est déterminé uniquement modulo l'action de $\Gamma(1) = \mathrm{SL}_2(\Z)$, et on aura l'occasion d'y revenir. Dans celle description, une isogénie $E\vers E'$ est simplement la multiplication par un $\alpha\in \C^*$ tel que $\alpha \Lambda_\tau \subset \Lambda_\tau'$ : avec cette description explicite, il est facile de vérifier les différentes propriétés exposées ci-dessus. Le cas de la caractéristique zéro en découle facilement par le principe de plongement de Lefschetz, mais le passage à la caractéristique quelconque semble toujours faire intervenir une preuve non triviale : voir par exemple \cite{Nekovar}.
 
-Dans la suite de ce document, on s'intéresse à des courbes elliptiques ordinaires sur un corps fini et à l'action d'un certain groupe de classes sur celles-ci : on étudie donc plus en détail le cas où $\End(E)$ est un ordre dans un corps quadratique imaginaire, en commençant par le cas complexe, plus facile et qui fournit une bonne intuition; c'est là aussi que l'on trouve l'origine du terme utilisé pour désigner habituellement ces courbes, dites \emph{à multiplication complexe}.
+Dans la suite de ce document, on s'intéresse à des courbes elliptiques ordinaires sur un corps fini et à l'action d'un certain groupe de classes sur celles-ci. On étudie donc plus en détail le cas où $\End(E)$ est un ordre dans un corps quadratique imaginaire, en commençant par le cas complexe, plus facile et qui fournit une bonne intuition. C'est là aussi que l'on trouve l'origine du terme utilisé pour désigner habituellement ces courbes, dites \emph{à multiplication complexe}.
 
 
 \subsection{Multiplication complexe sur $\C$}
 
 
-Ce thème étant plutôt élémentaire et déjà traité en détail dans \cite{Sil2}, on se contente ici de résumer les résultats importants. Dans cette section, on fixe un ordre $\O$ dans un corps quadratique $K\subset \C$, et l'on note $\Ell_\C(\O)$ l'ensemble des courbes elliptiques sur $\C$ (à isomorphisme près) ayant multiplication complexe par $\O$. On identifiera un élément de cet ensemble avec ses représentants. Dans \cite{Sil2}, on suppose que $\O$ est l'anneau d'entiers de $K$, mais cette supposition n'est pas essentielle. Dans le cas général, $\O$ n'est pas un anneau de Dedekind (n'étant pas intégralement clos) mais reste un anneau n\oe thérien de dimension 1.
+Ce thème étant plutôt élémentaire et déjà traité en détail dans \cite{Sil2}, on se contente ici de résumer les résultats importants. Dans cette section, on fixe un ordre $\O$ dans un corps quadratique $K\subset \C$, et l'on note $\Ell_\C(\O)$ l'ensemble des courbes elliptiques sur $\C$, à isomorphisme près, ayant multiplication complexe par $\O$. On identifiera un élément de cet ensemble avec ses représentants. Dans \cite{Sil2}, on suppose que $\O$ est l'anneau d'entiers de $K$, mais cette supposition n'est pas essentielle. Dans le cas général, $\O$ n'est pas un anneau de Dedekind (n'étant pas intégralement clos) mais reste un anneau n\oe thérien de dimension 1.
 
-La première étape est de fixer un isomorphisme $[\,\cdot\,]\de \O\vers \End(E)$ pour toute courbe $E\in \Ell_\C(\O)$ afin de pouvoir identifier ces anneaux. On fait cela en regardant l'action sur le $\C$-espace vectoriel de dimension 1  $H^0(E,\Omega^1)$ des formes différentielles sur $E$, en imposant
+La première étape est de fixer un isomorphisme $[\,\cdot\,]\de \O\vers \End(E)$ pour toute courbe $E\in \Ell_\C(\O)$ afin de pouvoir identifier ces anneaux. On fait cela en regardant l'action sur le $\C$-espace vectoriel de dimension 1 des formes différentielles sur $E$, en imposant
 $$\forall \omega\in H^0(E,\Omega^1),\ \forall\,\alpha\in\O,\ [\alpha]^*\omega = \alpha \omega.$$
 
-Le but est maintenant de définir une action du groupe de classes de $\O$. Si $\O_K$ désigne l'anneau d'entiers de $K$, on appelle $f=[\O:\O_K]$ le \emph{conducteur} de $\O$, et l'on a $\O = \Z  + f \O_K$. Le discriminant de $\O$ est alors $D = f^2 D_K$. Les idéaux de $\O$ premiers à $f$ engendrent un groupe d'idéaux fractionnaires, que l'on quotiente par les idéaux principaux pour obtenir le \emph{groupe de classes} $\Cl(\O)$ de $\O$.
+Le but est maintenant de définir une action du groupe de classes de $\O$. Si $\O_K$ désigne l'anneau d'entiers de $K$, on appelle $f=[\O:\O_K]$ le \emph{conducteur} de $\O$, et l'on a $\O = \Z  + f \O_K$. Le discriminant de $\O$ est alors $D = f^2 D_K$. Les idéaux de $\O$ premiers à $f$ sont les idéaux inversibles de $\O$ et engendrent un groupe d'idéaux fractionnaires, que l'on quotiente par les idéaux principaux pour obtenir le \emph{groupe de classes} $\Cl(\O)$ de $\O$.
 
-Au niveau des idéaux, on procède de la manière suivante: soit $E\in \Ell_\C(\O)$. En raisonnant en termes de réseaux, on voit que pour tout sous-groupe fini $S$ de $E$, il existe une isogénie $E\vers E'$ de noyau $S$, et celle-ci est unique à isomorphisme près (on déclare que deux isogénies sont isomorphes si elles diffèrent d'un isomorphisme à l'arrivée).
+Au niveau des idéaux, on procède de la manière suivante: soit $E\in \Ell_\C(\O)$. En raisonnant en termes de réseaux, on voit que pour tout sous-groupe fini $S$ de $E$, il existe une isogénie $E\vers E'$ de noyau $S$, et celle-ci est unique à isomorphisme près (on déclare que deux isogénies sont isomorphes si elles diffèrent d'un isomorphisme à l'arrivée). Soit $\frak a$ un idéal inversible de $\O$. On définit
+$$E[\frak a]=\bigcap_{\phi\in \frak a} \mathrm{Ker}\,\phi$$
+(rappelons l'identificiation $\End(E)\simeq\O$ ci-dessus). On note $\phi_{\frak a}$ l'isogénie de noyau $E[\frak a]$, et $\frak a\cdot E$ sa courbe image (qui est bien définie comme élément de $\Ell_\C(\O)$).
 
-\begin{defi}
-Soit $\frak a$ un idéal inversible de $\O$. On définit
-
-$$E[\frak a]=\bigcap_{\phi\in \frak a} \mathrm{Ker}\,\phi.$$
-
-On note $\phi_{\frak a}$ l'isogénie de noyau $E[\frak a]$, et $\frak a\cdot E$ sa courbe image (qui est bien définie comme élément de $\Ell_\C(\O)$).
-\end{defi}
-
-\begin{prop}
-
-Pour tout idéal inversible $\frak a$ de $\O$ et toute courbe $E=\C/\Lambda\in \Ell_\C(\O)$, on a :
-
+Pour montrer que cette \emph{action par isogénies} en est bien une, on peut faire appel aux réseaux et montrer la propriété suivante : pour tout idéal inversible $\frak a$ de $\O$ et toute courbe $E=\C/\Lambda\in \Ell_\C(\O)$, on a
 $$\frak a\cdot E = \C/\frak a^{-1} \Lambda.$$
-
-Le degré de $\phi_{\frak a}$ est la norme de l'idéal $\frak a$, et la courbe $\frak a\cdot E$ a également multiplication complexe par $\O$. Cette opération définit une action du groupe des idéaux fractionnaires inversibles de $\O$ sur $\Ell_\C(\O)$, qui est triviale pour les idéaux principaux. Elle se factorise donc en une action
-
+On en déduit que le degré de $\phi_{\frak a}$ est la norme de l'idéal $\frak a$, et que la courbe $\frak a\cdot E$ a également multiplication complexe par $\O$. On en déduit aussi la transitivité, et il est immédiat que les idéaux principaux agissent trivialement, l'isogénie en question étant alors l'endomorphisme qui engendre l'idéal. On obtient donc l'action annoncée
 $$\Cl(\O) \circlearrowright \Ell_\C(\O).$$
 
-Cette dernière action est simplement transitive.
-
-\end{prop}
-
-La preuve de ce résultat utilise de manière essentielle le fait qu'une courbe elliptique complexe est un tore $\C/\Lambda$ ; elle n'est donc pas transposable telle quelle en caractéristique positive notamment. Le but est maintenant d'adapter ce résultat à la caractéristique positive, et notamment les corps finis.
-
-
-
+De plus, cette dernière action est simplement transitive. Silverman donne une preuve qui utilise de manière essentielle la représentation des courbes elliptiques sur $\C$ sous la forme $\C/\Lambda$, et n'est donc pas transposable telle quelle en caractéristique positive notamment. La question est donc de reprendre ces définitions et résultats pour un corps quelconque, ou au moins un corps fini.
 
 \subsection{Théorèmes de relèvement}
 
+Une première idée pour atteindre les corps finis est de quotienter un anneau dans un corps de nombres par un idéal. Partant d'une courbe elliptique définie sur $\F_p$, on se demande par exemple s'il existe des relèvements à $\Z$, sur lesquels les résultats sont connus, et redescendre tout cela ensuite. 
 
-Une première direction pour adapter ces résultats aux corps finis est d'utiliser les théorèmes suivants, dus à Deuring. On se donne ici $k$ un corps fini de caractéristique $p$.
+Le problème inverse est de partir d'une courbe elliptique définie sur $\Q$ et étudier ses réductions modulo $p$. Si l'on se donne par exemple une courbe elliptique $E$ définie sur $\Q$, alors $E$ admet un modèle à coefficients dans $\Z$. Pour réduire $E$ en caractéristique $p$, on cherche d'abord à éliminer toutes les puissances possibles de $p$ pour trouver un \emph{modèle minimal} en $p$. Trois cas se présentent alors : soit la courbe réduite modulo $p$ est lisse (c'est alors une courbe elliptique et on dit que $E$ a \emph{bonne réduction} en $p$), soit elle ne l'est pas (elle dégénère en un n\oe ud ou une pointe et on dit que $E$ a mauvaise réduction). Étudier la réduction de courbes définies sur $\Q$, ou plus généralement sur un corps de nombres est une question d'arithmétique vaste.
+
+Cette question de relèvement est ancienne, et on peut utiliser les théorèmes suivants, dus à Deuring et dont une preuve apparaît dans \cite{Lang}. On se donne ici $k$ un corps fini de caractéristique $p$.
 
 
-\begin{thm}[Relèvement en caractéristique zéro]
+\begin{thm}[Relèvement d'un endomorphisme en caractéristique zéro]
 
 Soit $E/k$ une courbe elliptique et $\alpha$ un endomorphisme de $E$. Alors il existe un corps de nombres $L$, une courbe elliptique $E^0/L$, un endomorphisme $\alpha^0$ de $E^0$ et un premier $\frak P$ de $L$ de corps résiduel $k$, tels que $E^0$ a bonne réduction à $\frak P$, $E$ est isomorphe à $\bar{E^0}$ et $\alpha$ correspond à $\bar{\alpha^0}$ sous cet isomorphisme.
 
@@ -175,7 +168,7 @@ De plus, $\End(E)\vers\End(\bar{E})$ préserve le degré.
 Utilisons maintenant ce résultat pour adapter la section précédente au cas des courbes elliptiques sur un corps fini. On fixe à partir de maintenant un ordre quadratique $\O$ (que l'on voit dans $\C$) et un premier $\frak p$ de $\O$ au-dessus de $p$ ; il y a deux possibilités selon le second théorème. On notera par $\alpha\vers\bar{\alpha}$ la réduction mod $\frak p$.
 
 
-\begin{prop}
+\begin{prop}[Normalisation sur un corps fini]
 
 Soit $E\in \Ell_k(\O)$. Alors il existe un unique isomorphisme
 
@@ -201,22 +194,14 @@ où la première ligne est normalisée comme dans la section précédente.
 
 \begin{proof}
 
-On construit cet isomorphisme à l'aide du théorème de relèvement (si l'on n'avait pas la bonne place au-dessus de $\frak p$, on peut faire agir Galois). L'unicité provient du fait qu'il n'existe que deux isomorphismes de $\O$ vers $\End(E)$ ; l'un envoie un certain élément $t\in \O$ sur le Frobenius $\pi = F_{E/k}$, et l'autre sur $\widehat{\pi}.$ On peut les distinguer avec la condition sur les pullbacks, puisque dans le cas ordinaire, $\pi$ n'est pas séparable alors que $\widehat{\pi}$ l'est.
-
-Le diagramme commutatif découle alors immédiatement de l'unicité.
+On construit cet isomorphisme à l'aide du théorème de relèvement (si l'on n'avait pas la bonne place au-dessus de $\frak p$, on peut faire agir Galois). L'unicité provient du fait qu'il n'existe que deux isomorphismes de $\O$ vers $\End(E)$ ; l'un envoie un certain élément $t\in \O$ sur le Frobenius $\pi = F_{E/k}$, et l'autre sur $\widehat{\pi}.$ On peut les distinguer avec la condition sur les pullbacks, puisque dans le cas ordinaire, $\pi$ n'est pas séparable alors que $\widehat{\pi}$ l'est. Le diagramme commutatif découle alors immédiatement de l'unicité.
 \end{proof}
 
-A l'aide de cette identification, on peut maintenant définir comme précédemment $\frak a\cdot E$ pour $\frak a$ un idéal inversible de $\O$ et $E\in \Ell_k(\O)$. La courbe $\frak a\cdot E$ reste définie sur $k$, puisque $E[\frak a]$ l'est. On \emph{admet} alors le résultat suivant :
+A l'aide de cette identification, on peut maintenant définir comme précédemment $\frak a\cdot E$ pour $\frak a$ un idéal inversible de $\O$ et $E\in \Ell_k(\O)$. La courbe $\frak a\cdot E$ reste définie sur $k$, puisque $E[\frak a]$ l'est.
 
-\begin{prop}
+A ce point du raisonnement, nous admettons que pour tout idéal $\frak a$ inversible de $\O$ de norme première à $p$, le sous-groupe $E[\frak a](\bar{k})$ de $ E(\bar{k})$ est de cardinal $N(\frak a)$. On remarque que c'est vrai lorsque $\frak a$ est l'idéal engendré par un entier $n$ premier à $p$ ; pour adapter cette proposition au cas où $p$ divise la norme, il faut parler du rang du schéma en groupes fini plat $E[\frak a]$. Nous ne sommes pas parvenus à donner une preuve de ce fait, ni à la trouver dans la littérature.
 
-Pour tout idéal $\frak a$ inversible de $\O$ de norme première à $p$, le sous-groupe $E[\frak a](\bar{k})$ de $ E(\bar{k})$ est de cardinal $N(\frak a)$.
-
-\end{prop}
-
-On remarque que c'est vrai lorsque $\frak a$ est l'idéal engendré par un entier $n$ premier à $p$ ; pour adapter cette proposition au cas où $p$ divise la norme, il faut parler du rang du schéma en groupes fini plat $E[\frak a]$.
-
-En particulier cela montre que $\phi_{\frak a}^0$, définie en partant d'un relèvement en caractéristique zéro, se réduit en $\phi_{\frak a}$. On peut alors retrouver l'analogue du résultat sur $\C$ :
+On en déduit que $\phi_{\frak a}^0$, définie en partant d'un relèvement en caractéristique zéro, se réduit en $\phi_{\frak a}$. On peut alors retrouver l'analogue du résultat sur $\C$ :
 
 \begin{prop}
 
@@ -244,31 +229,20 @@ Mais $\phi_{\frak a}$ admet également un relèvement $\psi\in \End(E^0)$ ; tous
 \end{proof}
 
 
-Outre le fait d'admettre un résultat qui n'est pas élémentaire, cette méthode a le désavantage de très mal se généraliser aux corps de caractéristique positive qui ne sont pas des corps finis.
+Outre le fait d'admettre un résultat qui n'est pas élémentaire, cette méthode ne semble pas se généraliser aisément aux corps de caractéristique positive qui ne sont pas des corps finis : il faudrait tenter de réduire des courbes elliptiques définies sur des $W(k)$-algèbres, par exemple, où $W(k)$ désigne l'anneau des vecteurs de Witt. Ces algèbres plus complexes n'ont sans doute pas les mêmes propriétés arithmétiques que les corps de nombres.
 
-Une façon peut-être plus naturelle d'adapter aux corps finis les résultats obtenus sur $\C$ est d'utiliser les modules de Tate, comme des espaces naturels attachés aux courbes elliptiques dans lesquels $\End(E)$ se comporte effectivement comme un réseau.
-
-
-
-
-\newpage
+Une autre façon d'adapter aux corps finis les résultats obtenus sur $\C$ est d'utiliser les modules de Tate, comme des espaces naturels attachés aux courbes elliptiques dans lesquels $\End(E)$ se comporte effectivement comme un réseau.
 
 \subsection{Modules de Tate}
 
 
-Pour l'instant, on se donne un corps quelconque $k$.
-
-\begin{defi}
-
-On rappelle la définition bien connue des modules de Tate pour une courbe elliptique $E/k$ (cette définition a un sens dans un cadre plus général, celui des variétés abéliennes). Si $\ell$ est un nombre premier, on a des applications
+Pour l'instant, on se donne un corps quelconque $k$. Rappellons la définition bien connue des modules de Tate pour une courbe elliptique $E/k$ (cette définition a un sens dans un cadre plus général, celui des variétés abéliennes). Si $\ell$ est un nombre premier, on a des applications
 $$ [\ell] \de E[\ell^{m+1}](\bar{k})\vers E[\ell^{m}](\bar{k})$$
-
 et on définit le \emph{module de Tate}
 $$T_\ell(E) = \lim_{\leftarrow} E[\ell^m](\bar{k}).$$
+On a donc une identification canonique $E[\ell^m](\bar{k})\simeq T_\ell(E)/ \ell^{m} T_\ell(E)$.
 
-On a donc une identification canonique $E[\ell^m]\simeq T_\ell(E)/ \ell^{m} T_\ell(E)$.
-
-Si $\ell$ est différent de la caractéristique de $k$, on sait que $E[\ell]$ est étale de rang $\ell^2$, donc $T_\ell(E)$ est un $\Z_\ell$-module libre de rang 2. On peut donc le voir comme un réseau dans le $\Q_\ell$-espace vectoriel de dimension 2
+Si $\ell$ est différent de la caractéristique de $k$, on sait que $E[\ell]$ est un schéma en groupes fini étale de rang $\ell^2$, donc $T_\ell(E)$ est un $\Z_\ell$-module libre de rang 2. On peut donc le voir comme un réseau dans le $\Q_\ell$-espace vectoriel de dimension 2
 $$V_\ell(E) = T_\ell(E) \otimes_{\Z_\ell} \Q_\ell.$$
 
 Le diagramme suivant est alors commutatif :
@@ -284,61 +258,38 @@ $$
  E[\ell^{m+1}](\bar{k})
 }
 $$
-
 ce qui donne une identification canonique avec les points $\ell$-primaires de la courbe,
 $$ V_\ell(E)/ T_\ell(E) \simeq E(\ell)(\bar{k}).$$
 
 Avec cette identification, les sous-groupes $\ell$-divisibles de $E(\bar{k})$ correspondent aux réseaux de $V_\ell(E)$ contenant $T_\ell(E)$. Tous ces objets sont munis de plus d'une action naturelle du groupe de Galois $G= \mathrm{Gal}(\bar{k}/k)$.
-
-\end{defi}
 
 Si $\phi\de E\vers E'$ est une isogénie définie sur $k$, ses restrictions $E[\ell^m](\bar{k})\vers E'[\ell^m](\bar{k})$ sont compatibles, et $\phi$ induit donc naturellement une application
 $$ \phi_\ell\de T_\ell(E)\vers T_\ell(E').$$
 
 Cette application est un morphisme de $\Z_\ell[G]$-modules, que l'on peut également considérer de $V_\ell(E)$ dans $V_\ell(E')$. Avec ces notations, on a le théorème suivant, dû à Tate :
 
-\begin{thm} Si $k$ est un corps fini, cette application
+\begin{thm}[Équivalence de Tate] Si $k$ est un corps fini, cette application
 $$\Hom_k(E, E') \vers \Hom_{\Z_\ell[G]} (T_\ell(E), T_\ell(E'))$$
-
-est un isomorphisme.
+est un isomorphisme pour tout $\ell$ distinct de la caractéristique de $k$.
 \end{thm}
 
-On suppose maintenant que \emph{$k$ est un corps fini}. Connaissant ce résultat, on peut faire le lien entre les isogénies et les sous-groupes de $E(\bar{k})$, les isogénies, les réseaux dans les modules de Tate et les idéaux de l'anneau d'endomorphisme, et démontrer la simple transitivité de l'action de $\Cl(\O)$ sur $\Ell_k(\O)$.
+Un résultat similaire pour les corps de nombres est dû à Faltings. Dans le cas $\ell=p$, on peut construire un autre $\Z_p[G]$-module qui vérifie le même genre de propriétés, mais sa construction est plus complexe, et l'on renvoie à \cite{Waterhouse} pour une discussion sur les modules de Dieudonné. On se contentera ici du cas $\ell\neq p$.
 
-\begin{rem}
+On suppose maintenant que \emph{$k$ est un corps fini}. Connaissant ce résultat, on peut faire le lien entre les isogénies et les sous-groupes de $E(\bar{k})$, les isogénies, les réseaux dans les modules de Tate et les idéaux de l'anneau d'endomorphisme, et démontrer la simple transitivité de l'action de $\Cl(\O)$ sur $\Ell_k(\O)$. On fixe un isomorphisme $\O\vers \End(E)$ que l'on rend cohérent dans une classe d'isogénie, par exemple celui que l'on a défini à la section précédente.
 
-Cet isomorphisme est valable uniquement dans le cas $\ell\neq p$, si $k$ est de caractéristique $p$. Dans le cas $\ell=p$, on peut construire un autre $\Z_p[G]$-module qui vérifie le même genre de propriétés, mais sa construction est plus complexe : cf. Waterhouse. Ici on se concentre sur le cas $\ell\neq p$.
-
-\end{rem}
-
-Dans ce cadre, le lemme fondamental reliant l'anneau d'endomorphismes aux modules de Tate est le suivant. Ici on fixe un isomorphisme $\O\vers \End(E)$ que l'on rend cohérent dans une classe d'isogénie, par exemple celui que l'on a défini à la section précédente.
-
-\begin{lem}
-
-Soit $\ell\neq p$ un nombre premier, $\frak a$ un idéal de $\O$, et $\phi\de E\vers E' = E/E[\frak a]$ l'isogénie quotient. Alors on a l'égalité
-
+Le lien est le suivant : si $\ell\neq p$ un nombre premier, $\frak a$ un idéal de $\O$, et $\phi\de E\vers E' = E/E[\frak a]$ l'isogénie quotient, alors on a l'égalité
 $$\phi_\ell^{-1} T_\ell(E') = \bigcap_{\rho\in\frak a}\ \rho_\ell^{-1} T_\ell(E) .$$
-\end{lem}
 
-Cela permet de décrire la localisation de l'idéal $\frak a$ en $\ell$ en termes de modules de Tate. On utilise de plus le résultat bien connu qu'un réseau est déterminé par ses localisations :
-
-\begin{lem}[Weil-Eischle] L'application
-
+Cela permet de décrire la \emph{localisation} de l'idéal $\frak a$ en $\ell$ en termes de modules de Tate. On invoque alors le résultat bien connu qu'un réseau est déterminé par ses localisations : le lemme de Weil--Eischle déclare que l'application
 $$\begin{aligned}
 \mathcal{R}(\Q^n) &\longrightarrow \prod_{\ell\in \mathcal{P}} \mathcal{R}(\Q_\ell^n) \\
 \Lambda\ \ &\longmapsto (\Lambda_\ell = \Lambda\otimes_\Z \Z_\ell)_{\ell\in\mathcal{P}}
 \end{aligned}$$
+est une injection d'image l'ensemble des collections $(\Lambda_\ell)$ telles que $\Lambda_\ell = \Z_\ell$ pour presque tout $\ell$. Bien sûr, pour utiliser ce résultat, il faut regarder toutes les localisations (y compris en $p$), car la conclusion ne tient pas même si l'on n'ôte qu'un seul premier.
 
-est une injection d'image l'ensemble des collections $(\Lambda_\ell)$ telles que $\Lambda_\ell = \Z_\ell$ pour presque tout $\ell$.
-\end{lem}
+Nommons \emph{idéal de noyau} un idéal $\frak a$ de $\O$ tel que les endomorphismes s'annulant sur $\bigcap_{\rho\in \frak a} \Ker\rho$ sont des éléments de $\frak a$. Le point crucial est de montrer que tous les idéaux sont des idéaux de noyau ; à partir de cela, la simple transitivité de l'action est facile à atteindre.
 
-On peut ensuite démontrer sans trop de difficulté le théorème suivant.
-
-\begin{thm}
-
-Soit $k$ un corps fini, $E_0/k$ une courbe elliptique ordinaire ayant multiplication complexe par un ordre $\O$ d'un corps quadratique $K$. Alors tout idéal de $\O$ est un idéal de noyau pour toute courbe elliptique telle que $\End(E)=\O$. De plus, $\Ell_k(\O)$ est un espace principal homogène pour $\Cl(\O)$.
-
-\end{thm}
+--- à réécrire ---
 
 
 \begin{proof}
@@ -361,40 +312,55 @@ Comme $G$ est fini, $I_\ell$ est trivial pour presque tout $\ell$. Il existe don
 
 \section{Courbes modulaires}
 
+Une fois que l'on sait que l'action du groupe de classes est simplement transitive, on cherche naturellement à la \emph{calculer}. Très concrètement : étant donné une courbe elliptique explicite, et un idéal de $\O$ explicite, la question est de calculer l'action de cet idéal sur cette courbe. Par exemple si l'idéal est de norme $\ell$, un nombre premier, il s'agit de déterminer une isogénie de degré $\ell$ au départ d'une courbe donnée.
 
-Le but de cette section est de définir les courbes modulaires, d'en expliciter les propriétés et des modèles naturels. L'intérêt de ces courbes est qu'elles paramétrisent naturellement la donnée d'une courbe elliptique munie d'une certaine structure. Nous suivons ici \cite{KaMa}, en essayant de rester aussi concret que possible. L'étude du cas complexe permet de motiver et d'introduire l'étude générale, qui impliquera les résultats dont nous avons besoin sur les corps finis.
+On en arrive alors rapidement à la notion de courbe modulaire, qui paramétrisent naturellement la donnée d'une courbe elliptique munie d'une certaine structure. Le premier but de cette section est de montrer l'existence de ces courbes (ou au moins certaine d'entre elles) en toute généralité, c'est à dire en tant que \emph{schéma}, si possible sur $\Z$. Nous suivons ici \cite{KaMa}, en essayant de rester aussi concret que possible. L'étude du cas complexe permet de motiver et d'introduire l'étude générale.
 
 
 \subsection{Courbes modulaires sur $\C$}
 
-\begin{prop}
+Cherchons par exemple un espace classifiant les courbes elliptiques sur $\C$ munies d'un point de $N$-torsion ($N\geq 2$) à isomorphisme près. L'usage est de désigner ces objets par la lettre $Y$ complétée de quelques indices. Comme on l'a déjà mentionné, l'espace des courbes elliptiques complexe à isomorphisme près est le demi-plan de Poincaré quotienté par l'action du groupe $\Gamma(1) = \mathrm{SL}_2(\Z)$, ce que l'on note:
+$$Y(1)_\C = \Gamma(1) \b \H.$$
 
-Notons $\H$ le demi-plan de Poincaré et pour $n\geq 1$, $\Gamma(n)$, $\Gamma_0(n)$, $\Gamma_1(n)$ les sous-groupes usuels de $\Gamma(1).$ Alors :
+Soit $\tau\in \H$. La courbe elliptique $E_\tau = \C/(\Z+\Z\tau)$ a un point de $N$-torsion primitif naturel qui est simplement $\frac{1}{N}$. Cette donnée supplémentaire n'est pas invariante par tous les éléments de $\Gamma(1)$, seulement par ceux du sous-groupe
+$$\Gamma_1(N) = \left\{\left(
+\begin{matrix}
+a & b \\
+c & d
+\end{matrix}
+\right) \in \mathrm{SL}_2(\Z)\ :\ a = d = 1 \mod{N},\ c = 0\mod{N}\right\}.$$
+On montre alors qu'en effet, une courbe elliptique complexe munie d'un point de $N$-torsion est isomorphe à un unique couple $\left(\E_\tau, \frac{1}{N}\right)$ avec $\tau\in \Gamma_1(N) \b \H$. On note cela
+$$Y_1(N)_\C = \Gamma_1(N) \b \H.$$
 
-\begin{itemize}
-\item[•] Le quotient $\Gamma(n)\b \H$ peut être identifié à l'ensemble des classes d'isomorphisme de paires $(E,\phi)$, où $E$ est une courbe elliptique complexe et $\phi\de (\Z/n\Z)^2\vers E[n]$ est un isomorphisme de groupes compatible à l'accouplement de Weil.
-\item[•] Le quotient $\Gamma_0(n)\b \H$ peut être identifié à l'ensemble des classes d'isomorphisme des paires $(E,G)$, où $E$ est une courbe elliptique sur $\C$ et $G$ est un sous-groupe de $E[n]$ isomorphe à $\Z/n\Z$ (ou, de manière équivalente, à l'ensemble des classes d'isomorphisme des triplets $(E_1, E_2, \phi)$ où $\phi\de E_1\vers E_2$ est une isogénie cyclique de degré $n$).
-\item[•] Le quotient $\Gamma_1(n)\b \H$ peut être identifié à l'ensemble des classes d'isomorphisme des paires $(E,P)$, où $E$ est une courbe elliptique sur $\C$ et $P$ est un point de $E$ d'ordre $n$.
-\end{itemize}
+Qu'en est-t-il si l'on relâche la condition d'un point primitif de $N$-torsion, pour simplement demander un sous-groupe cyclique d'ordre $N$ ? Là encore, si $\tau\in \H$, $E_\tau$ a un groupe cyclique de cardinal $N$ naturel qui est simplement $\left\{\frac{a}{N},\ 0\leq a\leq N-1\right\}$. Cette donnée supplémentaire est invariante par un groupe plus grand que $\Gamma_1(N)$, à savoir
+$$\Gamma_0(N) = \left\{\left(
+\begin{matrix}
+a & b \\
+c & d
+\end{matrix}
+\right) \in \mathrm{SL}_2(\Z)\ :\ c = 0\mod{N}\right\}.$$
+De même que précédemment, étant donné une courbe elliptique et un sous-groupe cyclique de cardinal $N$, il existe une unique $E_\tau$ munie de cette donnée supplémentaire qui lui soit isomorphe modulo $\Gamma_0(N)$, autrement dit
+$$Y_0(N)_\C = \Gamma_0(N) \b \H.$$
 
-\end{prop}
+Prenons un troisième exemple : la donnée d'un couple de points de $E$ qui engendrent $E[N] \simeq (\Z/N\Z)^2$. Ici la présence d'un invariant discret, l'accouplement de Weil de ces deux points, interdit que l'on trouve une courbe connexe qui classifie une telle structure à isomorphisme près. L'accouplement de Weil est défini par exemple dans Silverman, mais d'une manière tellement \emph{ad hoc} que l'on peut se demander s'il existe une meilleure façon de formuler cette définition: cet accouplement est fondamental, dans la mesure où il garantit l'autodualité des schémas en groupes $E[N]$ pour la dualité de Poincaré.
 
-En effet, on sait que l'application
-$$\tau \longmapsto \C/\Lambda_\tau\quad \text{où}\ \Lambda_\tau = \Z \oplus \Z\tau$$
-induit une bijection entre le quotient $\Gamma(1)\b \H$ et l'ensemble des courbes elliptiques sur $\C$ à isomorphisme près. On peut ensuite expliciter chacune des autres bijections :
-
+Pout tout $\tau\in \H$, $E_\tau$ a deux points distingués qui engendrent $E_\tau[N]$, à savoir $\frac{\tau}{N}$ et $\frac{1}{N}$. Cette donnée est laissée invariante par le groupe
 $$\begin{aligned}
-\tau\in\ &\Gamma(n)\b \H &\longmapsto\ &\left(\C/\Lambda_\tau,\ \left(\frac{1}{n},\frac{\tau}{n}\right)\right) \\
-\tau\in\ &\Gamma_0(n)\b \H &\longmapsto\ &\left(\C/\Lambda_\tau, \left\{\frac{a}{n},\ 0\leq a<n\right\} \right) \\
-\tau\in\ &\Gamma_1(n)\b \H &\longmapsto\ &\left(\C/\Lambda_\tau,\ \frac{1}{n}\right).
+\Gamma(N) &= \left\{\left(
+\begin{matrix}
+a & b \\
+c & d
+\end{matrix}
+\right) \in \mathrm{SL}_2(\Z)\ :\ a = d = 1 \mod{N},\ b = c = 0\mod{N}\right\} \\
+ &= \Ker(\mathrm{SL}_2(\Z) \to \mathrm{SL}_2(\Z/N\Z)).
 \end{aligned}$$
+On peut vérifier que l'accouplement de Weil prend la valeur $\zeta_N = e^\frac{2 i \pi}{N}$ sur ces deux points, et que l'on obtient bien la courbe de classification cherchée (en ajoutant la condition sur l'accouplement):
+$$Y(N)_\C = \Gamma(N) \b \H.$$
+On pourrait s'amuser à trouver d'autres sous-groupes pour d'autres structures (par exemple la donnée simultanée d'un point de $N$-torsion et d'un sous-groupe cyclique d'ordre $M$), mais ces trois exemples suffiront pour nous guider.
 
-On dit que \emph{les surfaces $\Gamma(n)\b \H$, $\Gamma_0(n)\b \H$ et $\Gamma_1(n)\b \H$ représentent les problèmes modulaires} de classification de ces structures complexes à isomorphisme près. On note ces surfaces respectivement $Y(n)_\C$, $Y_0(n)_\C$ et $Y_1(n)_\C$. On se restreindra à ces problèmes modulaires particuliers, mais on pourrait en définir pour d'autres sous-groupes d'indice fini de $\Gamma(1)$.
+Comme dans le cas de $Y(1)$, on peut compactifier les courbes $\Gamma \b\H$ pour tout sous-groupe de congruence $\Gamma$ de $\Gamma(1)$ en ajoutant un nombre fini de points de $\P^1(\Q)$, appelés \emph{pointes}. On obtient alors des surfaces de Riemann compactes, qui sont donc des courbes algébriques, et que l'on notera avec la lettre $X$. Pour étudier ces courbes, une direction naturelle est de se demander quelles sont leurs fonctions et formes différentielles, ne serait-ce que pour en trouver une équation. Bien sûr, ce sont simplement des fonctions modulaires de différents poids pour $\Gamma$, et l'on voit un premier lien entre les courbes elliptiques et les formes modulaires.
 
-Si $Y$ est l'un des trois quotients précédents, on peut montrer qu'il existe un nombre fini $P$ de points tel que $Y\cup P$ est muni d'une structure de surface de Riemann compacte $X$ : on appelle ces points les \emph{pointes} de $Y$. Par conséquent, ces trois quotients sont isomorphes aux surfaces de Riemann associées à une courbe algébrique projective lisse sur $\C$ (c'est une conséquence du théorème de Riemann-Roch). $Y$ correspond alors à une partie affine de $X$, et on peut se demander à quoi ressemblent des équations définissant $Y$.
-
-
-\subsection{Une équation explicite pour $Y_0(n)_\C$}
+\subsection{Calcul d'équations pour les courbes modulaires complexes}
 
 
 Dans la suite de ce document, on utilise une courbe modulaire donnée par une équation explicite pour calculer des isogénies entre courbes elliptiques sur un corps fini. Il est donc important de disposer de telles équations en pratique.
