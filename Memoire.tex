@@ -9,7 +9,7 @@
 \usepackage{amsmath, amsthm, amssymb}
 
 %Fonts and graphics
-\usepackage{graphicx, textcomp, lmodern, fullpage, url}
+\usepackage{graphicx, textcomp, lmodern, fullpage, url, tikz}
 
 %Diagrams
 \usepackage[all]{xy}
@@ -110,16 +110,16 @@ Soit $E$ une courbe elliptique sur $k$ dans le sens abstrait donné ci-dessus. C
 \end{itemize}
 Le théorème de Riemann--Roch, un outil puissant dans l'étude des courbes algébriques, permet de contrôler le nombre de fonctions sur $E$ dont le diviseur satisfait une certaine condition, qui se traduit en des contraintes de zéros et de pôles sur ces fonctions. Il implique que l'on dispose d'un unique isomorphisme entre la courbe $E$ et sa jacobienne envoyant $\O_E$ sur zéro, que l'on peut donner sur les points de la manière suivante:
 $$\begin{aligned}
-E(\bar{k}) &\vers \Jac(E)(\bar{k}) \\
+E(\bar{k}) &\overset{\sim}{\vers} \Jac(E)(\bar{k}) \\
 P &\longmapsto \text{Classe de } (P) - (\O_E).
 \end{aligned}$$
-L'idée est la suivante: soit $D$ un diviseur de degré zéro. Alors $-D - (\O_E)$ est de degré $-1$, et il existe essentiellement une unique fonction $f$ dont les pôles et zéros sont décrits par ce diviseur, par le théorème de Riemann-Roch. Par la condition de degré, $f$ a un unique zéro supplémentaire, $P$. Le diviseur de $f$ est dont $- D - (\O_E) + (P)$, ce qui montre que $D = (P) - (\O_E)$ dans la jacobienne. On a donc montré la surjectivité de l'application ci-dessus.
+L'idée est la suivante: soit $D$ un diviseur de degré zéro. Alors $-D - (\O_E)$ est de degré $-1$, et il existe essentiellement une unique fonction $f$ dont les pôles et zéros sont contrôlés par ce diviseur, par le théorème de Riemann-Roch. Par la condition de degré, $f$ a un unique zéro supplémentaire, $P$. Le diviseur de $f$ est donc $- D - (\O_E) + (P)$, ce qui montre que $D = (P) - (\O_E)$ dans la jacobienne. On a donc montré la surjectivité de l'application ci-dessus.
 
 Cet isomorphisme permet de munir $E$ d'une structure de $k$-schéma en groupes, en particulier de munir l'ensemble $E(L)$ des $L$-points de $E$ d'une structure de groupe pour toute extension $L/k$, dont l'élément neutre est $\O_E$. Le théorème de Riemann--Roch implique également que toute courbe elliptique sur $K$ admet une équation plane sous forme de Weierstrass, en regardant cette fois les fonctions ayant un pôle uniquement en $\O_E$: la fonction $x$ de l'équation plane précédente y admet un pôle double, $y$ un pôle triple, et l'équation polynomiale provient du fait qu'il y a trop de fonctions ayant un pôle d'ordre au plus 6 en ce point. Bien sûr, ce modèle n'a rien de canonique et on peut donner une courbe elliptique par d'autres équations. Si la caractéristique de $k$ est différente de 2 et 3, on peut de plus effectuer quelques changements de coordonées et choisir $a_1 = a_2 = a_3 = 0$, et l'on obtient alors une forme de Weierstrass dite \emph{réduite} ou \emph{courte}.
 
 \v
 
-Une \emph{isogénie} de $E$ vers $E'$ est une application rationnelle surjective envoyant $\O_E$ sur $\O_{E'}$, et est automatiquement un morphisme de groupes. Chez les courbes, une application rationnelle est surjective si et seulement si elle est non nulle, mais cette définition est la bonne si l'on souhaite l'étendre à des variétés abéliennes de dimension supérieure. En ajoutant l'application nulle $x\mapsto \O_{E'}$, on obtient les \emph{morphismes} entre $E$ et $E'$. Notons qu'un morphisme entre deux courbes elliptiques sur $k$ n'est pas nécessairement lui-même défini sur $k$. Par exemples, deux courbes elliptiques peuvent être isomorphes sur une extension quadratique de $k$ mais pas sur $k$ lui-même.
+Une \emph{isogénie} de $E$ vers $E'$ est une application rationnelle surjective envoyant $\O_E$ sur $\O_{E'}$, et est automatiquement un morphisme de groupes. Chez les courbes, une application rationnelle est surjective si et seulement si elle est non nulle, mais cette définition est la bonne si l'on souhaite l'étendre à des variétés abéliennes de dimension supérieure. En ajoutant l'application nulle $x\mapsto \O_{E'}$, on obtient les \emph{morphismes} entre $E$ et $E'$. Notons qu'un morphisme entre deux courbes elliptiques sur $k$ n'est pas nécessairement lui-même défini sur $k$. Par exemples, deux courbes elliptiques peuvent être isomorphes sur une extension quadratique de $k$ mais pas sur $k$ lui-même. Elles sont alors dites \emph{tordues} l'une de l'autre.
 
 Notons $\End(E)$ l'anneau d'endomorphismes de $E$ : la structure de groupe donne une flèche
 $$\begin{aligned}
@@ -134,18 +134,18 @@ On a alors trois possibilités: $\End(E)$ est soit
 \item un ordre dans un corps quadratique imaginaire,
 \item un ordre dans une algèbre de quaternions sur $\Q$. 
 \end{enumerate}
-Un \emph{ordre} est simplement un sous-anneau qui est de type fini sur $\Z$ et engendre tout l'espace comme $\Q$-espace vectoriel. Par exemple, l'anneau des entiers $\O_K$ d'un corps quadratique imaginaire $K$ (on peut penser à $\Z[i]$ dans $\Q[i]$) est un ordre de $K$. C'est d'ailleurs l'ordre maximal, et tous les ordres de $K$ sont des sous-ordres de $\O_K$. Cette alternative à trois choix est le mieux que l'on puisse faire dans le cas général, mais les choses s'arrangent un peu lorsqu'on regarde deux cas particuliers: les corps finis d'une part, et la caractéristique nulle d'autre part. Dans l'optique d'utiliser des courbes elliptiques en cryptographie, ce sont les premières qui nous intéressent.
+Un \emph{ordre} est un sous-anneau qui est de type fini sur $\Z$ et engendre tout l'espace comme $\Q$-espace vectoriel. Par exemple, l'anneau des entiers $\O_K$ d'un corps quadratique imaginaire $K$ (on peut penser à $\Z[i]$ dans $\Q[i]$) est un ordre de $K$. C'est d'ailleurs l'ordre maximal, et tous les ordres de $K$ sont des sous-ordres de $\O_K$. Cette alternative à trois choix est le mieux que l'on puisse faire dans le cas général, mais les choses s'arrangent un peu lorsqu'on regarde deux cas particuliers: les corps finis d'une part, et la caractéristique nulle d'autre part. Dans l'optique d'utiliser des courbes elliptiques en cryptographie, ce sont les premières qui nous intéressent.
 
 \v
 
-\textbf{Courbes elliptiques sur un corps fini.} Si $k = \F_p$, où $p$ est un nombre premier, on dit que $E$ est \emph{ordinaire} dans le second cas et que $E$ est \emph{supersingulière} dans le troisième, le premier cas étant exclu par la présence du morphisme de Frobenius
+\textbf{Courbes elliptiques sur un corps fini.} Reprenons les trois cas ci-dessus. Si $k = \F_p$, où $p$ est un nombre premier, on dit que $E$ est \emph{ordinaire} dans le second cas et que $E$ est \emph{supersingulière} dans le troisième, le premier cas étant exclu par la présence du morphisme de Frobenius
 $$\pi_E\de (x,y)\mapsto (x^p, y^p)$$
 qui est de degré $p$, donc n'est pas un élément de $\Z$. On vient d'écrire le Frobenius pour une équation plane de $E$, mais il existe une définition plus intrinsèque, l'idée générale restant de tout mettre à la puissance $p$.
 
 La théorie de Hasse nous dit que $\pi_E$ vérifie une équation de la forme
 $$\pi_E^2 - t \pi_E + p = 0.$$
 L'autre élément de $\End(E)$ vérifiant cette équation est le dual du Frobenius.
-Le nombre $t$ est un entier vérifiant $|t|\leq 2\sqrt{p}$, et on peut montrer que le cardinal de l'ensemble $E(\F_p)$ est donné par
+Le nombre $t$, appelé \emph{trace} de $\pi_E$ (ou de la courbe $E$), est un entier vérifiant $|t|\leq 2\sqrt{p}$. On peut montrer que le cardinal de l'ensemble $E(\F_p)$ est donné par
 $$\# E(\F_p) = p + 1 - t,$$
 d'où les \emph{bornes de Hasse} :
 $$p + 1 - 2\sqrt{p} \leq \#E(\F_p) \leq p + 1 + 2\sqrt{p}$$
@@ -153,15 +153,15 @@ qui jouent un rôle important en pratique dans le calcul de $\# E(\F_p)$. On peu
 
 \v
 
-\textbf{Courbes elliptiques complexes}. Si $E/\C$ est une courbe elliptique, c'est en particulier une surface de Riemann. On peut montrer qu'il existe $\tau\in \H$, le demi-plan de Poincaré, tel que l'on ait un isomorphisme
+\textbf{Courbes elliptiques en caractéristique zéro}. Tout d'abord, le principe de plongement de Lefschetz permet de ramener les corps de caractéristique zéro au cas complexe. Si $E/\C$ est une courbe elliptique, c'est en particulier une surface de Riemann. On peut montrer qu'il existe $\tau\in \H$, le demi-plan de Poincaré, tel que l'on ait un isomorphisme
 $$\C/\Lambda_\tau \overset{\sim}{\vers} E.$$
 On a noté ici $\Lambda_\tau = \Z\oplus \Z\tau$, et cet isomorphisme est donné par la fonction $\wp$ de Weierstrass et sa dérivée. Le nombre $\tau$ est unique modulo l'action de $\Gamma(1) = \mathrm{SL}_2(\Z)$ sur $\H$ par homographies. Dans cette description, une fonction sur $E$ à valeurs complexes est simplement une fonction méromorphe sur le plan complexe admettant deux périodes, données par les deux vecteurs d'une base de $\Lambda_\tau$. D'un point de vue historique, l'étude de ces \emph{fonctions elliptiques} (dont un membre éminent est la longueur d'arc d'une ellipse) est le point de départ de celle des courbes elliptiques elles-mêmes. C'est là l'origine d'un nom peut-être malheureux, car une courbe elliptique et une ellipse n'ont pas grand-chose en commun.
 
-Dans ce contexte, une isogénie $E\vers E'$ est simplement la multiplication par un $\alpha\in \C^*$ tel que $\alpha \Lambda_\tau \subset \Lambda_\tau'$. Avec cette description explicite, il est facile de vérifier les différentes propriétés exposées plus haut, et l'on voit également que $\End(E)$ ne peut jamais être un ordre d'une algèbre de quaternions. Tout cela motive une terminologie différente du cas des corps finis: on dira que $E$ est \emph{à multiplication complexe} si $\End(E)$ est un ordre quadratique imaginaire.
+Dans ce contexte, une isogénie $E\vers E'$ est simplement la multiplication par un $\alpha\in \C^*$ tel que $\alpha \Lambda_\tau \subset \Lambda_\tau'$. Avec cette description explicite, il est facile de vérifier les différentes propriétés exposées plus haut: par exemple, le dual d'une isogénie est simplement son conjugué complexe. On voit également que $\End(E)$ ne peut jamais être un ordre d'une algèbre de quaternions. Tout cela motive une terminologie différente du cas des corps finis: on dira que $E$ est \emph{à multiplication complexe} si $\End(E)$ est un ordre quadratique imaginaire.
 % Sinon, on dira que... $E$ est \emph{sans multiplication complexe}, le terme \og ordinaire\fg\ étant déjà pris. 
 On utilise parfois également le terme de multiplication complexe pour parler de courbes elliptiques ordinaires sur un corps fini, leurs propriétés étant globalement similaires.
 
-Le principe de plongement de Lefschetz permet de ramener les corps de caractéristique zéro au cas complexe, mais le passage à la caractéristique quelconque semble toujours faire intervenir une preuve non triviale. On peut résumer cela en un leitmotiv de ce mémoire: le cas des courbes elliptiques complexes est plus facile du fait de cette description explicite, et transposer aux corps finis est souvent difficile. On se servira donc du cas complexe comme une motivation pour la démonstration des résultats généraux.
+Cette description agréable en termes de réseaux ne tient plus en caractéristique positive, et le passage à celle-ci semble toujours faire intervenir une preuve non triviale. Dans ce mémoire, on se servira du cas complexe comme une motivation pour la démonstration des résultats généraux.
 
 \v
 
@@ -172,9 +172,9 @@ Le but de ce document étant de travailler avec des courbes elliptiques ordinair
 \subsection{Multiplication complexe sur $\C$}
 
 
-La référence principale de cette section est \cite{Sil2}. On fixe ici un ordre $\O$ dans un corps quadratique imaginaire $K\subset \C$, une extension de $\Q$ de degré 2 vérifiant $K \not\subset\R$: concrètement, on a $K=\Q(\sqrt{-d})$ pour un certain entier $d\geq 2$ sans facteur carré. On note $\Ell_\C(\O)$ l'ensemble des courbes elliptiques sur $\C$, à isomorphisme près, ayant multiplication complexe par $\O$, c'est à dire les courbes $E_\tau = \C/\Lambda_\tau$ pour lesquelles on a:
+La référence principale de cette section est \cite{Sil2}. On fixe ici un ordre $\O$ dans un corps quadratique imaginaire $K\subset \C$, une extension de $\Q$ de degré 2 vérifiant $K \not\subset\R$: concrètement, on a $K=\Q(\sqrt{-d})$ pour un certain entier $d\geq 2$ sans facteur carré. On note $\Ell_\C(\O)$ l'ensemble des courbes elliptiques sur $\C$ (à isomorphisme près) ayant multiplication complexe par $\O$, c'est à dire les courbes $E_\tau = \C/\Lambda_\tau$ pour lesquelles on a:
 $$\End(E_\tau) = \{\alpha\in \C\ |\ \alpha\Lambda_\tau \subset \Lambda_\tau\} = \O.$$
-On identifiera un élément de cet ensemble avec ses représentants. Dans \cite{Sil2}, on suppose que $\O$ est l'anneau d'entiers de $K$, mais cette supposition, qui simplifie les démonstrations, n'est pas essentielle. %Dans le cas général, $\O$ n'est pas un anneau de Dedekind (n'étant pas intégralement clos) mais reste un anneau n\oe thérien de dimension 1.
+On identifiera un élément de cet ensemble avec ses représentants. Dans \cite{Sil2}, on suppose que $\O$ est l'anneau d'entiers de $K$, ce qui permet de simplifier certaines démonstrations; cette supposition n'est pas essentielle en réalité, et on énonce ici les résultats pour un ordre quelconque. %Dans le cas général, $\O$ n'est pas un anneau de Dedekind (n'étant pas intégralement clos) mais reste un anneau n\oe thérien de dimension 1.
 Si $\O_K$ désigne l'anneau d'entiers de $K$, on appelle $f=[\O:\O_K]$ le \emph{conducteur} de $\O$, et l'on a $\O = \Z  + f \O_K$. Le discriminant de $\O$ est alors $D = f^2 D_K$. Les idéaux de $\O$ premiers à $f$ sont les idéaux inversibles de $\O$ et engendrent un groupe d'idéaux fractionnaires, que l'on quotiente par les idéaux principaux pour obtenir le \emph{groupe de classes d'idéaux} $\Cl(\O)$ de $\O$.
 \v
 
@@ -197,19 +197,29 @@ De plus, cette dernière action est simplement transitive. Les preuves données 
 
 \subsection{Théorèmes de relèvement}
 
-Une première idée pour atteindre les corps finis est de quotienter un anneau dans un corps de nombres par un idéal. Partant d'une courbe elliptique définie sur $\F_p$, on se demande par exemple si l'on peut considérer un relèvement à $\Z$, sur lesquels les résultats sont connus, et redescendre tout cela ensuite. 
+Une première idée pour atteindre les corps finis est de quotienter un anneau dans un corps de nombres par un idéal. Partant d'une courbe elliptique définie sur $\F_p$, on se demande par exemple si l'on peut considérer un relèvement à $\Z$, sur lesquels les résultats sont connus vu que $\Z\subset\C$, et redescendre tout cela ensuite. 
 
-Le problème inverse est de partir d'une courbe elliptique définie sur $\Q$ et étudier ses réductions modulo $p$. Si l'on se donne par exemple une courbe elliptique $E$ définie sur $\Q$, alors $E$ admet un modèle à coefficients dans $\Z$. Pour réduire $E$ en caractéristique $p$, on cherche d'abord à éliminer toutes les puissances possibles de $p$ pour trouver un \emph{modèle minimal} en $p$. Deux cas se présentent alors : soit la courbe réduite modulo $p$ est lisse (c'est alors une courbe elliptique et on dit que $E$ a \emph{bonne réduction} en $p$), soit elle ne l'est pas (elle dégénère en un n\oe ud ou une pointe et on dit que $E$ a mauvaise réduction). Étudier la réduction de courbes définies sur $\Q$, ou plus généralement sur un corps de nombres est une question d'arithmétique vaste.
+Le problème inverse est de partir d'une courbe elliptique définie sur $\Q$ et étudier ses réductions modulo $p$. Si l'on se donne par exemple une courbe elliptique $E$ définie sur $\Q$, alors $E$ admet un modèle à coefficients dans $\Z$. Pour réduire $E$ en caractéristique $p$, on cherche d'abord à éliminer toutes les puissances possibles de $p$ pour trouver un \emph{modèle minimal} en $p$. Deux cas se présentent alors : soit la courbe réduite modulo $p$ est lisse (c'est alors une courbe elliptique et on dit que $E$ a \emph{bonne réduction} en $p$), soit elle ne l'est pas (elle dégénère en un n\oe ud ou une pointe et on dit que $E$ a \emph{mauvaise réduction}). Étudier la réduction de courbes définies sur $\Q$, ou plus généralement sur un corps de nombres est une question d'arithmétique vaste.
 
 \v
 
-Cette question de relèvement est ancienne, et on dispose des théorèmes suivants, dus à Deuring et dont une preuve figure dans \cite{Lang}. On se donne un corps fini $k$ de caractéristique $p$.
+Cette question de relèvement est ancienne, et on dispose des théorèmes suivants, dus à Deuring et dont une preuve figure dans \cite{Lang}. On se donne un corps fini $k$ de caractéristique $p$, et on note $x\mapsto\bar{x}$ les réductions modulo $p$. On fixe également un ordre quadratique $\O$, que l'on voit dans $\C$. Si $\O$ est l'anneau d'endomorphismes d'une certaine courbe définie sur $k$, alors on a une égalité d'idéaux
+$$(p) = \frak{p}_1 \frak{p}_2$$
+dans $\O$. Si $E$ a multiplication complexe par $\O$, il existe exactement deux isomorphismes entre $\End(E)$ et $\O$, l'un envoyant le Frobenius de $E$ dans $\frak p_1$, l'autre dans $\frak p_2$. On convient que l'on considère le Frobenius comme un élément de $\frak p_1$: c'est d'une certaine façon l'analogue de l'isomorphisme canonique de la section précédente. Le point important est que cette convention est compatible avec celle de la section précédente, dans le sens où le diagramme
+$$
+\shorthandoff{;:!?}
+\xymatrix @!=8mm {
+\O \ar[rr]^\sim \ar[rd]^\sim & & \End(E^0) \ar[ld]^{\mathrm{mod}\,\frak P} \\
+ & \End(E) & 
+}
+$$
+est commutatif, dès que la place $\frak P$ vit au-dessus de $\frak p_1$. On peut toujours être dans cette situation, car $\frak p_1$ et $\frak p_2$ sont simplement conjugués l'un de l'autre.
 
 %Noter la réduction autrement qu'avec des barres ?
 
 \begin{thm}[Relèvement d'un endomorphisme en caractéristique zéro]
 
-Soit $E/k$ une courbe elliptique et $\alpha$ un endomorphisme de $E$. Alors il existe un corps de nombres galoisien $L$, une courbe elliptique $E^0/L$, un endomorphisme $\alpha^0$ de $E^0$ et un premier $\frak p$ de $L$ de corps résiduel $k$, tels que $E^0$ a bonne réduction en $\frak p$, $E$ est isomorphe à $\bar{E^0}$ et $\alpha$ correspond à $\bar{\alpha^0}$ sous cet isomorphisme.
+Soit $E/k$ une courbe elliptique et $\alpha$ un endomorphisme de $E$. Alors il existe un corps de nombres galoisien $L$, une courbe elliptique $E^0/L$, un endomorphisme $\alpha^0$ de $E^0$ et un premier $\frak p$ de $L$ au-dessus de $p$, tels que $E^0$ a bonne réduction en $\frak p$, $E$ est isomorphe à $\bar{E^0}$ et $\alpha$ correspond à $\bar{\alpha^0}$ sous cet isomorphisme.
 
 \end{thm}
 
@@ -227,39 +237,7 @@ De plus, $\End(E)\vers\End(\bar{E})$ préserve le degré.
 
 \end{thm}
 
-Utilisons maintenant ce résultat pour adapter la section précédente au cas des courbes elliptiques ordinaires sur un corps fini. On fixe à partir de maintenant un ordre quadratique $\O$, que l'on voit dans $\C$. Si $\O$ est l'anneau d'endomorphismes d'une certaine courbe définie sur $k$, alors on a une égalité d'idéaux
-$$p = \frak{p}_1 \frak{p}_2$$
-dans $\O$. Si $E$ a multiplication complexe par $\O$, il existe exactement deux isomorphismes entre $\End(E)$ et $\O$, l'un envoyant le Frobenius de $E$ dans $\frak p_1$, l'autre dans $\frak p_2$. On convient que l'on considère le Frobenius comme un élément de $\frak p_1$. C'est d'une certaine façon l'analogue de l'isomorphisme canonique de la section précédente.%) et un premier $\frak p$ de $\O$ au-dessus de $p$; il y a deux possibilités selon le second théorème. On notera par $\alpha\mapsto\bar{\alpha}$ la réduction mod $\frak p$.
-
-%
-%\begin{prop}[Normalisation sur un corps fini]
-%
-%Soit $E\in \Ell_k(\O, \pi)$. Alors il existe un unique isomorphisme
-%$$[\,\cdot\,] \de \O \vers \End(E)$$
-%tel que pour tout $\omega \in H^0(E,\Omega^1)$ on ait :
-%$$\forall \, \alpha \in \O,\ [\alpha]^* \omega = \bar{\alpha}\omega.$$
-%
-%De plus, pour tout corps de nombre $L$ contenant $\O$, toute place $\frak P$ de $L$ au-dessus de $\frak p$, pour toute courbe elliptique %$E^0/L$ se réduisant en $E$ avec un isomorphisme d'anneaux d'endomorphismes, on a un diagramme commutatif :
-%
-%$$
-%\shorthandoff{;:!?}
-%\xymatrix @!=8mm {
-%\O \ar[rr]^\sim_{[\,\cdot\,]} \ar[rd]^\sim_{[\,\cdot\,]} & & \End(E^0) \ar[ld]^{\mathrm{mod}\,\frak P} \\
-% & \End(E) & 
-%}
-%$$
-%
-%où la première ligne est normalisée comme dans la section précédente.
-%
-%\end{prop}
-%
-%\begin{proof}
-%
-%On construit cet isomorphisme à l'aide du théorème de relèvement (si l'on n'avait pas la bonne place au-dessus de $\frak p$, on peut %faire agir Galois). L'unicité provient du fait qu'il n'existe que deux isomorphismes de $\O$ vers $\End(E)$ ; l'un envoie un certain %élément $\alpha\in \O$ sur le Frobenius $\pi = F_{E/k}$, et l'autre sur $\widehat{\pi}.$ On peut les distinguer avec la condition sur %les pullbacks, puisque dans le cas ordinaire, $\pi$ n'est pas séparable alors que $\widehat{\pi}$ l'est. La commutativité du diagramme %découle alors immédiatement de l'unicité.
-%\end{proof}
-%\v
-%
-A l'aide de cette identification, on peut maintenant définir comme précédemment $\frak a\cdot E$ pour $\frak a$ un idéal inversible de $\O$ et $E\in \Ell_k(\O)$, à l'aide de la propriété suivante.
+Utilisons maintenant ce résultat pour adapter la section précédente au cas des courbes elliptiques ordinaires sur un corps fini. On peut définir comme précédemment $\frak a\cdot E$ pour $\frak a$ un idéal inversible de $\O$ et $E\in \Ell_k(\O)$, comme l'image de l'isogénie de noyau $E[\frak a]$, à l'aide de la propriété suivante.
 
 \begin{lem}[Quotient, cas étale] Soit $S$ un sous-groupe fini de $E(\bar{k})$. Il existe une courbe elliptique $E'$ définie sur $\bar{k}$ et une isogénie séparable $\phi_S\de E\vers E'$ de noyau $S$. Cette isogénie est unique à isomorphisme près. Si $S$ est défini sur $k$, c'est à dire globalement stable par l'action du groupe de Galois, alors $\phi_S$ et $E'$ peuvent également être définies sur $k$.
 \end{lem} 
@@ -285,28 +263,16 @@ où $\phi$ est définie sur une extension finie de $k$. Le degré de $\phi$ est 
 
 Nous admettons maintenant un ingrédient essentiel, à savoir le fait suivant. Pour tout idéal $\frak a$ inversible de $\O$ de norme première à $p$, et toute courbe $E\in \Ell_k(\O)$, on peut choisir un relèvement $E^0$ vérifiant les conditions suivantes:
 \begin{itemize}
-\item[•] Les éléments de $E[\alpha]$ sont entiers sur $\frak p$
+\item[•] Les éléments de $E[\alpha]$ sont entiers en $\frak p$
 \item[•] La réduction modulo $\frak p$ donne un isomorphisme $E^0[\frak a] \overset{\sim}{\to} E[\frak a]$.
 \end{itemize}
 
 Avec ce fait admis, on montre donc que le noyau de $\phi$ est précisément $E[\frak a]$. Autrement dit, $\phi$ est, à isomorphisme près, l'isogénie $\phi_{\frak a}$, et on a $E' = \frak a\cdot E$. La courbe $\frak a\cdot E$ est donc la réduction de $\frak a\cdot E^0$. D'autre part, on peut utiliser le théorème de bonne réduction pour voir que $\frak a\cdot E$ a, comme $E'^0$, multiplication complexe par l'ordre $\O$. On en déduit immédiatement que l'on a une action
 $$\Cl(\O) \circlearrowright \Ell_k(\O).$$
 
-%On déduit de l'égalité de degrés que $\phi_{\frak a}^0$, définie en partant d'un relèvement en caractéristique zéro, se réduit en $\phi_{\frak a}$. On peut alors retrouver l'analogue du résultat sur $\C$. On a vu que si $E^0$ est un bon relèvement de $E$ en caractéristique zéro, $\phi_{\frak a}^0$ se réduit en $\phi_{\frak a}$ et donc $\frak a\cdot E^0$ se réduit en $\frak a\cdot E$. On en déduit immédiatement que c'est une action. De plus on peut utiliser le théorème de bonne réduction pour voir que $\frak a\cdot E$ a également multiplication complexe par $\O$.
-
 Montrons qu'elle est transitive : si $E$ et $E'$ sont données en caractéristique $p$, choisissons deux relèvements $E^0, E'^0$ en caractéristique 0. Il existe alors un idéal $\frak a$ envoyant $E^0$ sur $E'^0$, par transitivité dans $\C$. En réduisant on voit que $\phi_{\frak a}$ a bien pour image $E'$.
 
-Enfin, étant donné $E$, montrons que son stabilisateur est l'ensemble des idéaux principaux. Si $\frak a$ est principal, il laisse un relèvement $E^0$ invariant, et donc $E$ également. Réciproquement, si $\frak a$ laisse $E$ invariante, %on a un diagramme commutatif
-%
-%$$
-%\shorthandoff{;:!?}
-%\xymatrix @!=8mm {
-%E^0 \ar[rr]^{\phi_{\frak a}^0} \ar[rd]_{\mathrm{mod}\,\frak P} & & E'^0 \ar[ld]^{\mathrm{mod}\,\frak P} \\
-% & E \ar@(dr,dl)^{\phi_{\frak a}} & 
-%}
-%$$
-%
-$\phi_{\frak a}$ admet un relèvement $\psi\in \End(E^0)$. Comme $\psi$ et $\phi_{\frak a}^0$ ont même degré, on voit que ces isogénies ont même noyau, ce qui montre $\psi=\phi_{\frak a}^0$ (modulo un isomorphisme) et $\frak a\cdot E^0 = E^0$. Ainsi $\frak a$ est principal selon la section précédente.
+Enfin, étant donné $E$, montrons que son stabilisateur est l'ensemble des idéaux principaux. Si $\frak a$ est principal, il laisse un relèvement $E^0$ invariant, et donc $E$ également. Réciproquement, si $\frak a$ laisse $E$ invariante, alors $\phi_{\frak a}$ admet un relèvement $\psi\in \End(E^0)$. Comme $\psi$ et $\phi_{\frak a}^0$ ont même degré, on voit que ces isogénies ont même noyau, ce qui montre $\psi=\phi_{\frak a}^0$ (modulo un isomorphisme) et $\frak a\cdot E^0 = E^0$. Ainsi $\frak a$ est principal selon la section précédente.
 \end{proof}
 \v
 
@@ -323,7 +289,7 @@ $$T_\ell(E) = \lim_{\leftarrow} E[\ell^m](\bar{k}).$$
 On a donc une identification canonique $E[\ell^m](\bar{k})\simeq T_\ell(E)/ \ell^{m} T_\ell(E)$. Cette définition a un sens dans un cadre plus général, celui des variétés abéliennes.
 \v
 
-Si $\ell$ est différent de la caractéristique de $k$, on sait que $E[\ell]$ est un schéma en groupes fini étale de rang $\ell^2$. Autrement dit, les $\bar{k}$-points de ce noyau munis de l'action de Galois contiennent toute l'information, et sont au nombre de $\ell^2$, le degré du morphisme correspondant. Dans ce cas, $T_\ell(E)$ est un $\Z_\ell$-module libre de rang 2. On peut donc le voir comme un réseau dans le $\Q_\ell$-espace vectoriel de dimension 2
+Si $\ell$ est différent de la caractéristique de $k$, on sait que $E[\ell]$ est un schéma en groupes fini \emph{étale} de rang $\ell^2$. Autrement dit, les $\bar{k}$-points de ce noyau munis de l'action de Galois contiennent toute l'information, et sont au nombre de $\ell^2$, le degré du morphisme correspondant. Dans ce cas, $T_\ell(E)$ est un $\Z_\ell$-module libre de rang 2. On peut donc le voir comme un réseau dans le $\Q_\ell$-espace vectoriel de dimension 2
 $$V_\ell(E) = T_\ell(E) \otimes_{\Z_\ell} \Q_\ell.$$
 
 Le diagramme suivant est alors commutatif :
@@ -406,7 +372,7 @@ On en arrive alors rapidement à la notion de courbe modulaire. Ces courbes para
 
 Cherchons par exemple un espace classifiant les courbes elliptiques sur $\C$ munies d'un point de $N$-torsion ($N\geq 2$) à isomorphisme près. L'usage est de désigner ces objets par la lettre $Y$ complétée de quelques indices. Comme on l'a déjà mentionné, l'espace des courbes elliptiques complexe à isomorphisme près est le demi-plan de Poincaré quotienté par l'action du groupe $\Gamma(1) = \mathrm{SL}_2(\Z)$, ce que l'on note:
 $$Y(1)_\C = \Gamma(1) \b \H.$$
-La fonction $j$ donne un isomorphisme de cette surface de Riemann vers $\C$.
+La fonction modulaire $j$ donne un isomorphisme de cette surface de Riemann vers $\C$.
 
 Soit $\tau\in \H$. La courbe elliptique $E_\tau = \C/(\Z+\Z\tau)$ a un point de $N$-torsion primitif naturel qui est simplement $\frac{1}{N}$. Cette donnée supplémentaire n'est pas invariante par tous les éléments de $\Gamma(1)$, seulement par ceux du sous-groupe
 $$\Gamma_1(N) = \left\{\left(
@@ -465,8 +431,7 @@ Y_0(N)_\C &\vers \C^2 \\
 \end{aligned}$$
 est bien définie, ce que l'on peut vérifier à la main.
 
-%On pourrait bien sûr tenter de trouver une équation polynomiale reliant  par la force brute, mais
-Les fonctions modulaires $j(\tau)$ et $j(N\tau)$ sont simples, et on peut s'en sortir avec un papier et un crayon de la manière suivante. L'idée est que $\tau\mapsto N\tau$ est l'action d'une des matrices de $\Gamma_0(N)\b \Gamma(1)$, et que l'on veut symétriser cela pour obtenir un polynôme à coefficients dans $\Z$. On cherche donc un ensemble de représentants de $\Gamma_0(N)\b \Gamma(1)$: on définit
+Les fonctions modulaires $j(\tau)$ et $j(N\tau)$ sont simples, et on peut trouver une équation avec un papier et un crayon de la manière suivante. L'idée est que $\tau\mapsto N\tau$ est l'action d'une certaine matrice, et que l'on veut symétriser cela pour obtenir un polynôme à coefficients dans $\Z$. On définit
 $$C(N)=\left\{ 
 \left(
 \begin{matrix}
@@ -521,18 +486,72 @@ $$\begin{aligned}
 &\quad + 53274330803424425450420160273356509151232000(X + Y) \\
 &\quad + 141359947154721358697753474691071362751004672000
 \end{aligned}$$
-et l'on s'arrête ici de peur de rapidement doubler la longueur de ce mémoire. On peut en fait calculer ces polynômes bien plus efficacement, comme il est indiqué dans \cite{Elkies}.
-
-Ces polynômes deviennent rapidement assez gros, et nécessitent environ $\Theta(N^3)$ en mémoire pour les stocker.
-Des bases de données de polynômes modulaires se trouvent dans le logiciel de calcul formel Sagemath \cite{Sage} (qui contient également une riche base de formes modulaires), ou sur la page web d'Andrew Sutherland, par exemple, jusqu'à environ $N = 100$.
+et l'on s'arrête ici de peur de rapidement doubler la longueur de ce mémoire: le stockage du polynôme modulaire $\Phi_N$ en mémoire a un coût d'environ $\Theta(N^3)$. On peut en fait calculer ces polynômes plus efficacement, comme il est indiqué dans \cite{Elkies}.
+Des bases de données de polynômes modulaires se trouvent dans le logiciel de calcul formel Sage \cite{Sage} (qui contient également une riche base de formes modulaires) jusqu'à environ $N = 100$, ou sur la page web d'Andrew Sutherland (\url{math.mit.edu/~drew}), par exemple.
 
 En pratique, lorsque la taille de ces polynômes devient problématique, on peut utiliser d'autres fonctions modulaires qui donnent de meilleurs résultats que $j(\tau)$ et $j(N\tau)$, par exemple $j(\tau)$ et la fonction de Weber. On ne gagne asymptotiquement qu'un facteur constant, et les mêmes problèmes apparaissent à partir d'environ $N=500$.
 \v
 
-\textbf{Le cas général.} Cette méthode est adaptable directement au cas d'autres courbes modulaires, dès que l'on est capable d'exhiber des fonctions modulaires du bon niveau qui engendrent son corps des fonctions. On peut ensuite faire de l'algèbre linéaire sur les $q$-expansions. Prenons par exemple le cas de la courbe modulaire $X_0(30)$.....
+\textbf{Le cas général.} Cette méthode est adaptable directement au cas d'autres courbes modulaires, dès que l'on est capable d'exhiber des fonctions modulaires du bon niveau qui engendrent son corps des fonctions. On peut ensuite faire de l'algèbre linéaire sur les $q$-expansions. Prenons par exemple le cas de la courbe modulaire $X_0(30)$.
+
+L'espace des formes modulaires paraboliques de poids 2 et de niveau $\Gamma_0(30)$ est de dimension 3, et une base de cette espace est donnée par
+$$\begin{aligned}
+f_1 &= q - q^4 - q^6 - 2q^7 + q^9 + q^{10} - 2q^{11} + 2q^{12} + 2 q^{14} +\ldots\\
+f_2 &= q^2 - q^4 - q^6 - q^8 + q^{10} + q^{12} + 3q^{16} + q^{18} - q^{20} - \ldots \\
+f_3 &= q^3 + q^4 - q^5 - q^6 - 2q^7 - 2q^8 + q^{10} + 2q^{11} + 2q^{13} + \ldots
+\end{aligned}$$
+La forme $f_2$ est \emph{vieille} car elle s'écrit $g(2\tau)$ où $g$ est de niveau $\Gamma_0(15)$, ce qui n'est pas le cas de $f_1$ et $f_3$. Ces formes sont de poids 2, donc correspondent à des formes différentielles holomorphes sur la courbe $X_0(30)$. Le terme \emph{parabolique} signifie que ces formes s'annulent sur les pointes de $X_0(30)$, et on peut d'ailleurs lire l'ordre de leur zéro à la pointe $\infty$ sur la première puissance de $q$ apparaissant dans leur développement. On définit alors
+$$ x = \frac{f_2}{f_3}, \quad y = \frac{dx/d\tau}{f_3}.$$
+Les fonctions modulaires $x$ et $y$ sont de poids zéro, ce sont donc des fonctions méromorphes sur la surface de Riemann $X_0(30)$. On trouve une relation reliant $x$ et $y$ grâce à l'algèbre linéaire:
+$$ y^2 =  x^8 + 6x^7 + 9x^6 + 6x^5 - 4x^4 - 6x^3 + 9x^2 - 6x +1. $$
+Bien sûr, on ne peut tester cette égalité que sur un nombre fini de coefficients. Pour montrer que cette égalité a bien lieu, on peut utiliser l'argument suivant: la différence
+$y^2 - P(x)$
+est une fonction méromorphe sur $X_0(30)$ dont les pôles sont concentrés aux pointes, et les ordres de ses pôles sont bornés par une quantité explicite. De plus, le calcul montre que cette fonction admet un zéro à la pointe $\infty$ dont l'ordre est supérieur à, disons, 100. Si cette fonction était non nulle, elle aurait autant de zéros que de pôles, ce qui n'est pas le cas: elle est donc identiquement nulle.
+
+Il reste à voir que $x$ et $y$ engendrent bien le corps des fonctions de $X_0(30)$. La courbe hyperelliptique $\Cl$ donnée par l'équation ci-dessus est de genre 3, et on dispose d'une application rationnelle donnée par les fonctions $x, y$:
+$$X_0(30) \vers \Cl.$$
+Or, le genre de $X_0(30)$ est également 3 (la dimension de l'espace des formes paraboliques ci-dessus), ce qui force cette application à être de degré 1 par la formule de Hurwitz.
+
+Pourquoi avoir choisi ces fonctions $x$ et $y$ particulières? Pour le comprendre, on peut suivre le chemin inverse. Si l'on souhaite une équation de la forme $y^2 = f(x)$, alors les deux formes différentielles sur cette courbe hyperelliptique
+$$\omega_3 =  \frac{dx}{y},\quad \omega_1 = \frac{x\, dx}{y}$$
+engendrent l'espace des formes différentielles d'ordre 1, et ont un zéro d'ordre $g$ et 1 respectivement à l'infini, où $g$ désigne le genre de la courbe en question. On a donc choisi $f_3$ et $f_1$ de cette façon. C'est le raisonnement suivi dans la thèse de Galbraith \cite{Galbraith}.
+
+En réalité, cette équation de $X_0(30)$ ne nous sera utile que si l'on connaît l'expression de la fonction modulaire $j$ en fonction de $x$ et $y$, ce qui permet de retrouver une courbe elliptique à partir d'un point de la courbe modulaire $X_0(30)$. Comme on connaît la $q$-expansion de $j$, on peut faire de l'algèbre linéaire comme précédemment, et on trouve que $j$ peut s'exprimer en fonction de $x$ et $y$ par une fraction rationnelle de degré 36, de numérateur
+$$ \begin{aligned}
+ &11390626x^{36} + 136688232x^{35} + 615281004x^{34} + 1157841640x^{33} + 11390624x^{32}y + 385027410x^{32} \\
+ &+ 102514896x^{31}y + 3899199936x^{31} + 307361808x^{30}y + 68878885856x^{30} + 164026064x^{29}y  \\
+ &+ 461330789952x^{29} - 1401072176x^{28}y + 2024096667816x^{28} - 8580123696x^{27}y + 6544388993120x^{27} \\
+ &- 54692903792x^{26}y + 16121144156304x^{26} - 290282276144x^{25}y + 30519217044192x^{25} \\
+ &- 1110816170032x^{24}y + 44213136417480x^{24} - 3094506362864x^{23}y + 48084954873408x^{23} \\
+ &- 6419993916592x^{22}y + 37447747660704x^{22} - 10015247114224x^{21}y + 18293916069056x^{21} \\
+ &- 11672985621488x^{20}y + 2315694303708x^{20} - 9885812131312x^{19}y - 4389588785808x^{19} \\
+ &- 5658074812208x^{18}y - 4676088269240x^{18} - 1674540316912x^{17}y - 3342328078608x^{17} \\
+ &+ 354269688656x^{16}y - 2056348964388x^{16} + 760401538672x^{15}y - 837671190464x^{15} + 580040840752x^{14}y \\
+ & + 34891362336x^{14} + 300727188592x^{13}y + 90210852288x^{13} + 129394057072x^{12}y + 159283365960x^{12} \\
+  &- 333927056x^{11}y - 3950452128x^{11} - 2917217872x^{10}y + 33962685456x^{10} - 10863538576x^9y \\
+  &- 10436233760x^9 + 144372848x^8y + 1058338344x^8 - 342561616x^7y - 907019328x^7 + 79366768x^6y \\
+  &+ 209996384x^6 + 4157616x^5y - 19141824x^5 + 4326064x^4y + 4478610x^4 - 286544x^3y - 2160280x^3 \\
+  &- 402192x^2y + 883116x^2 + 134064xy - 196248x - 14896y + 16354
+\end{aligned}
+$$
+et de dénominateur
+$$ \begin{aligned}
+&x^{35} - 13x^{34} + 56x^{33} + 21x^{32} - x^{31}y - 1106x^{31} + 16x^{30}y + 4207x^{30} - 104x^{29}y \\
+&- 4268x^{29} + 294x^{28}y - 16637x^{28} + 165x^{27}y + 64174x^{27} - 4184x^{26}y - 62529x^{26} \\
+ &+ 14224x^{25}y - 131200x^{25} - 18436x^{24}y + 478757x^{24} - 18529x^{23}y - 645986x^{23} \\
+ &+ 102680x^{22}y + 1004763x^{22} - 95688x^{21}y + 5962092x^{21} - 225622x^{20}y - 6407093x^{20} \\
+ &+ 572493x^{19}y - 14435032x^{19} + 1166032x^{18}y + 11257145x^{18} - 1185120x^{17}y + 15043608x^{17} \\
+ &- 3222648x^{16}y - 10395833x^{16} + 1481173x^{15}y - 6881894x^{15} + 4046208x^{14}y + 5269581x^{14} \\
+ &- 1639608x^{13}y + 1177004x^{13} - 2375590x^{12}y - 1236463x^{12} + 1434343x^{11}y - 566142x^{11} \\
+ &+ 409992x^{10}y + 341845x^{10} - 686768x^9y + 516016x^9 + 205628x^8y - 349313x^8 + 115085x^7y \\
+ &- 61286x^7 - 88744x^6y + 105001x^6 + 9064x^5y - 35308x^5 + 4374x^4y + 6561x^4 - 729x^3y - 729x^3.
+\end{aligned}
+$$
+La situation se complique légèrement, en revanche, si l'on veut connaître une équation de la courbe et les coordonnées du point de 2-torsion garanti par $X_0(30)$, par exemple. La difficulté est que les coordonnées $a_4$ et $a_6$ de l'équation de Weierstrass \og usuelle\fg, proportionnelles aux séries d'Eisenstein $E_4$ et $E_6$, ne sont pas des fonctions modulaires, mais $\lambda^2 a_4$ et $\lambda^3 a_6$ en sont pour toute fonction modulaire $\lambda$ de poids $-2$. Les coordonnées du point de 2-torsion sont alors un multiple de la série d'Eisenstein $E_2$, précisément $\frac{-\lambda}{6} E_2$. On renvoie à \cite{Elkies} pour les détails.
 \v
 
-Nous avons travaillé jusqu'à présent sur $\C$, mais il est crucial de savoir que les équations données par le polynôme modulaire $\Phi_N$ restent valables sur un corps quelconque (en particulier pour les corps finis). Pour cela, il faut faire intervenir des notions plus avancées de géométrie algébrique.
+
+Nous avons travaillé jusqu'à présent sur $\C$, mais il est crucial de savoir que ces équations, en particulier celles de $X_0(N)$, restent valables sur un corps quelconque (en particulier pour les corps finis). Pour cela, il faut faire intervenir des notions plus avancées de géométrie algébrique.
 
 
 \subsection{Le formalisme des problèmes modulaires}
@@ -934,17 +953,15 @@ En réalité, on peut faire mieux et caractériser les points singuliers de $Y_0
 On peut en fait montrer que ceux-ci sont des réductions de points singuliers sur $\Z$, c'est à dire les mêmes que dans le cas complexe. En effet, soit $x$ un point singulier de $Y_0(N)$ en caractéristique $p$ qui n'est pas réduction d'un point singulier sur $\Z$. Alors il existe un ouvert pour la topologie de Zariski régulier en codimension 1 autour de ce point. Cela implique que la courbe donnée par $\Phi_N=0$ est normale sur $\F_p$. Or la normalisation de $\Phi_N=0$ est précisément la courbe modulaire $Y_0(N)$ qui est lisse: une contradiction.
 \v
 
-L'objectif de cette partie est donc atteint: on dispose d'une équation, le polynôme modulaire, dont les solutions sont les $j$-invariants de courbes liées par des isogénies cycliques de degré donné.
+L'objectif de cette partie est donc atteint: on dispose d'une équation, le polynôme modulaire, dont les solutions sont les $j$-invariants de courbes liées par des isogénies cycliques de degré donné. Des arguments similaires peuvent sans doute être utilisés pour montrer que l'équation de $X_0(30)$ obtenue plus haut est une équation valide sur $\F_p$. En revanche rien ne garantit a priori que l'expression précédente de la fonction $j$ est toujours valide, par exemple. Dans la suite de mémoire, on utilisera dans $\F_p$ des équations ayant un sens sur $\C$, l'expérience montrant, de fait, qu'elles restent valides après réduction.
 
 \newpage
 
 \section{Cryptosystème et algorithmes}
 
-La sécurité de nombreux cryptosystèmes à clefs publiques est basée sur la difficulté supposée d'un problème mathématique. On considère qu'un tel problème est \emph{difficile} s'il n'existe pas d'algorithme fonctionnant en temps polynomial qui, recevant en entrée les données du problème, en donne la solution avec probabilité supérieure à $\frac{1}{2}+\varepsilon(n)$ (pour un problème décisionnel) ou $\varepsilon(n)$ (pour un problème computationnel), où $\varepsilon$ est une fonction négligeable devant les polynômes et $n$ est le \emph{paramètre de sécurité} du système, typiquement la taille des données (par exemple $\log(N)$ pour un groupe de cardinal $N$).
-\v
+La sécurité de nombreux cryptosystèmes à clefs publiques est basée sur la difficulté supposée d'un problème mathématique. On considère qu'un problème est \emph{difficile} s'il n'existe pas d'algorithme fonctionnant en temps polynomial qui, recevant en entrée les données du problème, en donne la solution avec probabilité supérieure à $\frac{1}{2}+\varepsilon(n)$ (pour un problème décisionnel) ou $\varepsilon(n)$ (pour un problème computationnel). Ici, $\varepsilon$ est une fonction négligeable devant les polynômes, et $n$ est le \emph{paramètre de sécurité} du système, typiquement la taille des données (par exemple $\log(N)$ pour un groupe de cardinal $N$).
 
-L'un des protocoles d'échange de clés le plus ancien et le plus connu, proposé par Diffie et Hellman en 1976, est le suivant. Dans un groupe $G$, typiquement le groupe multiplicatif d'un corps fini, on dispose d'un élément $g$ d'ordre $N$, tous ces éléments étant publics. Alice et Bob souhaitent partager une clé secrète. Pour cela, Alice choisit un élément $a\in (\Z/N\Z)^\times$, Bob choisit $b\in (\Z/N\Z)^\times$, ils calculent respectivement $g^a$ et $g^b$ et les publient. Les deux protagonistes peuvent alors calculer leur secret commun $g^{ab}$. La sécurité de ce protocole repose notamment sur la difficulté du problème du logarithme discret, qui peut se formuler ainsi: étant donnés $g$ et $g^a$, trouver $a$. Le fait que ce problème soit difficile fait consensus.
-\v
+L'un des protocoles d'échange de clés le plus ancien et le plus connu, proposé par Diffie et Hellman en 1976, est le suivant. Dans un groupe $G$, typiquement le groupe multiplicatif d'un corps fini, on dispose d'un élément $g$ d'ordre $N$, tous ces éléments étant publics. Alice et Bob souhaitent partager une clé secrète. Pour cela, Alice choisit un élément $a\in (\Z/N\Z)^\times$, Bob choisit $b\in (\Z/N\Z)^\times$, ils calculent respectivement $g^a$ et $g^b$ et les publient. Les deux protagonistes peuvent alors calculer leur secret commun $g^{ab}$. La sécurité de ce protocole repose notamment sur la difficulté du problème du logarithme discret, qui peut se formuler ainsi: étant donnés $g$ et $g^a$, trouver $a$. Le fait que ce problème soit difficile lorsque $N$ est premier fait consensus.
 
 On peut immédiatement reformuler ce protocole de manière plus générale, suivant une idée de Couveignes \cite{Couv}. Dans la situation ci-dessus, le groupe abélien $G = (\Z/N\Z)^\times$ agit sur l'ensemble $X = \{g^k, k\in (\Z/N\Z)^\times\}$ de façon simplement transitive, $X$ étant muni d'un point fixé $g$. On peut alors formuler le même protocole pour toute action de ce type. La sécurité de ce protocole repose alors sur la difficulté du problème suivant: étant donnés des éléments $x_0, a\cdot x_0, b\cdot x_0\in X$, calculer $ab\cdot x_0$.
 
@@ -961,12 +978,12 @@ on se donne une courbe elliptique $E_0/k$ dont la trace du Frobenius est égale 
 
 \emph{Courbes elliptiques.} Une courbe elliptique est d'abord une courbe algébrique plane, et on peut donc la représenter par une de ses équations. On utilise deux formes de représentations de courbes elliptiques : la forme de Weierstrass réduite
 $$\E\de y^2 = x^3 + Ax + B$$
-ou la forme dite de Montgomery
+et la forme dite de Montgomery
 $$\E\de B y^2 = x^3 + A x^2 + x.$$
 Notons que toute courbe elliptique sur $k$ n'admet pas nécessairement de représentation sous forme de Montgomery : en effet, une telle courbe admet en particulier un point rationnel de 2-torsion qui est $(0,0)$, et ce n'est pas le cas de toutes les courbes.
-On s'autorise également à représenter une courbe elliptique à isomorphisme près par son $j$-invariant, qui est un élément de $k$. Ce faisant, on perd de l'information par rapport aux équations ci-dessus, car on ne peut plus distinguer une courbe de sa tordue, qui lui est isomorphe sur une extension quadratique de $k$ mais pas sur $k$ lui-même. Dans le modèle de Montgomery, la tordue d'une courbe a une forme agréable : il s'agit de la courbe
+On s'autorise également à représenter une courbe elliptique à isomorphisme près par son $j$-invariant, qui est un élément de $k$. Ce faisant, on perd de l'information par rapport aux équations ci-dessus, car on ne peut plus distinguer une courbe de sa tordue. Sur un corps fini, une courbe a en général une unique tordue, qui lui est isomorphe sur une extension quadratique de $k$ mais pas sur $k$ lui-même. Tordre une courbe a pour effet de changer sa trace de signe. Dans le modèle de Montgomery, la tordue a une forme agréable : il s'agit de la courbe
 $$E'\de B'y^2 = x^3 + Ax^2 + x$$
-où $B'$ est un carré dans $k$ si $B$ ne l'est pas et réciproquement.
+où $B'$ est un carré dans $k$ si $B$ ne l'est pas et réciproquement. Ajouter deux points sur une courbe elliptique sous forme de Montgomery est également plus efficace que sur une courbe sous forme de Weierstrass, ce qui est l'intérêt principal de ces courbes.
 \v
 
 \emph{Sous-groupes finis d'une courbe elliptique.} Si $S$ est un sous-schéma en groupe fini (et plat) de $E$ d'ordre $\ell$, où $p\neq \ell$ et $\ell$ est impair, on représente le sous-groupe $S$ de la façon suivante. $S$ est étale donc déterminé par ses $\bar{k}$-points, et est stable par l'automorphisme $[-1]$ de $E$.
@@ -985,19 +1002,48 @@ L'endomorphisme de Frobenius $\pi$, vu comme endomorphisme du $\F_\ell$-espace v
 \v
 
 \emph{Idéaux fractionnaires.} On utilisera toujours des idéaux fractionnaires écrits sous la forme $\prod {\frak l}_i^{r_i}$, où les ${\frak l}_i$ sont des idéaux dont la norme est un petit nombre premier d'Elkies. Cela implique, en particulier, que l'on ne travaille qu'avec un sous-groupe du groupe des idéaux fractionnaires.
-\v
 
-\emph{\'Elements du groupe de classes}. On choisit de donner un élément de $\Cl(\O)$ par un de ses représentants, que l'on écrit comme ci-dessus. Notons que l'on pourrait toujours atteindre le groupe de classes en entier même en se restreignant à un sous-groupe des idéaux fractionnaires.
-
-On peut donner différents moyens de calculer l'action du groupe de classes sur $\Ell_t(\O)$. On décomposera toujours l'action d'un élément du groupe de classes en actions successives d'idéaux \og simples\fg\, c'est à dire de la forme $(\ell, v)$ où $\ell$ est un petit nombre premier d'Elkies.
 \v
+\emph{\'Elements du groupe de classes}. On choisit de donner un élément de $\Cl(\O)$ par un de ses représentants, que l'on écrit comme ci-dessus. Notons que l'on pourrait toujours atteindre le groupe de classes en entier même en se restreignant à un sous-groupe des idéaux fractionnaires. On décomposera donc toujours l'action d'un élément du groupe de classes en actions successives d'idéaux \og simples\fg\, c'est à dire de la forme $(\ell, v)$ où $\ell$ est un petit nombre premier d'Elkies.
 
 On peut donner à cette décomposition un aspect plus visuel à l'aide du concept de \emph{graphe d'isogénies}. Les sommets de ce graphe sont des courbes elliptiques sur $k$ à isomorphisme près (donc des $j$-invariants), et l'on relie ces sommets par une arête labellée par un premier $\ell$ s'il existe une isogénie de degré $\ell$ les reliant. Comme on l'a dit, l'action du groupe de classes par isogénies est simplement transitive, et on obtient donc simplement un graphe de Cayley pour le groupe de classes relativement aux \og générateurs\fg\ $(\ell, v)$ pour de petits $\ell$:
 
-%image
+\begin{center}
+\begin{tikzpicture}[line cap=round,line join=round, x=2cm,y=2cm]
+
+\draw[]
+ (1, 0) node(1) {2}
+ (0.62, 0.78) node(2) {162}
+ (-0.22,0.97) node(3) {36}
+ (-0.9,0.43) node(4) {117}
+ (-0.9,-0.43) node(5) {134}
+ (-0.22,-0.97) node(6) {116}
+ (0.62,-0.78) node (7) {167};
+\draw[]
+ (1) edge[thick, blue] (2)
+ (2) edge[thick, blue] (3)
+ (3) edge[thick, blue] (4)
+ (4) edge[thick, blue] (5)
+ (5) edge[thick, blue] (6)
+ (6) edge[thick, blue] (7)
+ (7) edge[thick, blue] (1);
+\draw[]
+ (1) edge[thick, red] (3)
+ (3) edge[thick, red] (5)
+ (5) edge[thick, red] (7)
+ (7) edge[thick, red] (2)
+ (2) edge[thick, red] (4)
+ (4) edge[thick, red] (6)
+ (6) edge[thick, red] (1);
+
+\end{tikzpicture}
+\end{center}
 
 
-La décomposition précédente revient simplement à découper un voyage complet dans ce graphe en plusieurs pas.
+On montre ici un graphe d'isogénies sur $\F_{173}$; les sommets sont des $j$-invariants, les arêtes bleues représentent des isogénies de degré 3, et les arêtes rouges des isogénies de degré 7. La décomposition précédente revient simplement à découper un voyage complet dans ce graphe en plusieurs pas.
+\v
+
+On peut maintenant proposer plusieurs manières d'effectuer un pas dans ce graphe d'isogénies.
 
 \subsection{Calcul à l'aide d'un polynôme de division}
 
@@ -1006,7 +1052,7 @@ Si $\phi\de E\vers E'$ est une isogénie séparable de degré $\ell$, alors son 
 \begin{algorithm}
 \caption{un pas dans le graphe d'isogénies à l'aide des polynômes de division}
 \label{alg:div}
-\KwIn{Une courbe elliptique $E\in \Ell_k(\O, \pi)$, et un idéal représenté par $(\ell, v)$}
+\KwIn{Une courbe elliptique $E\in \Ell_k(\O)$, et un idéal représenté par $(\ell, v)$}
 \KwOut{Une courbe elliptique $E'$ telle que l'isogénie $E\vers E'$ corresponde à cet idéal}
 $\psi_\ell \gets \textsc{PolynômeDeDivision}(E, \ell)$
 \label{alg:div:poldiv}
@@ -1014,21 +1060,19 @@ $\psi_\ell \gets \textsc{PolynômeDeDivision}(E, \ell)$
 $F \gets \textsc{Factorisation}(\psi_\ell)$
 \label{alg:div:fact}
 \;
-$(K_1, K_2) \gets \textsc{SousGroupes}(F, \frac{\ell-1}{2})$
+$K \gets \textsc{SousGroupe}(F, \frac{\ell-1}{2}, v)$
 \label{alg:div:rec}
 \;
-\lIf{$\textsc{CompareDirection}(K_1,v)$}{\Return{$\textsc{Quotient}(E, K_1)$}}
-\label{alg:div:check}
-\lElse{\Return{$\textsc{Quotient}(E, K_2)$}}
+\lElse{\Return{$\textsc{Quotient}(E, K)$}}
 
 \end{algorithm}
 
 Seul le but de l'étape~\ref{alg:div:rec} nécessite peut-être une explication : il consiste à retrouver à partir des facteurs irréductibles de $\psi_l$ les deux polynômes de degré $\frac{\ell-1}{2}$ définissant des sous-groupes cycliques de $E$. Cette étape est nécessaire car ces polynômes ne sont pas nécessairement irréductibles, et $\psi_l$ peut avoir beaucoup d'autres facteurs qui ne déterminent pas des sous-groupes mais seulement des sous-ensembles de $E[\ell](\bar{k})$.
 
-Examinons maintenant chacune des étapes de l'algorithme~\ref{alg:div}.
+Examinons maintenant chacune des étapes de l'algorithme~\ref{alg:div}, en commençant par le calcul des polynômes de division.
 
 \begin{lem}[Polynômes de division]
-Soit $E$ une courbe elliptique sous forme de Weierstrass réduite :
+Soit $E$ une courbe elliptique sous forme de Weierstrass réduite
 $$y^2 = x^3 + Ax + B.$$
 Il existe des polynômes dits \emph{de division} $\Psi_n \in \Z[x,y]/(y^2 - x^3 - Ax - B)$, $n\geq 1$ tels que pour tout $n\geq 1$, l'endomorphisme $[n]_E$ soit donné sur l'ouvert affine par les applications rationnelles
 $$(x,y) \longmapsto \left(\frac{x\Psi_n^2 - \Psi_{n-1}\Psi_{n+1}}{\Psi_n^2},
@@ -1056,19 +1100,18 @@ Lorsque $n$ est impair, on montre aisément par récurrence que $\Psi_n$ peut ê
 %$$2P = \left(\frac{(3x_P^2 + A)^2 - 8x_P(x_P^3 + Ax_p + B)}{4(x_P^3+Ax_P+B)},\frac{x_P^3-Ax-2B-(3x_P^2+A)x_{2P}}{2y_P}\right).$$
 %En écrivant $2nP = nP + nP$ et $(2n+1)P = nP + (n+1) P$, on trouve les formules de récurrence annoncées (?).
 %\end{proof}
-On utilise ces relations de récurrence pour écrire l'algorithme~{\sc PolynômeDeDivision} dans l'étape~\ref{alg:div:poldiv}.
+On utilise ces relations de récurrence, obtenues à partir des formules d'additions de points sur la courbe, pour écrire l'algorithme~{\sc PolynômeDeDivision} dans l'étape~\ref{alg:div:poldiv}.
 \v
 
 Pour l'étape \ref{alg:div:fact}, {\sc Factorisation}, on utilise l'algorithme de Cantor--Zassenhaus \cite{vzGG}. La première étape est de séparer les facteurs irréductibles d'un polynôme $P$ par degré, ce que l'on fait en prenant le pcgd avec les polynômes $X^p - X$, $X^{p^2} - X$, etc. que l'on calcule directement modulo $P$ par mises au carré répétées. Ensuite on tente de factoriser le reste obtenu $R$ en prenant un polynôme au hasard $a$ et en calculant $\mathrm{pgcd}(a^{\frac{p^r - 1}{2}} + 1, R)$. L'idée de l'algorithme est que si $P$ est un produit de facteurs irréductibles de degré $d$, alors $k[X]/P$ est un produit de corps de cardinal $p^r$, et le calcul de cette puissance donne aléatoirement 1 ou -1 dans chacun de ces corps.
 \v
 
-Dans l'étape \ref{alg:div:rec}, il s'agit de retrouver les deux polynômes à coefficients dans $k$ définissant des sous-groupes cycliques d'ordre $\ell$. C'est une opération difficile à réaliser directement, mais on peut utiliser l'astuce suivante. Comme on connaît les deux valeurs propres du Frobenius $v_1$ et $v_2$ sur les deux sous-groupes recherchés, on peut calculer l'action du Frobenius sur chacun des facteurs irréductibles de $\psi_\ell$ et rassembler les morceaux. Pour un facteur irréductible $Q$, on calcule $[v_1](X, Y)$ et $[v2](X, Y)$ pour le point tautologique $(X, Y)$ sur l'anneau $k[X, Y]/(Q,\ Y^2 - X^3 - AX - B).$ Si l'un des deux est égal à $(X^p, Y^p)$, on peut ranger le facteur irréductible $Q$ dans le sous-groupe correspondant.
+Dans l'étape \ref{alg:div:rec}, il s'agit de retrouver les deux polynômes à coefficients dans $k$ définissant des sous-groupes cycliques d'ordre $\ell$. C'est une opération difficile à réaliser directement, mais on peut utiliser l'astuce suivante. Comme on connaît la valeur propre du Frobenius $v$ sur le sous-groupe recherché, on peut calculer l'action du Frobenius sur chacun des facteurs irréductibles de $\psi_\ell$ et rassembler les morceaux. Pour un facteur irréductible $Q$, on calcule $[v](X, Y)$ pour le point tautologique $(X, Y)$ sur l'anneau $k[X, Y]/(Q,\ Y^2 - X^3 - AX - B).$ Si ce point est égal à $(X^p, Y^p)$, on sait que l'on a trouvé un facteur du polynôme de noyau $K$.
 \v
+%
+%Dans l'étape \ref{alg:div:check}, on souhaite vérifier si le polynôme de noyau $K_1$ correspond bien à l'action de l'idéal $\frak l$ donné par $(\ell,v)$. $v$ étant défini par $\pi = v \mod \frak l$, l'endomorphisme $\pi - [v]$ de $E$ est un élément de $\frak l$, et doit donc s'annuler sur le sous-groupe défini par $K_1$. C'est cette vérification qui consiste l'algorithme {\sc CompareDirection}. Concrètement, il s'agit du même calcul que ci-dessus: le test est validé si on a l'égalité $[v_1](X, Y) = (X^p, Y^p)$ dans l'anneau $k[X, Y]/(K_1, Y^2 - X^3 - aX - b)$.
 
-Dans l'étape \ref{alg:div:check}, on souhaite vérifier si le polynôme de noyau $K_1$ correspond bien à l'action de l'idéal $\frak l$ donné par $(\ell,v)$. $v$ étant défini par $\pi = v \mod \frak l$, l'endomorphisme $\pi - [v]$ de $E$ est un élément de $\frak l$, et doit donc s'annuler sur le sous-groupe défini par $K_1$. C'est cette vérification qui consiste l'algorithme {\sc CompareDirection}. Concrètement, il s'agit du même calcul que ci-dessus: le test est validé si on a l'égalité $[v_1](X, Y) = (X^p, Y^p)$ dans l'anneau $k[X, Y]/(K_1, Y^2 - X^3 - aX - b)$.
-\v
-
-Enfin, on souhaite calculer une équation de la courbe image connaissant $E$ et le noyau $K$ de l'isogénie.
+Enfin, on souhaite calculer une équation de la courbe image connaissant $E$ et le noyau $K$ de l'isogénie. C'est là qu'intervient la preuve \og directe\fg\ de l'existence du quotient évoquée plus tôt dans ce document.
 
 \begin{lem}[Formules de Vélu]
 Soit $E$ une courbe elliptique donnée par une équation sous forme de Weierstrass
@@ -1091,9 +1134,10 @@ y_G(P) = y(P) + \sum_{Q\in G\backslash \{0\}} y(P+Q) - y(Q).
 \end{aligned}$$
 Ces fonctions rationnelles sont bien définies et invariantes par $G$ : elles définissent donc des fonctions sur la courbe $E/G$. On montre alors qu'elles satisfont l'égalité donnée par l'équation de Weierstrass ci-dessus, et qu'elles engendrent le corps des fonctions de la courbe quotient.
 \end{proof}
-\v
+Une discussion plus détaillée sur ces formules se trouve dans \cite{Kohel}, notamment leur extension aux isogénies cycliques de degré pair.
 
-On dispose depuis récemment de meilleures formules dans le cas de la forme de Montgomery : si $P$ est un point d'ordre $2n+1$ sur une courbe de Montgomery d'équation $By^2 = x^3 + Ax^2 + x$, alors il existe une isogénie normalisée dont le noyau est le sous-groupe engendré par $P$ vers la courbe d'équation
+\v
+On dispose depuis récemment de meilleures formules dans le cas de la forme de Montgomery, données dans \cite{VeluMontgomery}: si $P$ est un point d'ordre $2n+1$ sur une courbe de Montgomery d'équation $By^2 = x^3 + Ax^2 + x$, alors il existe une isogénie normalisée dont le noyau est le sous-groupe engendré par $P$ vers la courbe d'équation
 $$B'y^2 = x^3 + A'x^2 + x$$
 avec $A' = (6\sigma + A)\pi^2,\ B' = B\pi^2$, où
 $$\begin{aligned}
@@ -1105,19 +1149,19 @@ Comme ci-dessus, on peut réexprimer $\pi$ et $\sigma$ en termes des coefficient
 Sans utiliser ces formules, une autre méthode est disponible : étant donné une courbe sous forme de Montgomery, on peut calculer une équation de Weierstrass de cette courbe, et utiliser les formules de Vélu pour cette courbe. En se souvenant du point de 2-torsion, on peut ensuite retrouver une équation de Montgomery pour la courbe quotient sans extraction de racine carrée.
 
 \v
-D'un point de vue pratique, factoriser entièrement un polynôme de degré $\frac{\ell^2 - 1}{2}$ lorsque $p$ est grand et $\ell$ n'est pas très petit, est une opération trop coûteuse. Cela pousse à utiliser une autre méthode à l'aide d'une équation modulaire, ce que l'on décrit maintenant.
+D'un point de vue pratique, factoriser entièrement un polynôme de degré $\frac{\ell^2 - 1}{2}$ lorsque $p$ est grand et $\ell$ n'est pas très petit, est une opération trop coûteuse. L'étape de reconstruction du sous-groupe n'est pas non plus gratuite; en face de ces coûts, celui des formules de Vélu est tout à fait négligeable. Cela pousse préférer une autre méthode à l'aide d'une équation modulaire, ce que l'on décrit maintenant.
 
 
 \subsection{Calcul à l'aide d'une équation modulaire}
 
-Selon la section précédente, la courbe modulaire $Y_0(\ell)_k$ paramétrise les isogénies cycliques de degré $\ell$ définies sur $k$. Le polynôme modulaire de degré $\ell$ relie les $j$-invariants de ces courbes ; on a vu de plus que les points singuliers sur $k$ de l'application
+On a vu que la courbe modulaire $Y_0(\ell)_k$ paramétrise les isogénies cycliques de degré $\ell$ définies sur $k$. Le polynôme modulaire de degré $\ell$ relie les $j$-invariants de ces courbes ; on a vu de plus que les points singuliers sur $k$ de l'application
 $$Y_0(\ell) \vers \A^1 \times \A^1,$$
-dont l'image et définie par le polynôme modulaire, sont nécessairement des réductions modulo $p$ de points singuliers complexes, donc peu nombreux (et dont l'ordre a un petit discriminant). En utilisant ces outils, on obtient l'algorithme suivant pour un calcul d'isogénie.
+dont l'image et définie par le polynôme modulaire, sont nécessairement des réductions modulo $p$ de points singuliers complexes, donc peu nombreux (et dont l'ordre a un petit discriminant). En utilisant ces outils, on obtient l'algorithme suivant pour un calcul d'isogénie, qui est valide lorsque le discriminant de la courbe est supérieur à $\ell^2 + 1$, selon la borne grossière obtenue précédemment.
 
 \begin{algorithm}
 \caption{un pas dans le graphe d'isogénies en utilisant une équation modulaire}
 \label{alg:mod}
-\KwIn{Une courbe elliptique $E\in \Ell_k(\O, \pi)$, et un idéal représenté par $(\ell, v)$}
+\KwIn{Une courbe elliptique $E\in \Ell_k(\O)$, et un idéal représenté par $(\ell, v)$}
 \KwOut{Une courbe elliptique $E'$ telle que l'isogénie $E\vers E'$ corresponde à cet idéal}
 $\Phi_\ell(X, Y) \gets \textsc{PolynômeModulaire}(\ell)$
 \label{alg:mod:polmod}
@@ -1128,13 +1172,13 @@ $(j_1, j_2) \gets \textsc{Racines}(\Phi_\ell(j(E), Y), k)$
 $K_1 \gets \textsc{Noyau}(E, \ell, j_1)$
 \label{alg:mod:ker}
 \;
-\lIf{$\textsc{CompareDirection}(K_1,v)$}{\Return{$\textsc{CourbeElliptique}(j_1)$}}
+\lIf{$\textsc{ValeurPropre}(K_1,v)$}{\Return{$\textsc{Courbe}(j_1)$}}
 \label{alg:mod:check}
-\lElse{\Return{$\textsc{CourbeElliptique}(j_2)$}}
+\lElse{\Return{$\textsc{Courbe}(j_2)$}}
 
 \end{algorithm}
 
-De la même façon, on étudie les étapes de l'algorithme l'une après l'autre. Pour trouver le polynôme modulaire comme précédemment, on peut faire de l'algèbre linéaire comme précédemment, ou des méthodes plus sophistiquées (voir par exemple \cite{Elkies}), mais le plus rapide reste d'utiliser une base de données préfabriquée. Pour le calcul des racines, on utilise à nouveau l'algorithme de Cantor--Zassenhaus, et l'algorithme {\sc CompareDirection} a déjà été discuté. Examinons maintenant le calcul du noyau.
+De la même façon, on étudie les étapes de l'algorithme l'une après l'autre. On a vu comment calculer le polynôme modulaire, mais le plus rapide reste d'utiliser une base de données préfabriquée. Pour le calcul des racines, on utilise à nouveau l'algorithme de Cantor--Zassenhaus. Enfin l'algorithme {\sc ValeurPropre} est analogue à la reconstruction du sous-groupe dans l'algorithme 1, mais le calcul du Frobenius est effectué modulo un unique polynôme de degré $\frac{\ell-1}{2}$. Examinons maintenant le calcul du noyau.
 
 \v
 Soit $\phi\de E\vers E'$ une isogénie. On a alors une application $k$-linéaire \og pullback\fg:
@@ -1163,9 +1207,7 @@ et
 $$ \left(\frac{y}{x^2} T'(1/x)\right)^2 = \left(\frac{1}{T^3(1/x)} + \frac{a_2'}{T^2(1/x)} + \frac{a_4'}{T(1/x)} + a_6'\right)T(1/x)^4$$
 ce qui donne, vu l'équation de $E$ :
 $$ \frac{1}{x} G(1/x) T'^2(1/x) =T(1/x) H(T(1/x))$$
-et par changement de variable
-$$ G(u) T'^2(u) = \frac{T(u)}{u} H(T(u)),$$
-ce qui est l'équation annoncée.
+et on obtient l'équation annoncée après un changement de variable.
 \end{proof}
 
 Remarquons que dans cette description, lorsque $\ell$ est impair, le polynôme $D$ est précisément le carré du polynôme de noyau $K_\phi$. Précisons maintenant comment se déroule le calcul du noyau.
@@ -1173,7 +1215,7 @@ Remarquons que dans cette description, lorsque $\ell$ est impair, le polynôme $
 \begin{algorithm}
 \caption{{\sc Noyau} : Calcul du noyau de l'isogénie}
 \label{alg:ker}
-\KwIn{Une courbe elliptique $E\in \Ell_k(\O,\pi)$, un nombre premier $\ell\neq p$, un élément $j'\in k$ qui est le $j$-invariant d'une courbe reliée à $E$ par une isogénie cyclique de degré $\ell$}
+\KwIn{Une courbe elliptique $E\in \Ell_k(\O)$, un nombre premier $\ell\neq p$, un élément $j'\in k$ qui est le $j$-invariant d'une courbe reliée à $E$ par une isogénie cyclique de degré $\ell$}
 \KwOut{Le noyau de cette isogénie}
 $E' \gets \textsc{EquationNormalisée}(E, \ell, j')$
 \label{alg:ker:eq}
@@ -1206,10 +1248,11 @@ on a $j(E') = j'$ et il existe une isogénie normalisée $E\vers E'$ de degré $
 \end{lem}
 
 \begin{proof}
-Dans le cas complexe, on a des égalités entre séries formelles :
+Dans le cas complexe, on peut écrire des égalités entre séries formelles :
 $$ A = \frac{- E_4}{48}, \quad B = \frac{E_6}{864}$$
-et on peut tout écrire explicitement en fonction de $q$ comme dans \cite{Schoof}. Dans le cas d'un corps fini, on peut utiliser le théorème de Deuring vu précédemment. L'isogénie de degré $\ell$ correspond à un idéal de norme $\ell$, qui est donc inversible lorsque $\ell$ est premier au discriminant : ainsi on sait que l'isogénie est la réduction d'une isogénie définie sur les complexes.
+et on peut tout écrire explicitement en fonction de $q$ comme dans \cite{Schoof}. Dans le cas d'un corps fini, on peut utiliser le théorème de Deuring, avec le même fait admis que dans la première section. On sait alors que l'isogénie définie sur $\F_p$ est la réduction de l'isogénie définie sur les complexes, ce qui justifie de réduire dans $\F_p$ les équations donnant $A'$ et $B'$. Il peut arriver que ces deux dérivées s'annulent modulo $p$; dans ce cas, \ldots
 \end{proof}
+On utilise donc ces formules pour trouver une équation normalisée de $E'$.
 
 %Remarquons que l'on peut tout à fait utiliser ce calcul pour la fonction {\sc CourbeElliptique} précédente. On pourrait en fait choisir $\lambda$ arbitrairement, mais le coût de ce calcul est de toute façon négligeable.
 \v
@@ -1221,19 +1264,18 @@ Alors pour tout $i\geq 0$, $T_i$ est une solution de l'équation différentielle
 \end{lem}
 
 \begin{proof}
-On renvoie à \cite{LaVa}.
+On renvoie à \cite{?}.
 \end{proof}
 
  Pour récupérer le dénominateur, un simple algorithme d'Euclide étendu permet de récupérer les polynômes $N$ et $D$ lorsque l'on connaît les coefficients de la série formelle $\frac{N}{D}$ jusqu'au degré $2\ell + 1$. En effet, si l'on connaît un polynôme $U$ tel que $U = \frac{N}{D} \mod X^{2\ell + 1}$, alors il existe un polynôme $P$ tel que $D U = N + P X^{2\ell+1}$, ce que l'on peut réécrire
  $$D U - P X^{2\ell + 1} = N.$$
-On lance alors l'algorithme d'Euclide étendu avec $U$ et $X^{2\ell + 1}$, que l'on arrête dès que les coefficients $N$ et $D$ sont tous deux de degré inférieur à $\ell$. Là encore, on a un résultat d'unicité.
+On lance alors l'algorithme d'Euclide étendu avec $U$ et $X^{2\ell + 1}$, que l'on arrête dès que les coefficients $N$ et $D$ sont tous deux de degré inférieur à $\ell$, ce qui survient nécessairement au cours du calcul.
 
 Enfin, pour le calcul de racine carrée, on utilise la remarque suivante : si $D = K^2$ où $K$ est un polynôme séparable, alors $K$ et $\mathrm{pgcd}(D, D')$ sont associés. En effet, on a $D' = 2 K K'$ et pgcd$(K, K')$ = 1 puisque $K$ est séparable.
 \v
 
-Le coût principal de l'algorithme~\ref{alg:mod} est partagé entre le calcul des racines et l'algorithme {\sc CompareDirection}, qui impliquent tous deux de calculer une puissance $p$-ième modulo un polynôme de degré de l'ordre de $\ell$. C'est une amélioration importante d'un point de vue pratique par rapport au $\ell^2$ précédent.
+Le coût principal de l'algorithme~\ref{alg:mod} est partagé entre le calcul des racines et l'algorithme {\sc CompareDirection}, qui impliquent tous deux de calculer une puissance $p$-ième modulo un polynôme de degré de l'ordre de $\ell$. C'est une amélioration importante d'un point de vue pratique par rapport au $\ell^2$ précédent. Cependant, on peut proposer encore mieux dans certains cas particuliers.
 
-\newpage
 \subsection{Calcul à l'aide de torsion rationnelle}
 
 Pour certaines valeurs propres spéciales du Frobenius, on peut proposer une autre méthode qui évite complètement le calcul d'une puissance $p$-ième. Par exemple, si 1 est valeur propre modulo $\ell$, cela signifie qu'il existe un sous-groupe cyclique d'ordre $\ell$ constitué de points rationnels sur $k$ (et un seul, car les valeurs propres sont distinctes). On obtient alors l'algorithme \ref{alg:tors}.
@@ -1241,7 +1283,7 @@ Pour certaines valeurs propres spéciales du Frobenius, on peut proposer une aut
 \begin{algorithm}
 \caption{un pas dans le graphe d'isogénies à l'aide de points de torsion rationnels}
 \label{alg:tors}
-\KwIn{Une courbe elliptique $E\in \Ell_k(\O,\pi)$, et un idéal représenté par $(\ell, v)$ tel que $v = 1$}
+\KwIn{Une courbe elliptique $E\in \Ell_k(\O)$, et un idéal représenté par $(\ell, v)$ tel que $v = 1$}
 \KwOut{Une courbe elliptique $E'$ telle que l'isogénie $E\vers E'$ corresponde à cet idéal}
 $P \gets \textsc{PointDeTorsion}(E, \ell)$
 \label{alg:tors:tors}
@@ -1256,14 +1298,14 @@ $E' \gets \textsc{Quotient}(E, K)$
 
 \end{algorithm}
 
-Remarquons qu'en dehors de la recherche du point de torsion, cette méthode est très peu coûteuse. Le coût de la construction du sous-groupe est linéaire en $\ell$, mais indépendant de $p$, et le quotient final est simplement un appel aux formules de Vélu, ce qui est quasiment instantané. La recherche d'un point de torsion rationnel ne pose pas non plus beaucoup de problèmes.
+Remarquons qu'en dehors de la recherche du point de torsion, cette méthode est très peu coûteuse. Le coût de la construction du sous-groupe est linéaire en $\ell$, mais indépendant de $p$, et le quotient final est simplement un appel aux formules de Vélu, ce qui est quasiment instantané. La recherche d'un point de torsion rationnel ne pose pas non plus beaucoup de problèmes:
 
 \begin{algorithm}
 \caption{{\sc PointDeTorsion} : calcul d'un point de torsion rationnel}
 \label{alg:ptors}
-\KwIn{Une courbe elliptique $E\in \Ell_k(\O,\pi)$, et un nombre premier d'Elkies $\ell$ tel que $E$ admet un point de $\ell$-torsion rationnel}
+\KwIn{Une courbe elliptique $E\in \Ell_k(\O)$, et un nombre premier d'Elkies $\ell$ tel que $E$ admet un point de $\ell$-torsion rationnel primitif}
 \KwOut{Un point de $\ell$-torsion primitif}
-$C \gets q + 1 - t$
+$C \gets p + 1 - t$
 \label{alg:ptors:card}
 \;
 \Repeat{$P \neq 0$}{
@@ -1279,33 +1321,44 @@ $P \gets \left[\frac{C}{\ell}\right]Q$
 Le coût principal de la recherche d'un point de torsion est la multiplication scalaire à l'étape~\ref{alg:ptors:scal}. Pour calculer ce type de multiplications, on utilise un mécanisme de chaîne d'additions (double-and-add par exemple, en utilisant l'expression du cofacteur en base binaire) qui utilise environ $\log(C)$ (c'est à dire $\log(p)$) additions sur la courbe. Cela représente un gain important par rapport aux algorithmes~\ref{alg:div} et~\ref{alg:mod}. Lorsque $\ell$ devient trop grand, l'étape {\sc SousGroupeEngendré} devient coûteuse. Néanmoins on peut s'autoriser des nombres premiers beaucoup plus grands que pour les algorithmes précédents, de l'ordre de 10 000 environ en lieu et place de 500 pour un même coût.
 \v
 
-Bien évidemment, l'algorithme~\ref{alg:tors} n'est utilisable que pour les nombres premiers $\ell$ pour lesquels 1 est valeur propre. Intuitivement, il y a environ une chance sur $\ell$ que cela survienne pour une courbe choisie \og au hasard \fg . Pour profiter pleinement de cette accélération, il faut donc choisir des courbes adéquates.
+L'algorithme~\ref{alg:tors} n'est utilisable que pour les nombres premiers $\ell$ pour lesquels 1 est valeur propre. Intuitivement, il y a environ une chance sur $\ell - 1$ que cela survienne pour une courbe choisie \og au hasard \fg : c'est donc plutôt rare.
 
-Remarquons également que l'on peut donner une variante de l'algorithme~\ref{alg:tors} lorsque les points de $\ell$-torsion ne sont pas nécessairement $k$-rationnels, mais seulement définis sur une extension de $k$ de petit degré. Il faut alors multiplier un point choisi au hasard par $\frac{C'}{\ell}$, où $C'$ est le cardinal de la courbe sur cette extension (qui peut se calculer directement à partir de $C$ par la théorie de Hasse). Lorsque l'extension est de degré $d$, $C'$ est de l'ordre de $p^d$. Associé au fait qu'il est plus coûteux de manipuler des points définis sur une extension, le coût de cet algorithme étendu devient quadratique en $d$: en pratique, il n'est intéressants que lorsque $d<10$ environ. De plus, le fait que $\ell$ soit d'Elkies n'empêche plus les deu sous-groupes d'apparaître simultanément, ce qui ajoute une nouvelle restriction.
+On peut donner une variante de l'algorithme~\ref{alg:tors} lorsque les points de $\ell$-torsion ne sont pas nécessairement $k$-rationnels, mais seulement définis sur une extension de $k$ de petit degré. Il faut alors multiplier un point choisi au hasard par $\frac{C'}{\ell}$, où $C'$ est le cardinal de la courbe sur cette extension (qui peut se calculer directement à partir de $C$ par la théorie de Hasse). Lorsque l'extension est de degré $d$, $C'$ est de l'ordre de $p^d$. Associé au fait qu'il est plus coûteux de manipuler des points définis sur une extension, le coût de cet algorithme étendu devient quadratique en $d$: en pratique, il n'est intéressant que lorsque $d<10$ environ. De plus, le fait que $\ell$ soit d'Elkies n'empêche plus les deux sous-groupes d'apparaître simultanément, ce qui ajoute une nouvelle restriction.
+
+En pratique, il est rare qu'une courbe admette beaucoup de nombres premiers pour lesquels l'algorithme \ref{alg:tors} ou une variante peut être utilisé. Pour profiter pleinement de cette accélération, il faut donc choisir des courbes adéquates.
 
 \v
-D'autre part, l'algorithme \ref{alg:tors} permet de voyager dans le graphe d'isogénies uniquement dans la direction associée à la valeur propre 1, et non dans la direction opposée. On peut proposer trois astuces:
+D'autre part, l'algorithme \ref{alg:tors} permet de voyager dans le graphe d'isogénies uniquement dans la direction associée à la valeur propre 1, et non dans la direction de l'autre valeur propre. On peut proposer trois astuces:
 \begin{itemize}
-\item D'une part, utiliser le modèle de Montgomery permet d'utiliser une arithmétique plus efficace, ce qui réduit le coût de la multiplication scalaire. On peut ainsi ajouter deux points génériques en 6 additions, 2 mises au carré et 4 multiplications, contre 8 additions, 5 multiplications, une mise au carré et une division pour un modèle de Weierstrass \og classique\fg\ non optimisé.
+\item[•] D'une part, utiliser le modèle de Montgomery permet d'utiliser une arithmétique plus efficace, ce qui réduit le coût de la multiplication scalaire. On peut ainsi ajouter deux points génériques en 6 additions, 2 mises au carré et 4 multiplications, contre 8 additions, 5 multiplications, une mise au carré et une division pour un modèle de Weierstrass \og classique\fg\ non optimisé.
 
-\item Un autre avantage du modèle de Montgomery est de pouvoir travailler uniquement sur la coordonnée $x$. Il devient alors très facile de passer d'une courbe à sa tordue. En pratique, cela revient à dire que l'on tire autant d'avantages d'une valeur propre égale à -1 qu'une valeur propre égale à 1.
+\item[•] Un autre avantage du modèle de Montgomery est de pouvoir travailler uniquement sur la coordonnée $x$. Il devient alors très facile de passer d'une courbe à sa tordue. En pratique, cela revient à dire que l'on tire autant d'avantages d'une valeur propre égale à -1 qu'une valeur propre égale à 1.
 
-\item Enfin, une dernière amélioration est de forcer l'égalité $p = -1 \mod\ell$. De ce fait, si $v_1 = 1$ dans une direction, alors on aura $v_2 = -1$ ce qui garantit une méthode efficace pour pouvoir faire un pas dans les deux sens.
+\item[•] Enfin, une dernière amélioration est de forcer l'égalité $p = -1 \mod\ell$. De ce fait, si $v_1 = 1$ dans une direction, alors on aura $v_2 = -1$ ce qui garantit une méthode efficace pour pouvoir faire un pas dans les deux sens.
 \end{itemize}
 \v
-On peut donner une intuition plus étayée du temps de recherche d'une courbe ayant une valeur propre du Frobenius égale à 1 pour plusieurs nombres premiers.
 
-\begin{prop}
-Soit $p>3$ un nombre premier, et $\ell\neq p$ un nombre premier tel que $p\neq 1 \mod\ell$. Alors on a
-$$ \#'\left\{E/\F_p \right\}/\mathrm{isom.} = p.$$
-De plus, il existe une constante explicite $C$ telle que
-$$ \left| \frac{p}{\ell - 1}  - \#' \left\{E/\F_p\ :\ \#E(\F_p) = 0 \mod\ell\right\}/\mathrm{isom.} \right|\leq C\ell\sqrt{p}.$$
-\end{prop}
+Pour conclure, on peut retenir deux choses:
+\begin{itemize}
+\item[•] En utilisant une méthode générique, on ne peut pas espérer beaucoup mieux que de devoir chercher les racines d'un polynôme de degré $\ell + 1$ sur $\F_p$. En effet, il existe toujours $\ell + 1$ isogénies distinctes de degré $\ell$ au départ d'une courbe donnée qui sont définies sur $\bar{k}$: c'est le nombre de sous-groupes cycliques de taille $\ell$ dans $E(\bar{k})$.
+\item[•] Utiliser des points de torsion rationnelle d'ordre $\ell$ permet de contourner ce calcul lorsqu'ils existent. La recherche de courbes ayant beaucoup de tels points devient critique pour l'amélioration des performances.
+\end{itemize}
 
-Dans ce résultat, $\#'$ désigne la cardinalité \emph{pondérée}, c'est à dire que la classe d'isomorphisme d'une courbe $E$ est comptée avec le poids $\frac{1}{\#\mathrm{Aut}(E)}$. Cette correction correspond aux seules courbes de $j$-invariant 0 ou 1728. Ainsi, la proportion de courbes ayant un point rationnel de $\ell$-torsion lorsque $p\neq 1 \mod \ell$ est $\frac{1}{\ell - 1} + O(\frac{\ell}{\sqrt{p}}).$
+Il est également intéressant de disposer d'une courbe ayant beaucoup de nombres premiers d'Elkies, car on sera amené à manipuler des isogénies de degré moins élevé. Cependant, avant de pouvoir chercher des courbes intéressantes, différents paramètres restent à déterminer
 
-Bien sûr, le fait d'admettre de la $\ell_1$-torsion rationnelle et de la $\ell_2$-torsion rationnelle ne sont pas des événements indépendants, mais on peut disposer d'un résultat analogue lorsque $\ell$ n'est pas premier. Ce qui ressort de cette proposition, ou même de l'intuition grossière, est qu'il sera très difficile de trouver une courbe ayant toutes les bonnes propriétés que l'on pourrait souhaiter. Par conséquent, la recherche d'une bonne courbe initiale devient critique pour l'amélioration des performances de ce cryptosystème.
-
+%On peut donner une intuition plus étayée du temps de recherche d'une courbe ayant une valeur propre du %Frobenius égale à 1 pour plusieurs nombres premiers.
+%
+%\begin{prop}
+%Soit $p>3$ un nombre premier, et $\ell\neq p$ un nombre premier tel que $p\neq 1 \mod\ell$. Alors on a
+%$$ \#'\left\{E/\F_p \right\}/\mathrm{isom.} = p.$$
+%De plus, il existe une constante explicite $C$ telle que
+%$$ \left| \frac{p}{\ell - 1}  - \#' \left\{E/\F_p\ :\ \#E(\F_p) = 0 \mod\ell\right\}/\mathrm{isom.} \right|%\leq C\ell\sqrt{p}.$$
+%\end{prop}
+%
+%Dans ce résultat, $\#'$ désigne la cardinalité \emph{pondérée}, c'est à dire que la classe d'isomorphisme d'une courbe $E$ est comptée avec le poids $\frac{1}{\#\mathrm{Aut}(E)}$. Cette correction correspond aux seules courbes de $j$-invariant 0 ou 1728. Ainsi, la proportion de courbes ayant un point rationnel de $\ell$-torsion lorsque $p\neq 1 \mod \ell$ est $\frac{1}{\ell - 1} + O(\frac{\ell}{\sqrt{p}}).$
+%
+%Bien sûr, le fait d'admettre de la $\ell_1$-torsion rationnelle et de la $\ell_2$-torsion rationnelle ne sont pas des événements indépendants, mais on peut disposer d'un résultat analogue lorsque $\ell$ n'est pas premier. Ce qui ressort de cette proposition, ou même de l'intuition grossière, est qu'il sera très difficile de trouver une courbe ayant toutes les bonnes propriétés que l'on pourrait souhaiter. Par conséquent, la recherche d'une bonne courbe initiale devient critique pour l'amélioration des performances de ce cryptosystème.
+%
 %Pour assurer qu'il n'y ait qu'un seul groupe cyclique d'ordre $\ell$ défini sur cette extension minimale, il faut alors demander la %propriété suivante :
 %
 %\begin{defi}
@@ -1353,7 +1406,7 @@ Plusieurs paramètres restent à fixer dans le cryptosystème décrit à la sect
 \item[•] Retourner l'élément $\prod_{\ell\in L} {\frak l}^{n_\ell}$ du groupe de classes, où $\frak l$ est un idéal de $\O$ de norme $\ell$ choisi arbitrairement (autrement dit, une valeur propre du Frobenius choisie arbitrairement).
 \end{itemize}
 
-Ces paramètres, comme leurs analogues dans d'autres protocoles cryptographiques, doivent être choisis de telle sorte à assurer une bonne sécurité contre les meilleures attaques connues. Déterminer ces paramètres permettra également de mesurer les véritables performances de ce protocole. En effet, cette mesure n'a de sens qu'à un certain niveau de sécurité donné: par exemple, un intérêt de beaucoup de protocoles utilisant des courbes elliptiques par rapport au RSA classique est de pouvoir utiliser des groupes plus petits pour atteindre le même niveau de sécurité.
+Ces paramètres, comme leurs analogues dans d'autres protocoles cryptographiques, doivent être choisis de telle sorte à assurer une bonne sécurité contre les meilleures attaques connues. Déterminer ces paramètres permettra également de mesurer les véritables performances de ce protocole. En effet, cette mesure n'a de sens qu'à un niveau de sécurité donné: par exemple, un intérêt de beaucoup de protocoles utilisant des courbes elliptiques par rapport au RSA classique est de pouvoir utiliser des groupes plus petits pour atteindre le même niveau de sécurité.
 
 \v
 Pour quantifier cette sécurité, on parle de \emph{bits}. On dit qu'un protocole présente $n$ bits de sécurité si la meilleure attaque connue nécessite au moins $2^n$ opérations pour réussir avec une probabilité non négligeable. Même sans préciser ce que signifie \og opération \fg, c'est une façon agréable de quantifier le concept de sécurité. En informatique, on aime les puissances de 2, c'est pourquoi les niveaux de sécurités standard sont aujourd'hui 128, 192 ou 256 bits de sécurité (ce dernier étant tout de même un peu paranoïaque). L'objectif de cette partie est de déterminer des paramètres de notre cryptosystème et d'en déduire ses performances réelles au niveau d'environ 128 bits de sécurité.
@@ -1384,7 +1437,7 @@ se comportent de manière raisonnablement uniforme dans le groupe de classes pou
 Avant de construire ces arbres, toutefois, il faut s'assurer de disposer de deux courbes ayant le même anneau d'endomorphismes, et ce n'est pas nécessairement le cas des deux courbes d'origine. Une solution consiste à utiliser des isogénies dont le degré divise le conducteur pour se ramener tout d'abord à des courbes dont l'anneau d'endomorphismes est maximal: les propriétés de ces isogénies \og exceptionnelles \fg\ sont décrites par exemple dans \cite{Kohel}. Cette étape est la plus coûteuse dans le pire des cas.
 \v
 
-L'algorithme de Galbraith peut être simplifié dans notre cadre. On sait déjà en effet que les deux courbes ont le même anneau d'endomorphismes, et que seuls des premiers de la liste $L$ ont été utilisés pour voyager entre elles. Cela permet d'éviter de se ramener à l'anneau d'endomorphismes maximal, et on peut aussi profiter du fait que les idéaux dont les normes apparaissent dans $L$ n'engendrent pas nécessairement la totalité du groupe de classes. On peut donc reformuler l'attaque ainsi.
+L'attaque de Galbraith peut être simplifiée dans notre cadre. On sait déjà en effet que les deux courbes ont le même anneau d'endomorphismes, et que seuls des premiers de la liste $L$ ont été utilisés pour voyager entre elles. Cela permet d'éviter de se ramener à l'anneau d'endomorphismes maximal, et on peut aussi profiter du fait que les idéaux dont les normes apparaissent dans $L$ n'engendrent pas nécessairement la totalité du groupe de classes. On peut donc reformuler l'attaque ainsi.
 
 \begin{prop}
 Avec les notations précédentes, il existe un algorithme probabiliste qui, étant donnés $E_0$, $E_a$ et $L$, construit une chaîne d'isogénies entre $E_0$ et $E_a$ dont les degrés sont choisis dans $L$. En notant $N$ le cardinal du sous-groupe du groupe de classes engendré par les idéaux dont la norme figure dans $L$, le coût de cet algorithme est en moyenne $\Theta(\sqrt{N}\, \ln(N) \ln(p)^5)$.
@@ -1446,7 +1499,7 @@ Or, la proposition nous dit que pour que $h_K$ soit de l'ordre de 250 bits, $D_K
 Soit $p$ un nombre premier. Pour une grande proportion de courbes elliptiques $E/\F_p$, le conducteur $c$ de $\Z[\pi]$ est petit relativement à $p$, disons $c\leq (\ln(p))^k$ où $k$ est un petit entier.
 \end{hyp}
 
-Cette hypothèse est conforme à l'intuition, dans la mesure où un entier choisi au hasard a peu de chances de présenter un grand facteur carré. La justification s'arrête ici.
+Cette hypothèse est conforme à l'intuition, dans la mesure où un entier choisi au hasard a peu de chances de présenter un grand facteur carré.
 
 \v
 On sait donner une réponse à la seconde question lorsque l'on parle de l'anneau d'entiers d'un corps quadratique.
@@ -1474,8 +1527,6 @@ Alors la plupart du temps, les produits $\prod {\frak l}^{a_\ell}$ pour $-M_\ell
 
 \v
 Ainsi, on choisira un nombre premier $p$ de 512 bits, une liste $L$ de longueur environ 100 et des bornes $M_\ell$ vérifiant $\prod (2 M_\ell +1) \geq 2^{256}$. On a vu que montrer la sécurité de ce genre de paramètres nécessite beaucoup d'heuristiques. Pour une instance donnée, il existe des algorithmes sous-exponentiels pour déterminer l'anneau d'endomorphismes et la structure du groupe de classes que l'on pourrait utiliser pour étayer ces hypothèses, mais cela n'est pas étudié dans ce document.
-
-\subsection{Bonne distribution}
 
 
 \subsection{Recherche de courbes}
