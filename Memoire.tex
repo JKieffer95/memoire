@@ -60,19 +60,86 @@
 \newtheorem*{defi}{Définition}
 \newtheorem*{ex}{Exemples}
 
-\title{Un cryptosystème à base d'isogénies\\
-\v
-\normalsize Mémoire du M2 Mathématiques fondamentales de l'Université Paris VI}
-
-\author{Jean Kieffer}
-\date{\today}
-
-%add a picture
+%Titlepage
+\definecolor{darkgreen}{RGB}{0, 150, 0}
 
 \begin{document}
 
-\maketitle
-\newpage
+\begin{titlepage}
+
+\centering
+
+{\Huge Un cryptosystème à base d'isogénies}
+\vspace{1cm}
+
+{\large Mémoire du M2 Mathématiques fondamentales de l'Université Paris VI}
+\vspace{1cm}
+
+{\Large Jean Kieffer}
+\v
+
+\today
+
+\vfill
+
+\begin{tikzpicture}[x=6cm, y=6cm]
+
+\draw[]
+ (1, 0) node(7) {2}
+ (0.84, 0.54) node(443) {443}
+ (0.42, 0.91) node(362) {362}
+ (-0.14,0.99) node(104) {104}
+ (-0.65,0.76) node(200) {200}
+ (-0.96,0.28) node(468) {468}
+ (-0.96, -0.28) node(84) {84}
+ (-0.65, -0.76) node(385) {385}
+ (-0.14, -0.99) node(242) {242}
+ (0.42, -0.91) node(402) {402}
+ (0.84, -0.54) node(341) {341};
+\draw[]
+ (7) edge[thick, blue, bend right = 10] (443)
+ (443) edge[thick, blue, bend right = 10] (362)
+ (362) edge[thick, blue, bend right = 10] (104)
+ (104) edge[thick, blue, bend right = 10] (200)
+ (200) edge[thick, blue, bend right = 10] (468)
+ (468) edge[thick, blue, bend right = 10] (84)
+ (84) edge[thick, blue, bend right = 10] (385)
+ (385) edge[thick, blue, bend right = 10] (242)
+ (242) edge[thick, blue, bend right = 10] (402)
+ (402) edge[thick, blue, bend right = 10] (341)
+ (341) edge[thick, blue, bend right = 10] (7);
+
+\draw[]
+ (7) edge[thick, red, bend left=45] (468)
+ (468) edge[thick, red, bend left=45] (341)
+ (341) edge[thick, red, bend left=45] (200)
+ (200) edge[thick, red, bend left=45] (402)
+ (402) edge[thick, red, bend left=45] (104)
+ (104) edge[thick, red, bend left=45] (242)
+ (242) edge[thick, red, bend left=45] (362)
+ (362) edge[thick, red, bend left=45] (385)
+ (385) edge[thick, red, bend left=45] (443)
+ (443) edge[thick, red, bend left=45] (84)
+ (84) edge[thick, red, bend left=45] (7);
+ 
+\draw[]
+ (7) edge[thick, darkgreen, bend left=10] (242)
+ (242) edge[thick, darkgreen, bend left=10] (468)
+ (468) edge[thick, darkgreen, bend left=10] (362)
+ (362) edge[thick, darkgreen, bend left=10] (341)
+ (341) edge[thick, darkgreen, bend left=10] (385)
+ (385) edge[thick, darkgreen, bend left=10] (200)
+ (200) edge[thick, darkgreen, bend left=10] (443)
+ (443) edge[thick, darkgreen, bend left=10] (402)
+ (402) edge[thick, darkgreen, bend left=10] (84)
+ (84) edge[thick, darkgreen, bend left=10] (104)
+ (104) edge[thick, darkgreen, bend left=10] (7);
+
+\end{tikzpicture}
+
+\vfill
+
+\end{titlepage}
 
 \section{Introduction}
 
@@ -493,66 +560,9 @@ Des bases de données de polynômes modulaires se trouvent dans le logiciel de c
 En pratique, lorsque la taille de ces polynômes devient problématique, on peut utiliser d'autres fonctions modulaires qui donnent de meilleurs résultats que $j(\tau)$ et $j(N\tau)$, par exemple $j(\tau)$ et la fonction de Weber. On ne gagne asymptotiquement qu'un facteur constant, et les mêmes problèmes apparaissent à partir d'environ $N=500$.
 \v
 
-\textbf{Le cas général.} Cette méthode est adaptable directement au cas d'autres courbes modulaires, dès que l'on est capable d'exhiber des fonctions modulaires du bon niveau qui engendrent son corps des fonctions. On peut ensuite faire de l'algèbre linéaire sur les $q$-expansions. Prenons par exemple le cas de la courbe modulaire $X_0(30)$.
+\textbf{Le cas général.} Cette méthode est adaptable directement au cas d'autres courbes modulaires, dès que l'on est capable d'exhiber des fonctions modulaires du bon niveau qui engendrent son corps des fonctions. On peut ensuite faire de l'algèbre linéaire sur les $q$-expansions si l'on ne connaît pas a priori d'équation polynomiale satisfaite par ces fonctions modulaires. On verra dans ce mémoire deux exemples de cette méthode, pour les courbes $X_0(30)$ et $X_1(N)$.
 
-L'espace des formes modulaires paraboliques de poids 2 et de niveau $\Gamma_0(30)$ est de dimension 3, et une base de cette espace est donnée par
-$$\begin{aligned}
-f_1 &= q - q^4 - q^6 - 2q^7 + q^9 + q^{10} - 2q^{11} + 2q^{12} + 2 q^{14} +\ldots\\
-f_2 &= q^2 - q^4 - q^6 - q^8 + q^{10} + q^{12} + 3q^{16} + q^{18} - q^{20} - \ldots \\
-f_3 &= q^3 + q^4 - q^5 - q^6 - 2q^7 - 2q^8 + q^{10} + 2q^{11} + 2q^{13} + \ldots
-\end{aligned}$$
-La forme $f_2$ est \emph{vieille} car elle s'écrit $g(2\tau)$ où $g$ est de niveau $\Gamma_0(15)$, ce qui n'est pas le cas de $f_1$ et $f_3$. Ces formes sont de poids 2, donc correspondent à des formes différentielles holomorphes sur la courbe $X_0(30)$. Le terme \emph{parabolique} signifie que ces formes s'annulent sur les pointes de $X_0(30)$, et on peut d'ailleurs lire l'ordre de leur zéro à la pointe $\infty$ sur la première puissance de $q$ apparaissant dans leur développement. On définit alors
-$$ x = \frac{f_2}{f_3}, \quad y = \frac{dx/d\tau}{f_3}.$$
-Les fonctions modulaires $x$ et $y$ sont de poids zéro, ce sont donc des fonctions méromorphes sur la surface de Riemann $X_0(30)$. On trouve une relation reliant $x$ et $y$ grâce à l'algèbre linéaire:
-$$ y^2 =  x^8 + 6x^7 + 9x^6 + 6x^5 - 4x^4 - 6x^3 + 9x^2 - 6x +1. $$
-Bien sûr, on ne peut tester cette égalité que sur un nombre fini de coefficients. Pour montrer que cette égalité a bien lieu, on peut utiliser l'argument suivant: la différence
-$y^2 - P(x)$
-est une fonction méromorphe sur $X_0(30)$ dont les pôles sont concentrés aux pointes, et les ordres de ses pôles sont bornés par une quantité explicite. De plus, le calcul montre que cette fonction admet un zéro à la pointe $\infty$ dont l'ordre est supérieur à, disons, 100. Si cette fonction était non nulle, elle aurait autant de zéros que de pôles, ce qui n'est pas le cas: elle est donc identiquement nulle.
-
-Il reste à voir que $x$ et $y$ engendrent bien le corps des fonctions de $X_0(30)$. La courbe hyperelliptique $\Cl$ donnée par l'équation ci-dessus est de genre 3, et on dispose d'une application rationnelle donnée par les fonctions $x, y$:
-$$X_0(30) \vers \Cl.$$
-Or, le genre de $X_0(30)$ est également 3 (la dimension de l'espace des formes paraboliques ci-dessus), ce qui force cette application à être de degré 1 par la formule de Hurwitz.
-
-Pourquoi avoir choisi ces fonctions $x$ et $y$ particulières? Pour le comprendre, on peut suivre le chemin inverse. Si l'on souhaite une équation de la forme $y^2 = f(x)$, alors les deux formes différentielles sur cette courbe hyperelliptique
-$$\omega_3 =  \frac{dx}{y},\quad \omega_1 = \frac{x\, dx}{y}$$
-engendrent l'espace des formes différentielles d'ordre 1, et ont un zéro d'ordre $g$ et 1 respectivement à l'infini, où $g$ désigne le genre de la courbe en question. On a donc choisi $f_3$ et $f_1$ de cette façon. C'est le raisonnement suivi dans la thèse de Galbraith \cite{Galbraith}.
-
-En réalité, cette équation de $X_0(30)$ ne nous sera utile que si l'on connaît l'expression de la fonction modulaire $j$ en fonction de $x$ et $y$, ce qui permet de retrouver une courbe elliptique à partir d'un point de la courbe modulaire $X_0(30)$. Comme on connaît la $q$-expansion de $j$, on peut faire de l'algèbre linéaire comme précédemment, et on trouve que $j$ peut s'exprimer en fonction de $x$ et $y$ par une fraction rationnelle de degré 36, de numérateur
-$$ \begin{aligned}
- &11390626x^{36} + 136688232x^{35} + 615281004x^{34} + 1157841640x^{33} + 11390624x^{32}y + 385027410x^{32} \\
- &+ 102514896x^{31}y + 3899199936x^{31} + 307361808x^{30}y + 68878885856x^{30} + 164026064x^{29}y  \\
- &+ 461330789952x^{29} - 1401072176x^{28}y + 2024096667816x^{28} - 8580123696x^{27}y + 6544388993120x^{27} \\
- &- 54692903792x^{26}y + 16121144156304x^{26} - 290282276144x^{25}y + 30519217044192x^{25} \\
- &- 1110816170032x^{24}y + 44213136417480x^{24} - 3094506362864x^{23}y + 48084954873408x^{23} \\
- &- 6419993916592x^{22}y + 37447747660704x^{22} - 10015247114224x^{21}y + 18293916069056x^{21} \\
- &- 11672985621488x^{20}y + 2315694303708x^{20} - 9885812131312x^{19}y - 4389588785808x^{19} \\
- &- 5658074812208x^{18}y - 4676088269240x^{18} - 1674540316912x^{17}y - 3342328078608x^{17} \\
- &+ 354269688656x^{16}y - 2056348964388x^{16} + 760401538672x^{15}y - 837671190464x^{15} + 580040840752x^{14}y \\
- & + 34891362336x^{14} + 300727188592x^{13}y + 90210852288x^{13} + 129394057072x^{12}y + 159283365960x^{12} \\
-  &- 333927056x^{11}y - 3950452128x^{11} - 2917217872x^{10}y + 33962685456x^{10} - 10863538576x^9y \\
-  &- 10436233760x^9 + 144372848x^8y + 1058338344x^8 - 342561616x^7y - 907019328x^7 + 79366768x^6y \\
-  &+ 209996384x^6 + 4157616x^5y - 19141824x^5 + 4326064x^4y + 4478610x^4 - 286544x^3y - 2160280x^3 \\
-  &- 402192x^2y + 883116x^2 + 134064xy - 196248x - 14896y + 16354
-\end{aligned}
-$$
-et de dénominateur
-$$ \begin{aligned}
-&x^{35} - 13x^{34} + 56x^{33} + 21x^{32} - x^{31}y - 1106x^{31} + 16x^{30}y + 4207x^{30} - 104x^{29}y \\
-&- 4268x^{29} + 294x^{28}y - 16637x^{28} + 165x^{27}y + 64174x^{27} - 4184x^{26}y - 62529x^{26} \\
- &+ 14224x^{25}y - 131200x^{25} - 18436x^{24}y + 478757x^{24} - 18529x^{23}y - 645986x^{23} \\
- &+ 102680x^{22}y + 1004763x^{22} - 95688x^{21}y + 5962092x^{21} - 225622x^{20}y - 6407093x^{20} \\
- &+ 572493x^{19}y - 14435032x^{19} + 1166032x^{18}y + 11257145x^{18} - 1185120x^{17}y + 15043608x^{17} \\
- &- 3222648x^{16}y - 10395833x^{16} + 1481173x^{15}y - 6881894x^{15} + 4046208x^{14}y + 5269581x^{14} \\
- &- 1639608x^{13}y + 1177004x^{13} - 2375590x^{12}y - 1236463x^{12} + 1434343x^{11}y - 566142x^{11} \\
- &+ 409992x^{10}y + 341845x^{10} - 686768x^9y + 516016x^9 + 205628x^8y - 349313x^8 + 115085x^7y \\
- &- 61286x^7 - 88744x^6y + 105001x^6 + 9064x^5y - 35308x^5 + 4374x^4y + 6561x^4 - 729x^3y - 729x^3.
-\end{aligned}
-$$
-La situation se complique légèrement, en revanche, si l'on veut connaître une équation de la courbe et les coordonnées du point de 2-torsion garanti par $X_0(30)$, par exemple. La difficulté est que les coordonnées $a_4$ et $a_6$ de l'équation de Weierstrass \og usuelle\fg, proportionnelles aux séries d'Eisenstein $E_4$ et $E_6$, ne sont pas des fonctions modulaires, mais $\lambda^2 a_4$ et $\lambda^3 a_6$ en sont pour toute fonction modulaire $\lambda$ de poids $-2$. Les coordonnées du point de 2-torsion sont alors un multiple de la série d'Eisenstein $E_2$, précisément $\frac{-\lambda}{6} E_2$. On renvoie à \cite{Elkies} pour les détails.
-\v
-
-
-Nous avons travaillé jusqu'à présent sur $\C$, mais il est crucial de savoir que ces équations, en particulier celles de $X_0(N)$, restent valables sur un corps quelconque (en particulier pour les corps finis). Pour cela, il faut faire intervenir des notions plus avancées de géométrie algébrique.
+Nous avons travaillé jusqu'à présent sur $\C$, mais il est crucial de savoir que ces équations, en particulier celles de $X_0(N)$, restent valables sur un corps quelconque (en particulier sur les corps finis). Pour cela, il faut faire intervenir des notions plus avancées de géométrie algébrique.
 
 
 \subsection{Le formalisme des problèmes modulaires}
@@ -953,7 +963,7 @@ En réalité, on peut faire mieux et caractériser les points singuliers de $Y_0
 %En effet, soit $x$ un point singulier de $Y_0(N)$ en caractéristique $p$ qui n'est pas réduction d'un point singulier sur $\Z$. Alors il existe un ouvert pour la topologie de Zariski régulier en codimension 1 autour de ce point. Cela implique que la courbe donnée par $\Phi_N=0$ est normale sur $\F_p$. Or la normalisation de $\Phi_N=0$ est précisément la courbe modulaire $Y_0(N)$ qui est lisse: une contradiction.
 \v
 
-L'objectif de cette partie est donc atteint: on dispose d'une équation, le polynôme modulaire, dont les solutions sont les $j$-invariants de courbes liées par des isogénies cycliques de degré donné. Des arguments similaires peuvent sans doute être utilisés pour montrer que l'équation de $X_0(30)$ obtenue plus haut est une équation valide sur $\F_p$. En revanche rien ne garantit a priori que l'expression précédente de la fonction $j$ est toujours valide, par exemple. Dans la suite de mémoire, on utilisera dans $\F_p$ des équations ayant un sens sur $\C$, l'expérience montrant qu'elles restent valides après réduction. Ces outils permettent d'effectuer les calculs nécessaires au protocole de Couveignes--Rostovtsev--Stolbunov, que l'on étudie maintenant.
+L'objectif de cette partie est donc atteint: on dispose d'une équation, le polynôme modulaire, dont les solutions sont les $j$-invariants de courbes liées par des isogénies cycliques de degré donné. Des arguments similaires peuvent sans doute être utilisés pour montrer que d'autres équations de courbes obtenues sur $\C$ restent valides sur $\F_p$, et l'expérience montre que c'est en effet le cas. Dans la suite de mémoire, on utilisera donc dans $\F_p$ les équations ayant un sens sur $\C$. Ces outils permettent d'effectuer les calculs nécessaires au protocole de Couveignes--Rostovtsev--Stolbunov, que l'on étudie maintenant.
 
 \newpage
 
@@ -1040,7 +1050,7 @@ On peut donner à cette décomposition un aspect plus visuel à l'aide du concep
 \end{center}
 
 
-On montre ici un graphe d'isogénies sur $\F_{173}$; les sommets sont des $j$-invariants, les arêtes bleues représentent des isogénies de degré 3, et les arêtes rouges des isogénies de degré 7. La décomposition précédente revient simplement à découper un voyage complet dans ce graphe en plusieurs pas.
+On montre ici un graphe d'isogénies sur $\F_{173}$; les sommets sont des $j$-invariants, les arêtes bleues représentent des isogénies de degré 3, et les arêtes rouges des isogénies de degré 7. La décomposition précédente revient simplement à découper un voyage complet dans ce graphe en plusieurs pas. Le graphe de couverture est un graphe d'isogénies sur $\F_503$, avec le degré 3 en bleu, 11 en rouge et 13 en vert. 
 \v
 
 On peut maintenant proposer plusieurs manières d'effectuer un pas dans ce graphe d'isogénies.
@@ -1299,7 +1309,7 @@ Remarquons qu'en dehors de la recherche du point de torsion, cette méthode est 
 \begin{algorithm}
 \caption{{\sc PointDeTorsion} : calcul d'un point de torsion rationnel}
 \label{alg:ptors}
-\KwIn{Une courbe elliptique $E\in \Ell_k(\O)$, et un nombre premier d'Elkies $\ell$ tel que $E$ admet un point de $\ell$-torsion rationnel primitif}
+\KwIn{Une courbe elliptique $E\in \Ell_k(\O)$ de trace $t$, et un nombre premier d'Elkies $\ell$ tel que $E$ admet un point de $\ell$-torsion rationnel primitif}
 \KwOut{Un point de $\ell$-torsion primitif}
 $C \gets p + 1 - t$
 \label{alg:ptors:card}
@@ -1313,6 +1323,8 @@ $P \gets \left[\frac{C}{\ell}\right]Q$
 \Return{$P$}
 
 \end{algorithm}
+
+Nous reviendrons plus tard sur le calcul de la trace $t$. Cette quantité est la même pour toutes les courbes rencontrées au cours du calcul: en effet, selon un théorème de Tate, deux courbes sur $k$ reliées par une isogénie définie sur $k$ ont le même nombre de points sur $k$. La trace $t$ dépend donc uniquement de la courbe d'origine choisie, et n'est ensuite plus recalculée.
 
 Le coût principal de la recherche d'un point de torsion est la multiplication scalaire à l'étape~\ref{alg:ptors:scal}. Pour calculer ce type de multiplications, on utilise un mécanisme de chaîne d'additions (double-and-add par exemple, en utilisant l'expression du cofacteur en base binaire) qui utilise environ $\log(C)$ (c'est à dire $\log(p)$) additions sur la courbe. Cela représente un gain important par rapport aux algorithmes~\ref{alg:div} et~\ref{alg:mod}. Lorsque $\ell$ devient trop grand, l'étape {\sc SousGroupeEngendré} devient coûteuse. Néanmoins on peut s'autoriser des nombres premiers beaucoup plus grands que pour les algorithmes précédents, de l'ordre de 10 000 environ en lieu et place de 500 pour un même coût.
 \v
@@ -1479,22 +1491,22 @@ Ce résultat était en réalité connu avant les travaux de Brauer et Siegel, qu
 \v
 Dans notre contexte, $K$ est obtenu comme le quotient $\Q[\pi]/(\pi^2  - t\pi + p)$. Le discriminant de l'ordre $Z[\pi]$ de $K$, engendré par l'endomorphisme de Frobenius, est $D = t^2 - 4 p$ et est donc en général de l'ordre de grandeur de $p$. Le discriminant $D_K$ de $K$ (qui est celui de $\O_K$) est alors l'entier dans facteur carré qui apparaît dans la décomposition $D = c^2 D_K,$ et $c$ est le conducteur de $\Z[\pi]$. Ainsi, déterminer le discriminant de $K$ revient à déterminer le facteur carré maximal de $D$.
 
-Lorsque $D$ est un entier de l'ordre de 512 bits, factoriser $D$ est une opération difficile. Cela signifie que pour un discriminant donné, nous ne sommes pas capables de déterminer le discriminant $D_K$ de l'anneau d'entiers de $K$. 
+Lorsque $D$ est un entier de l'ordre de 512 bits, factoriser $D$ est une opération difficile. Cela signifie que pour un discriminant donné, nous ne sommes pas capables de déterminer le discriminant $D_K$ de l'anneau d'entiers de $K$ à moins d'y consacrer des ressources non négligeables.
 
-On a cependant tendance à penser qu'un entier choisi \og au hasard\fg\ a peu de chances de présenter un grand facteur carré; en moyenne, le conducteur de $\Z[\pi]$ sera donc, au pire, un petit entier. On peut donc espérer que ce sera le cas pour la courbe elliptique $E_0$ que nous finirons par choisir dans ce mémoire. On laisse donc ce problème de côté pour l'instant, et l'on choisira un nombre premier $p$ de 512 bits, de sorte que $D$ et donc $D_K$ soient de cet ordre également. Il faudrait vérifier que le conducteur de la courbe choisie est bien un petit entier, mais ce n'est pas fait dans ce mémoire.
+On a cependant tendance à penser qu'un entier choisi \og au hasard\fg\ a peu de chances de présenter un grand facteur carré; en moyenne, le conducteur de $\Z[\pi]$ sera donc, au pire, un petit entier. On peut donc espérer que ce sera le cas pour la courbe elliptique $E_0$ que nous finirons par choisir dans ce mémoire. On laisse donc ce problème de côté pour l'instant, et l'on choisira un nombre premier $p$ de 512 bits, de sorte que $D$ et donc $D_K$ soient de cet ordre également. Il faudrait vérifier que le conducteur de la courbe choisie est bien un petit entier, mais ce n'est pas fait ici.
 
 \v
 \textbf{Générateurs du groupe de classes.}
 Soit $K$ un corps quadratique imaginaire de discriminant $D$, et soit $\O_K$ son anneau d'entiers. En admettant l'hypothèse de Riemann pour $K$, les idéaux de $\O_K$ dont la norme est inférieure à $6\ln(|D|)^2$ engendrent le groupe de classe de $\O_K$. Cela donne la borne cherchée.
 
-Pour un nombre premier $p$ de 512 bits, utiliser cette borne amènerait à calculer des isogénies de degré près d'un million, ce qui est déraisonnable. En pratique, il est tout à fait possible que le nombre minimal de générateurs soit très inférieur à cette quantité: par exemple, un générateur suffit lorsque le groupe de classes est de cardinal premier. On considèrera donc que si $K$ un corps quadratique imaginaire, et $\O$ un ordre de $K$ de discriminant $D$ de notre ordre de grandeur, alors les idéaux inversibles de $\O$ dont la norme est inférieure à $\ln(|D|)$ engendrent un grand sous-groupe de $\Cl(\O)$, ou au moins un grand sous-groupe.
+Pour un nombre premier $p$ de 512 bits, utiliser cette borne amènerait à calculer des isogénies de degré près d'un million, ce qui est déraisonnable. En pratique, il est tout à fait possible que le nombre minimal de générateurs soit très inférieur à cette quantité: par exemple, un générateur suffit lorsque le groupe de classes est de cardinal premier. On considèrera donc que si $K$ un corps quadratique imaginaire, et $\O$ un ordre de $K$ de discriminant $D$ de notre ordre de grandeur, alors les idéaux inversibles de $\O$ dont la norme est inférieure à $\ln(|D|)$ engendrent $\Cl(\O)$, ou au moins un grand sous-groupe de celui-ci.
 
 \v
 Pour étudier la répartition des produits d'idéaux, on peut réfléchir à nouveau en termes de graphe d'isogénies. La répartition des produits d'idéaux dans le groupe de classes est alors directement reliée à la dispersion d'une certaine marche aléatoire dans ce graphe, et on sait que les propriétés d'\emph{expansion} de certains graphes garantissent la dispersion rapide des marches aléatoires. En admettant l'hypothèse de Riemann à nouveau, on peut montrer que le graphe d'isogénies satisfait ce type de propriété. 
 
-Quelques définitions: pour un graphe non orienté $G$, $k$-régulier (c'est à dire que tout sommet est admet $k$ voisins), on définit l'opérateur d'adjacence $A$ de la façon suivante:
+Quelques définitions: pour un graphe non orienté $G$, $k$-régulier (c'est à dire que tout sommet admet $k$ voisins), on définit l'opérateur d'adjacence $A$ de la façon suivante:
 $$A(f)\de x\longmapsto \sum_{y \text{ voisin de } x} f(y).$$
-La fonction constante 1 est un vecteur propre de cet opérateur associé à la valeur propre $k$, dite valeur propre triviale: c'est la plus grande en valeur absolue. Le graphe $G$ est dit $\delta$-expanseur si les autres valeurs propres $\lambda$ de $A$ vérifient $|\lambda|\leq (1-\delta) k$. Lorsque $G$ est $\delta$-expanseur, les marches aléatoires dans $G$ de longueur $\frac{1}{\delta} \log(|G|)$ (où $|G|$ est le nombre de sommets) se répartissent uniformément dans le graphe, au sens où la probabilité de terminer dans un ensemble de sommets $S$ est au moins proportionnelle à $\#S$. Le résultat suivant est tiré de \cite{GRH}.
+La fonction constante 1 est un vecteur propre de cet opérateur associé à la valeur propre $k$, dite valeur propre triviale; c'est la plus grande en valeur absolue. Le graphe $G$ est dit $\delta$-expanseur si les autres valeurs propres $\lambda$ de $A$ vérifient $|\lambda|\leq (1-\delta) k$. Lorsque $G$ est $\delta$-expanseur, les marches aléatoires dans $G$ de longueur $\frac{1}{\delta} \log(|G|)$ (où $|G|$ est le nombre de sommets) se répartissent uniformément dans le graphe, au sens où la probabilité de terminer dans un ensemble de sommets $S$ est au moins proportionnelle à $\#S$ (uniformément en $S$, bien sûr). Le résultat suivant est tiré de \cite{GRH}.
 
 \begin{thm}
 Soit $E_0/\F_p$ une courbe elliptique ayant multiplication complexe par $\O$. On se donne $B>2$. Soit $G$ le graphe dont les sommets sont les éléments de $\Ell_{\F_p}(\O)$, et dont deux sommets sont reliés par une arête s'ils sont reliés par une isogénie de degré inférieur à $(\log(4p))^B$. Alors $G$ est un graphe expanseur, dans le sens où les valeurs propres de l'opérateur d'adjacence vérifient
@@ -1516,23 +1528,169 @@ Avec les notations précédentes, soit $L$ un ensemble de nombres premiers, et $
 \item[•] Pour tout $\ell\in L$, on a $M_\ell \leq \ln(N)$;
 \item[•] On a $\prod_{\ell\in L} (2M_\ell + 1) \geq N$.
 \end{itemize}
-Alors la plupart du temps, les produits $\prod {\frak l}^{a_\ell}$ pour $-M_\ell \leq a_\ell\leq M_\ell$ se répartissent de manière environ uniforme dans le sous-groupe.
+Alors la plupart du temps, les produits $\prod {\frak l}^{a_\ell}$ pour $-M_\ell \leq a_\ell\leq M_\ell$ se répartissent de manière environ uniforme dans le sous-groupe, et $N$ est proche de $h_\O$.
 \end{hyp}
 
 Ainsi, on choisira un nombre premier $p$ de 512 bits, une liste $L$ de longueur environ 100 et des bornes $M_\ell$ vérifiant $\prod (2 M_\ell +1) \geq 2^{256}$. Montrer la sécurité de ce genre de paramètre semble impossible, mais utiliser les bornes prouvées données ci-dessus n'est pas raisonnable; on se contente donc de l'approche heuristique.
 
+\v
+Après cette discussion, on peut poser
+$$\begin{aligned}
+p =\ &120373407382088450343833839782228011370920294512701979230713977354082515866699 \\ &38291587857560356890516069961904754171956588530344066457839297755929645858769,
+\end{aligned}
+$$
+un nombre premier de 512 bits congru à $-1$ modulo tous les nombres premiers compris entre 2 et 380. Notons que le produit de ces premiers est déjà un nombre de 509 bits. Afin de pouvoir utiliser le plus possible la méthode rapide de calcul d'isogénie, on souhaite maintenant exhiber une courbe elliptique $E/\F_p$ admettant:
+\begin{itemize}
+\item[•] Un modèle de Montgomery,
+\item[•] Beaucoup de nombres premiers d'Elkies,
+\item[•] Beaucoup de points de torsion rationnels de petit ordre.
+\end{itemize}
+
+Malheureusement, trouver une telle courbe est un problème difficile. Par exemple, étant donné un entier $C$ compris entre les bornes de Hasse, on ne sait pas exhiber une courbe de cardinalité $C$, bien que l'on puisse démontrer son existence. On peut toutefois faire un peu mieux que tester des courbes au hasard et observer leurs propriétés, comme on va le voir maintenant.
 
 \subsection{Recherche de courbes}
 
-Une première stratégie, peu coûteuse en mémoire, consiste à tirer des courbes au hasard et tester si des nombres premiers sont adaptés, les uns après les autres. On jette la courbe si un de ces tests rate. Une autre façon de procéder est de choisir une courbe elliptique associée à un point d'une courbe modulaire. Si l'on connaît une forme explicite de la courbe modulaire $X_1(N)$ ainsi que du revêtement
-$$j\de X_1(N)\vers X(1),$$
-on peut prendre des courbes candidates dont la cardinalité sur $\F_p$ sera divisible par $N$.
+On donne tout d'abord une stratégie (très) naïve pour trouver ce genre de courbe sur $k = \F_p$:
+\begin{itemize}
+\item[•] Choisir $a_4$ et $a_6$ au hasard dans $k$;
+\item[•] Définir la courbe $E\de y^2 = x^3 + a_4x + a_6$;
+\item[•] Regarder si $E$ a un modèle de Montgomery;
+\item[•] Si oui, calculer le nombre de points $C$ de $E$ sur $k$ (ou sa trace $t$, de manière équivalente);
+\item[•] Pour les premiers $\ell\leq 500$, regarder si $t^2 - 4p$ est un carré non nul modulo $\ell$ et si $C = 0 \mod\ell$;
+\item[•] Estimer le temps nécessaire à un parcours dans le graphe d'isogénies en fonction des résultats.
+\end{itemize}
 
-On recherche une équation de $X_1(N)$ sous forme de courbe plane, valable au moins sur le corps des nombres complexes (on espère alors que cette équation est à coefficients entiers et donne bien une équation de $X_1(N)_{\F_p}$ une fois réduite modulo $p$). On recherche donc deux formes modulaires $f$, $g$ de niveau $\Gamma_1(N)$, et un polynôme $\Phi_N^{(f, g)}$ à coefficients entiers tel que
+Pour que $E$ admette un modèle de Montgomery, il faut que $E$ admette un point rationnel de 2-torsion, donc que le polynôme $X^3 + a_4 X + a_6$ ait une racine dans $\F_p$. La courbe $E$ admet un modèle de Montgomery si, et seulement si, il existe une racine $\alpha$ de ce polynôme telle que le polynôme dérivé $3\alpha^2 + a_4$ soit un carré dans $\F_p$.
+
+Bien sûr, le temps nécessaire pour effectuer un parcours dépend de l'implémentation choisie, et du choix du nombre de pas $M_\ell$ pour chaque nombre premier $\ell$ utilisé. On donnera des valeurs précises du temps d'exécution à la section suivante. Notons que même en connaissant le temps de calcul pour chaque premier, il est difficile de trouver les bornes $M_\ell$ optimales: en pratique, on se donne un certain temps $T$ que l'on accepte de dépenser pour chaque premier, on calcule alors la borne $M_\ell$ associée pour chaque $\ell$, et on obtient une majoration du temps de parcours lorsque le produit des $M_\ell$ devient assez grand.
+
+\v
+Pour déterminer les propriétés de $E[\ell]$ pour de petits premiers $\ell$, cette première stratégie nécessite de calculer la cardinalité d'une courbe sur $\F_p$. Pour cela, on utilise l'algorithme de Schoof, amélioré par Atkin et Elkies \cite{Schoof}. L'idée de cet algorithme polynomial est de calculer la trace $t$ modulo $\ell_i$, pour des nombres premiers $\ell_i$ tels que $\prod \ell_i > 4\sqrt{p}$. Connaissant les bornes de Hasse $|t|\leq 2\sqrt{p}$, on peut ensuite déterminer uniquement la trace dans $\Z$ modulo le théorème chinois.
+
+Pour déterminer $t \mod \ell_i$, l'idée de Schoof est de regarder le Frobenius agissant sur l'espace $E[\ell_i](\bar{k})$. On a vu que c'est un endomorphisme de cet $\F_{\ell_i}$-espace vectoriel de dimension 2, dont la trace est $p\mod \ell_i$ et le déterminant $p$. On peut donc calculer le $\ell_i$-ième polynôme de division $\psi_i$ de la courbe $E$, et se demander pour quel élément $t$ l'égalité
+$$(X^{p^2}, Y^{p^2}) - t (X^p, Y^p) + [p] (X, Y)$$
+a lieu, où $(X, Y)$ est le point canonique de $E$ sur l'anneau $k[X, Y]$ quotienté par $\psi_i$ et l'équation de $E$. Notons que les sommes ci-dessus sont des sommes de poins sur une courbe elliptique. 
+
+Cet algorithme est certes polynomial en $\log p$, mais n'est pourtant pas très praticable pour de grandes valeurs de $p$. L'amélioration proposée par Elkies est essentiellement celle qui a déjà été utilisée plus tôt dans ce document: lorsque $\ell_i$ est un nombre premier d'Elkies, on peut utiliser une équation modulaire pour travailler avec des polynômes de degré $\ell_i$ plutôt que $\ell_i^2$. En effet, on peut alors calculer une isogénie comme précédemment, calculer son noyau, puis calculer la valeur propre $v_i$ du Frobenius sur celui-ci. On saura alors que $t = v_i + \frac{p}{v_i} \mod \ell_i$.
+
+L'amélioration proposée par Atkin concerne les autres premiers. Elle ne permet pas de déterminer directement $t \mod \ell_i$, mais détermine un petit ensemble de valeurs parmi lesquels $t \mod\ell_i$ doit se trouver. On ne peut alors plus appliquer directement le théorème chinois, et il faut effectuer une recherche supplémentaire pour déterminer la valeur exacte de $t$. Cette dernière recherche n'est pas un algorithme polynomial, mais cela améliore tout de même les performances en pratique.
+
+L'algorithme de Schoof--Atkin--Elkies (SEA) a été bien étudié, et des implémentations matures sont aujourd'hui disponibles. Nous avons utilisé PARI \cite{PARI} pour ce calcul, à travers l'interface offerte par Sage \cite{Sage}. Pour le nombre premier $p$ choisi plus haut, une à deux minutes sont nécessaires environ pour calculer le cardinal d'une courbe sur $\F_p$.
+
+\v
+Revenons à la stratégie naïve donnée plus haut. Une première remarque est que l'on pourrait éviter le test du modèle de Montgomery, en tirant dès le début une courbe elliptique sous forme de Montgomery. On peut reformuler cela en disant que l'on dispose d'une paramétrisation (évidente) qui fournit des courbes sous forme de Montgomery.
+
+Une question naturelle est alors la suivante: peut-on donner des paramétrisations qui donnent des courbes elliptiques ayant un point rationnel de $\ell$-torsion, pour certains nombres premiers $\ell$? On a vu que les courbes elliptiques munies d'un tel point sont des points de la courbe modulaire $Y_1(\ell)$; plus généralement on peut considérer des courbes $Y_1(N)$ où $N$ est un produit de nombres premiers distincts. La question est donc de savoir si l'on peut donner une paramétrisation de $Y_1(N)$. Cela n'est possible que si la courbe $X_1(N)$ est de genre zéro. Or, selon \cite{Coreens}:
+
+\begin{prop}
+Soit $N\geq 1$ un entier. Alors le genre de $X_1(N)$ est 
+$$  g(N) = 
+\begin{cases}
+0 &\text{si}\ 1\leq N\leq 4 \\
+\displaystyle 1 + \frac{N^2}{24} \prod_{\substack{p|N \\ p\ \mathrm{premier}}} \left(1 - \frac{1}{p^2}\right) + \sum_{\substack{d|N\\ d\geq 0}} \varphi(d)\varphi\left(\frac{N}{d}\right)& \text{sinon,}
+\end{cases}$$
+où $\varphi$ désigne la fonction indicatrice d'Euler.
+\end{prop}
+
+Par conséquent, le genre de $X_1(N)$ est nul lorsque $N\leq 10$ ou $N = 12$. Pour ces valeurs, on peut en effet exhiber des paramétrisations de $Y_1(N)$ pour lesquelles on est capable d'expliciter le morphisme
+$$j \de Y_1(N) \vers Y(1)$$
+afin de pouvoir retrouver la courbe elliptique correspondante. Remarquons qu'utiliser une paramétrisation de $Y_1(12)$, par exemple, est strictement supérieur à utiliser directement le modèle de Montgomery: en effet, une courbe ayant un point de 4-torsion admet toujours un modèle de Montgomery qui est facile à déterminer, et on gagne en plus la présence d'un point rationnel de 3-torsion.
+
+Bien sûr, plus le niveau $N$ est grand, plus l'information gagnée a de la valeur, ce qui pousse à utiliser des courbes modulaires pour lesquelles aucune paramétrisation n'est disponible. Lorsque l'on connaît une équation plane $g(x, y) = 0$ de $Y_1(N)$, on peut tout de même générer des points de cette courbe modulaire sur $\F_p$ par le procédé suivant: on tire $x\in \F_p$ au hasard, puis on recherche les racines du polynôme $g(x, Y)$ dans $\F_p$. Cela a de bonnes chances de donner un résultat, puisqu'un polynôme à coefficients sur $\F_p$ a de bonnes chances d'admettre une racine.
+
+À quel point cette méthode est-elle plus avantageuse que la recherche de courbes au hasard? Lorsque l'on tire une courbe au hasard, elle a environ une chance sur $N$ d'admettre un point rationnel de $N$-torsion, et vérifier sa présence a un coût essentiellement proportionnel à $N$: en utilisant une équation modulaire, le calcul coûteux est la recherche de racines d'un polynôme de degré $N + 1$. Le coût total est donc essentiellement quadratique. En utilisant une équation de $Y_1(N)$, il faut en premier lieu la stocker, et ensuite chercher les racines d'un polynôme de degré $d$, le degré de l'équation $g$ en la variable $y$. Plus ce degré est faible, plus l'équation est petite et plus cette méthode est intéressante.
+
+On arrive donc à la notion de \emph{gonalité}. On appelle gonalité d'une courbe algébrique $X$ sur un corps algébriquement clos $K$ le plus petit entier $k\geq 1$ tel qu'il existe une application rationnelle de degré $k$ de $X$ vers la droite projective. Autrement dit, c'est le plus petit entier $k$ tel qu'il existe une extension $K(X)/K(f)$ de degré $k$ pour un certain $f\in K(X)$. La gonalité mesure donc un défaut de rationalité, et les courbes de gonalité 1 sont exactement les courbes birationnelles à $\P^1$.
+
+Lorsque $X$ est donné par une équation plane, la gonalité est majorée par le degré de l'équation en chacune de ses variables. Or, les résultats connus sur la gonalité de $X_1(N)$ sont décourageants.
+
+\begin{prop}
+La gonalité $k$ de $X_1(N)$ vérifie l'inégalité $\frac{21}{100}(g_1(N)-1)\leq k.$
+\end{prop}
+
+Dans ce résultat, tiré de \cite{gon}, $g_1(N)$ est le genre de $X_1(N)$, qui est quadratique en $N$ vu la proposition précédente. Une équation plane de $X_1(N)$ est donc nécessairement de degré quadratique en chacune de ses variables: le stockage seul de cet équation est trop coûteux pour envisager de l'utiliser pour de grandes valeurs de $N$.
+
+La situation est sensiblement la même pour les courbes modulaires $X_0(N)$. Il s'agit donc de trouver le juste milieu entre les très petites valeurs, pour lesquelles utiliser les courbes modulaires est intéressant, et les valeurs plus élevées où le coût explose. En pratique, on peut utiliser les courbes $X_0(30)$ ou $X_1(17)$, de gonalité respectivement 2 et 4, et dont il faut alors calculer une équation.
+
+\v
+On peut apporter une autre amélioration à la stratégie naïve du début de cette section. En effet, au cours de l'algorithme SEA, on peut choisir de s'arrêter lorsque les valeurs de $t \mod \ell$ pour de petites valeurs de $\ell$ ne sont pas satisfaisantes, ou s'il y a trop peu de nombres premiers d'Elkies. On obtient alors l'algorithme de recherche que nous avons utilisé en pratique:
+\begin{itemize}
+\item[•] Générer des courbes candidates $E$ à l'aide d'une équation modulaire du bon niveau;
+\item[•] Regarder si la courbe admet un modèle de Montgomery;
+\item[•] Si oui, lancer l'algorithme SEA et s'arrêter s'il n'y a pas de torsion rationnelle pour de petits premiers;
+\item[•] Une fois le cardinal calculé, estimer le temps nécessaire à un parcours dans le graphe d'isogénies en fonction des résultats.
+\end{itemize}
+
+Le nombre de conditions à satisfaire dans l'étape 3 est déterminé empiriquement avec l'intuition suivante: l'algorithme sera le plus efficace s'il passe autant de temps à générer des candidats, vérifier les premières conditions et calculer la cardinalité en entier, sachant que moins de courbes sont concernées à mesure que l'on descend dans la liste ci-dessus. Par exemple, si l'on utilise la courbe modulaire $X_1(17)$,
+on peut tester la présence de $\ell$-torsion rationnelle pour $\ell\in\{3, 5, 7, 11, 13\}$.
+
+\v
+
+Voyons maintenant comment calculer une équation pour ces courbes modulaires, ainsi que l'expression de la fonction $j$ sur ces courbes.
+
+\subsection{Calcul d'une équation de $X_0(30)$}
+
+L'espace des formes modulaires paraboliques de poids 2 et de niveau $\Gamma_0(30)$ est de dimension 3, et une base de cette espace est donnée par
+$$\begin{aligned}
+f_1 &= q - q^4 - q^6 - 2q^7 + q^9 + q^{10} - 2q^{11} + 2q^{12} + 2 q^{14} +\ldots\\
+f_2 &= q^2 - q^4 - q^6 - q^8 + q^{10} + q^{12} + 3q^{16} + q^{18} - q^{20} - \ldots \\
+f_3 &= q^3 + q^4 - q^5 - q^6 - 2q^7 - 2q^8 + q^{10} + 2q^{11} + 2q^{13} + \ldots
+\end{aligned}$$
+La forme $f_2$ est \emph{vieille} car elle s'écrit $g(2\tau)$ où $g$ est de niveau $\Gamma_0(15)$, ce qui n'est pas le cas de $f_1$ et $f_3$. Ces formes sont de poids 2, donc correspondent à des formes différentielles holomorphes sur la courbe $X_0(30)$. Le terme \emph{parabolique} signifie que ces formes s'annulent sur les pointes de $X_0(30)$, et on peut d'ailleurs lire l'ordre de leur zéro à la pointe $\infty$ sur la première puissance de $q$ apparaissant dans leur développement. On définit alors
+$$ x = \frac{f_2}{f_3}, \quad y = \frac{dx/d\tau}{f_3}.$$
+Les fonctions modulaires $x$ et $y$ sont de poids zéro, ce sont donc des fonctions méromorphes sur la surface de Riemann $X_0(30)$. On trouve une relation reliant $x$ et $y$ grâce à l'algèbre linéaire:
+$$ y^2 =  x^8 + 6x^7 + 9x^6 + 6x^5 - 4x^4 - 6x^3 + 9x^2 - 6x +1. $$
+Bien sûr, on ne peut tester cette égalité que sur un nombre fini de coefficients. Pour montrer que cette égalité a bien lieu, on peut utiliser l'argument suivant: la différence
+$y^2 - P(x)$
+est une fonction méromorphe sur $X_0(30)$ dont les pôles sont concentrés aux pointes, et les ordres de ses pôles sont bornés par une quantité explicite. De plus, le calcul montre que cette fonction admet un zéro à la pointe $\infty$ dont l'ordre est supérieur à, disons, 100. Si cette fonction était non nulle, elle aurait autant de zéros que de pôles, ce qui n'est pas le cas: elle est donc identiquement nulle.
+
+Il reste à voir que $x$ et $y$ engendrent bien le corps des fonctions de $X_0(30)$. La courbe hyperelliptique $\Cl$ donnée par l'équation ci-dessus est de genre 3, et on dispose d'une application rationnelle donnée par les fonctions $x, y$:
+$$X_0(30) \vers \Cl.$$
+Or, le genre de $X_0(30)$ est également 3 (la dimension de l'espace des formes paraboliques ci-dessus), ce qui force cette application à être de degré 1 par la formule de Hurwitz.
+
+Pourquoi avoir choisi ces fonctions $x$ et $y$ particulières? Pour le comprendre, on peut suivre le chemin inverse. Si l'on souhaite une équation de la forme $y^2 = f(x)$, alors les deux formes différentielles sur cette courbe hyperelliptique
+$$\omega_3 =  \frac{dx}{y},\quad \omega_1 = \frac{x\, dx}{y}$$
+engendrent l'espace des formes différentielles d'ordre 1, et ont un zéro d'ordre $g$ et 1 respectivement à l'infini, où $g$ désigne le genre de la courbe en question. On a donc choisi $f_3$ et $f_1$ de cette façon. C'est le raisonnement suivi dans la thèse de Galbraith \cite{Galbraith}.
+
+Cette équation de $X_0(30)$ ne nous est utile que si l'on connaît l'expression de la fonction modulaire $j$ en fonction de $x$ et $y$, ce qui permet de retrouver une courbe elliptique à partir d'un point de la courbe modulaire $X_0(30)$. Comme on connaît la $q$-expansion de $j$, on peut faire de l'algèbre linéaire comme précédemment, et on trouve que $j$ peut s'exprimer en fonction de $x$ et $y$ par une fraction rationnelle de degré 36, de numérateur
+$$ \begin{aligned}
+ &11390626x^{36} + 136688232x^{35} + 615281004x^{34} + 1157841640x^{33} + 11390624x^{32}y + 385027410x^{32} \\
+ &+ 102514896x^{31}y + 3899199936x^{31} + 307361808x^{30}y + 68878885856x^{30} + 164026064x^{29}y  \\
+ &+ 461330789952x^{29} - 1401072176x^{28}y + 2024096667816x^{28} - 8580123696x^{27}y + 6544388993120x^{27} \\
+ &- 54692903792x^{26}y + 16121144156304x^{26} - 290282276144x^{25}y + 30519217044192x^{25} \\
+ &- 1110816170032x^{24}y + 44213136417480x^{24} - 3094506362864x^{23}y + 48084954873408x^{23} \\
+ &- 6419993916592x^{22}y + 37447747660704x^{22} - 10015247114224x^{21}y + 18293916069056x^{21} \\
+ &- 11672985621488x^{20}y + 2315694303708x^{20} - 9885812131312x^{19}y - 4389588785808x^{19} \\
+ &- 5658074812208x^{18}y - 4676088269240x^{18} - 1674540316912x^{17}y - 3342328078608x^{17} \\
+ &+ 354269688656x^{16}y - 2056348964388x^{16} + 760401538672x^{15}y - 837671190464x^{15} + 580040840752x^{14}y \\
+ & + 34891362336x^{14} + 300727188592x^{13}y + 90210852288x^{13} + 129394057072x^{12}y + 159283365960x^{12} \\
+  &- 333927056x^{11}y - 3950452128x^{11} - 2917217872x^{10}y + 33962685456x^{10} - 10863538576x^9y \\
+  &- 10436233760x^9 + 144372848x^8y + 1058338344x^8 - 342561616x^7y - 907019328x^7 + 79366768x^6y \\
+  &+ 209996384x^6 + 4157616x^5y - 19141824x^5 + 4326064x^4y + 4478610x^4 - 286544x^3y - 2160280x^3 \\
+  &- 402192x^2y + 883116x^2 + 134064xy - 196248x - 14896y + 16354
+\end{aligned}
+$$
+et de dénominateur
+$$ \begin{aligned}
+&x^{35} - 13x^{34} + 56x^{33} + 21x^{32} - x^{31}y - 1106x^{31} + 16x^{30}y + 4207x^{30} - 104x^{29}y \\
+&- 4268x^{29} + 294x^{28}y - 16637x^{28} + 165x^{27}y + 64174x^{27} - 4184x^{26}y - 62529x^{26} \\
+ &+ 14224x^{25}y - 131200x^{25} - 18436x^{24}y + 478757x^{24} - 18529x^{23}y - 645986x^{23} \\
+ &+ 102680x^{22}y + 1004763x^{22} - 95688x^{21}y + 5962092x^{21} - 225622x^{20}y - 6407093x^{20} \\
+ &+ 572493x^{19}y - 14435032x^{19} + 1166032x^{18}y + 11257145x^{18} - 1185120x^{17}y + 15043608x^{17} \\
+ &- 3222648x^{16}y - 10395833x^{16} + 1481173x^{15}y - 6881894x^{15} + 4046208x^{14}y + 5269581x^{14} \\
+ &- 1639608x^{13}y + 1177004x^{13} - 2375590x^{12}y - 1236463x^{12} + 1434343x^{11}y - 566142x^{11} \\
+ &+ 409992x^{10}y + 341845x^{10} - 686768x^9y + 516016x^9 + 205628x^8y - 349313x^8 + 115085x^7y \\
+ &- 61286x^7 - 88744x^6y + 105001x^6 + 9064x^5y - 35308x^5 + 4374x^4y + 6561x^4 - 729x^3y - 729x^3.
+\end{aligned}
+$$
+La situation se complique légèrement, en revanche, si l'on veut connaître une équation de la courbe et les coordonnées du point de 2-torsion garanti par $X_0(30)$, par exemple. Connaître ce point de 2-torsion permet d'éviter une recherche de racine lorsque l'on se demande si la courbe elliptique obtenue admet un modèle de Montgomery. La difficulté est que les coordonnées $a_4$ et $a_6$ de l'équation de Weierstrass \og usuelle\fg, proportionnelles aux séries d'Eisenstein $E_4$ et $E_6$, ne sont pas des fonctions modulaires de poids zéro, mais $\lambda^2 a_4$ et $\lambda^3 a_6$ en sont pour toute fonction modulaire $\lambda$ de poids $-2$. Les coordonnées du point de 2-torsion sont alors un multiple de la série d'Eisenstein $E_2$, précisément $\frac{-\lambda}{6} E_2$. On renvoie à \cite{Elkies} pour les détails.
+
+\subsection{Calcul d'une équation de $X_1(N)$}
+
+Comme dans le cas de $X_0(30)$, on recherche une équation de $X_1(N)$ sous forme de courbe plane valable sur le corps des nombres complexes, et on espère que cette équation est à coefficients entiers et donne bien une équation de $X_1(N)_{\F_p}$ une fois réduite modulo $p$. On recherche donc deux formes modulaires $f$, $g$ de niveau $\Gamma_1(N)$, et un polynôme $\Phi_N^{(f, g)}$ à coefficients entiers tel que
 $$\Phi_N^{(f, g)}(f, g) = 0.$$
 
-On suit ici l'article \cite{Baaziz}. On note $\wp(z, \Lambda_\tau)$ la fonction $\wp$ de Weierstrass associé au réseau
-$$\Lambda_\tau = \Z\oplus\Z \tau.$$
+On suit ici l'article \cite{Baaziz}. On note $\wp(z, \Lambda_\tau)$ la fonction $\wp$ de Weierstrass associé au réseau $\Lambda_\tau = \Z\oplus\Z \tau.$
 
 \begin{thm}
 On définit deux fonctions méromorphes de la variable complexe :
@@ -1545,7 +1703,7 @@ $$y^2 + a_1xy + a_3y = x^3 + a_2x^2$$
 évalué au point $(x, y) = (0, 0)$.
 \end{thm}
 
-Remarquons que le calcul de ce polynôme de division évalué en $(0, 0)$ est facile, en utilisant des formules récursives comme précédemment (?). Rappelons que le polynôme de division s'annule exactement sur les points affines de $N$-torsion de la courbe.
+Remarquons que le calcul de ce polynôme de division évalué en $(0, 0)$ est facile, en utilisant des formules récursives comme précédemment. Rappelons que le polynôme de division s'annule exactement sur les points affines de $N$-torsion de la courbe. Le lemme clé est le suivant:
 
 \begin{lem}
 Toute classe d'isomorphisme de courbes elliptiques $(E, P)$ où $P$ est un point d'ordre $N$ sur un corps $K$ algébriquement clos contient un représentant de la forme
@@ -1557,61 +1715,20 @@ $$f = \frac{(\wp(1/N, \Lambda_\tau) - \wp(1/N, \Lambda_\tau))^3}{\wp'(1/N, \Lamb
 Ce lemme s'établit à l'aide de calculs sur les modèles de Weierstrass. L'ingrédient clé est que la courbe elliptique $\C/\Lambda_\tau$ est isomorphe à la courbe elliptique $y^2 = x^3 + g_2(\tau) x + g_3(\tau)$, l'isomorphisme étant donné par 
 $z\mapsto (\wp(z), \wp'(z))$.
 
-\begin{proof}[Démontration du théorème]. On vérifie que les fonctions méromorphes
+\begin{proof}[Démontration du théorème] On vérifie que les fonctions méromorphes
 $$\tau\mapsto \wp(1/N, \Lambda_\tau),\quad \tau\mapsto\wp'(1/N,\Lambda_\tau),\quad \tau\mapsto\wp''(1/N, \Lambda_\tau)$$
-sont des formes modulaires pour $\Gamma_1(N)$ de poids respectifs 2, 3 et 4. On montre alors que $f$ et $g$ sont des fonctions modulaires (de poids 0) pour $\Gamma_1(N)$ à l'aide des formules de duplication, donc des fonctions sur $X_1(N)_\C = \overline{\Gamma_1(N)\backslash \H}$. Si $a$ est un point affine de la courbe modulaire, selon le lemme, $a$ admet un représentant $(E, P)$ qui s'écrit
+sont des formes modulaires pour $\Gamma_1(N)$ de poids respectifs 2, 3 et 4. On montre alors que $f$ et $g$ sont des fonctions modulaires (de poids 0) pour $\Gamma_1(N)$ à l'aide des formules de duplication, donc des fonctions sur $X_1(N)_\C = \overline{\Gamma_1(N)\backslash \H}$. Si $a$ est un point affine de cette courbe modulaire, selon le lemme, $a$ admet un représentant $(E, P)$ qui s'écrit
 $$E\de y^2 + ((1 + g(a))x + f(a))y = x^3 + f(a)x^2,\quad P = (0, 0).$$
 $P$ étant un point de $N$-torsion, on a bien $\psi_N(1+g(a), f(a), f(a)) = 0$. \'Etant vraie sur un ouvert affine, cette égalité est vraie sur tout $X_1(N)$.
 
 Il reste à montrer que $f$ et $g$ engendrent le corps des fonctions de $X_1(N)_\C$. Pour cela, il suffit de trouver un ouvert non vide $U$ de la surface de Riemann compacte $X_1(N)_\C$ tel que $(f, g)$ sépare les points sur $U$. Or, c'est le cas sur l'ouvert affine $Y_1(N)$, car le lemme donne un représentant d'un tel point en fonction uniquement de $f$ et $g$.
 \end{proof}
 
-\begin{rem}
 Le fait que $f$ et $g$ engendrent le corps des fonctions montrent que l'application rationnelle
 $$X_1(N)_\C \overset{(f,\ g)}{\vers} \left\{(u, v)\in \P^2(\C) \de \psi_N(1+v, u, u) = 0\right\}$$
-est un isomorphisme birationnel sur son image : on a donc obtenu un modèle plan de la courbe modulaire $X_1(N)$. Bien évidemment, cela ne démontre pas directement que ce modèle est bien valable sur un corps fini, et il faudrait sans doute invoquer des arguments similaires à ce qui a déjà été fait sur les polynômes modulaires classiques et les courbes $X_0(N)$ pour justifier cela. Néanmoins, on admet ici que les équations obtenues restent valables sur $\F_p$ sans modification.
-\end{rem}
+est un isomorphisme birationnel sur son image : on a donc obtenu un modèle plan de la courbe modulaire $X_1(N)$.
 
-Pour le problème qui nous intéresse, générer des points sur la courbe $X_1(N)_{\F_p}$, il est intéressant de chercher une équation minimisant le degré d'une des deux variables. On peut alors tirer la seconde au hasard, et on se retrouve à calculer les racines d'un polynôme de plus petit degré. Cela motive la définition suivante.
-
-\begin{defi}
-Soit $X$ une courbe algébrique sur un corps algébriquement clos $K$. On appelle \emph{gonalité} de $X$ le plus petit entier $k\geq 1$ tel qu'il existe une application rationnelle de degré $k$ de $X$ vers la droite projective. Autrement dit, c'est le plus petit entier $k$ tel qu'il existe une extension $K(X)/K(f)$ de degré $k$ pour un certain $f\in K(X)$.
-\end{defi}
-
-La gonalité mesure un défaut de rationalité : les courbes de gonalité 1 sont exactement les courbes birationnelles à $\P^1$.
-Si l'on dispose d'une équation plane $\Phi(X, Y) = 0$ pour la courbe $\Cl$ (définie sur un corps), on peut majorer la gonalité de $\Cl$ par le degré de $\Phi$ en chacune de ses variables. En effet, soit $p_1 : \Cl\vers \P^1$ l'application donnée par la première variable. Il existe un ouvert $U$ de $\P^1$ tel que tout $x\in U$ admet exactement $d$ préimages distinctes par $p_1$, quitte à prendre une clôture algébrique, où $d$ est le degré de $\P^1$. Ces préimages sont de la forme $(x, y)$ où $y$ est une racine du polynôme $\Phi(x, Y)$ : ainsi on a $d \leq \mathrm{deg}_Y \Phi$.
-
-En toute généralité, on ne sait pas donner de gonalité d'une courbe : ainsi, la gonalité de $X_1(N)$ est inconnue en dehors des plus petites valeurs de $N$. (Voir cependant un algorithme de calcul de la gonalité). Le genre intervient également, bien qu'il ne détermine pas la gonalité :
-
-\begin{prop}
-Soit $\Cl/K$ une courbe de genre $g$ et de gonalité $k$. Alors on a
-$$k\leq \frac{g+2}{3}.$$
-De plus, si $\Cl = X_1(N)$, on a également l'inégalité
-$$\frac{21}{100}(g-1)\leq k.$$
-\end{prop}
-
-\begin{proof} Pour le premier point,\ldots
-Pour le second, on renvoie à \cite{gon}.
-\end{proof}
-
-
-Pour avoir une intuition sur le degré des polynômes mis en jeu, on allie cette propriété au résultat suivant :
-
-\begin{prop}
-Soit $N\geq 1$ un entier. Alors le genre de $X_1(N)$ est 
-$$  g(N) = 
-\begin{cases}
-0 &\text{si}\ 1\leq N\leq 4 \\
-\displaystyle 1 + \frac{N^2}{24} \prod_{\substack{p|N \\ p\ \mathrm{premier}}} \left(1 - \frac{1}{p^2}\right) + \sum_{\substack{d|N\\ d\geq 0}} \varphi(d)\varphi\left(\frac{N}{d}\right)& \text{sinon,}
-\end{cases}$$
-où $\varphi$ désigne la fonction indicatrice d'Euler.
-\end{prop}
-
-\begin{proof}
-\cite{Coreens}.
-\end{proof}
-
-On peut donc s'attendre à trouver des équations pour $X_1(N)$ de degré de l'ordre de $N^2$ en chaque variable. En pratique, on peut s'arranger pour réduire ce degré d'un facteur constant. Une première étape est de remarquer que $\psi_N(1+g, f, f)$ possède un facteur $f^{v_N}.$ On peut déterminer cette valuation à partir des formules de récurrence, et on obtient
+Vu les résultats précédents sur la gonalité de $X_1(N)$, on doit s'attendre à trouver des équations de degré de l'ordre de $N^2$ en chaque variable. En pratique, on peut s'arranger pour réduire ce degré d'un facteur constant. Une première étape est de remarquer que $\psi_N(1+g, f, f)$ possède un facteur $f^{v_N}.$ On peut déterminer cette valuation à partir des formules de récurrence, et on obtient
 $$ v_N =
 \begin{cases}
 3k^2 & \text{si}\ N = 3k, \\
@@ -1621,21 +1738,20 @@ $$ v_N =
 En pratique, on calcule directement la quantité $f^{-v_N}\psi_N$, pour laquelle on peut donner une formule récursive semblable. De plus, si $M$ divise $N$, alors $\psi_M(1+g, f, f)$ divise $\psi_N(1+g, f, f)$ (si $MP = 0$, on a aussi $NP = 0$). On définit donc des polynômes $\Phi^{(f, g)}$ vérifiant :
 $$\forall N\geq 1,\ f^{-v_N} \psi_N(1+g, f, f) = \prod_{M | N} \Phi_M^{(f, g)}.$$
 
-On a alors $\Phi_N^{(f, g)}(f, g) = 0$. Une fois cette équation calculée, on peut tenter  un changement de variables pour la simplifier. On pose ainsi successivement :
+On a alors $\Phi_N^{(f, g)}(f, g) = 0$. Une fois cette équation calculée, on peut tenter un changement de variables pour la simplifier. On pose ainsi successivement :
 $$\begin{matrix} f = st(t-1), & g = s(t-1)\\
  s = q\frac{r+1}{r} - 1, & t = q(r+1) + 1.
  \end{matrix}$$
-On peut aisément inverser ces changements de variables pour vérifier que $q$ et $r$ engendrent toujours le corps des fonctions de $X_1(N)$. L'équation obtenue reste à coefficients entiers, et est de plus petit degré que $\Phi^{(f, g)}$ ; expliquer cette constatation expérimentale reste une question ouverte (voir par exemple \cite{Galbraith} et \cite{Baaziz}). Une autre approche serait d'effectuer des changements de variables \og aléatoires \fg\ jusqu'à en trouver de plus intéressants : c'est par exemple l'approche de \cite{Sutheq}.
+On peut aisément inverser ces changements de variables pour vérifier que $q$ et $r$ engendrent toujours le corps des fonctions de $X_1(N)$. L'équation obtenue reste à coefficients entiers, et est de plus petit degré que $\Phi^{(f, g)}$ après simplification; expliquer cette constatation expérimentale reste une question ouverte. Une autre approche serait d'effectuer des changements de variables \og aléatoires \fg\ jusqu'à en trouver de plus intéressants : c'est par exemple l'approche de \cite{Sutheq}. Bien sûr, tout ceci est une affaire de facteurs constants, et on ne peut pas échapper à la minoration de la gonalité donnée précédemment.
 
-Vu la remarque précédente, il faut s'attendre à trouver des polynômes bivariés de degré $N^2$ en chaque variable, c'est à dire de l'ordre de $N^4$ coefficients. De plus, ces coefficients entiers deviennent plus grands avec $N$, ce qui induit un coût supplémentaire. En conclusion, cette construction d'une équation est un algorithme certes polynomial en $N$, mais qui devient rapidement impraticable quand $N$ augmente, même s'il reste plus intéressant que la recherche au hasard de courbes ayant des points de $N$-torsion. En pratique, on a calculé une équation de $X_1(N)$ pour $N = \dots$, qui est de degré $\dots$ en $q$ et $\dots$ en $r$, la valeur absolue du plus grand coefficient étant $\dots$.
-
-\begin{rem}
-Dans l'optique d'accélérer le calcul d'isogénies, les courbes ayant beaucoup de premiers d'Elkies sont intéressantes au même titre que les courbes ayant des points de torsion rationnels. Nous n'avons pas cherché à savoir quelle était la meilleure méthode de recherche, car les gains de temps découlant de la présence d'un nombre premier d'Elkies supplémentaire, par exemple, sont difficiles à estimer.
-
-En plus de la recherche brute et de l'utilisation de la courbe modulaire $X_1(N)$, il est possible d'utiliser, par exemple, la courbe $X_0(30)$. Expliquer \dots
-\end{rem}
+\v
+Avec ces équations explicites de $X_0(30)$ et $X_1(17)$ et une base de données de polynômes modulaires, tous les ingrédients sont réunis pour pouvoir implémenter le cryptosystème de Couveignes--Rostovtsev--Stolbunov et la recherche de courbe initiale décrite plus haut.
 
 \subsection{Catalogue de courbes}
+
+Donnons maintenant les meilleures courbes obtenues. Le calcul a été effectué par Sage sur les machines de l'équipe Grace.
+
+
 
 Donnons maintenant les résultats obtenus par différentes méthodes. Une fois les candidats désignés, on calcule le cardinal entièrement à l'aide de l'algorithme SEA, implanté par exemple dans PARI \cite{PARI}. Le principe de ce dernier est de calculer la trace du Frobenius modulo $\ell$ en travaillant modulo les polynômes de division de la courbe, pour des nombres premiers dont le produit est supérieur à $4\sqrt{p}$, puis à retrouver la trace entière entre les bornes de Hasse par le théorème chinois. Lorsque $\ell$ est d'Elkies, on peut gagner du temps en calculant le polynôme de noyau d'une isogénie de degré $\ell$ et la valeur propre du Frobenius $v\in \F_\ell$ associée, puis à récupérer la trace $t = v + p/v \mod\ell.$
 
