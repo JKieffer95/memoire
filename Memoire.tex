@@ -72,13 +72,17 @@
 {\Huge Un cryptosystème à base d'isogénies}
 \vspace{1cm}
 
-{\large Mémoire du M2 Mathématiques fondamentales de l'Université Paris VI}
+{\large Mémoire du Master 2 Mathématiques fondamentales de l'Université Paris VI}
 \vspace{1cm}
 
 {\Large Jean Kieffer}
 \v
 
 \today
+
+\vfill
+
+\vfill
 
 \vfill
 
@@ -141,17 +145,29 @@
 
 \end{titlepage}
 
-Le point de départ de ce document est une proposition de Jean-Marc Couveignes \cite{Couv} d'utiliser certains espaces principaux homogènes pour un groupe fini donné comme une source de protocoles cryptographiques : la condition étant que connaissant $g$ et $x$, le calcul de $g\cdot x$ soit facile, mais que connaissant $x$ et $g\cdot x$, retrouver $g$ soit une opération coûteuse. Couveignes remarque que l'on rencontre cette situation dans le cadre du calcul d'isogénies entre courbes elliptiques sur un corps fini, et l'objet de ce mémoire est d'étudier cette proposition de protocole cryptographique.
+Le sujet de ce mémoire rentre dans le cadre de la \emph{cryptographie à base d'isogénies} entre courbes elliptiques. Les courbes elliptiques sont des groupes algébriques, et sont donc utilisables comme brique de base pour de nombreux protocoles. L'utilisation de courbes elliptiques en cryptographie est relativement jeune ; la plupart du temps, on utilise une courbe elliptique en cryptographie parce que le problème du logarithme discret pour les points de cette courbe est réputé difficile (plus difficile que dans le groupe multiplicatif d'un corps fini, par exemple).
 
-Le but de ce mémoire est donc triple : d'une part introduire le cadre de ce problème et les propriétés des courbes elliptiques sur lesquels il se fonde : cela passe par une présentation  Dans un second temps, détailler et prouver les algorithmes qu'il met en jeu, qui apparaissent souvent disséminés dans la littérature. Enfin, du côté des considérations pratiques, en discuter la complexité, son implémentation, déterminer des paramètres visant à satisfaire les standards de sécurité actuels et comment les obtenir.
+Dans ce cadre, faire intervenir des isogénies entre courbes elliptiques est une idée récente, qui date du début des années 2000. À l'origine, ces morphismes entre courbes sont plutôt utilisés de manière destructrice, pour ramener une courbe elliptique donnée vers une courbe elliptique plus faible, c'est à dire plus facile à casser. Encore plus récemment, on a commencé à utiliser des isogénies de manière constructive, en proposant des protocoles cryptographiques les utilisant. La tête de pont de ce mouvement est le protocole SIDH, où interviennent des isogénies de petit degré entre courbes elliptiques sur un corps fini.
 
-Dans le but d'être le plus accessible possible, on revient rapidement dans la première section sur les propriétés basiques des courbes elliptiques. Le cadre complexe est explicite et facile, mais beaucoup de résultats vrais sur $\C$ le sont également sur un corps fini, et un des objectifs de ce mémoire est de donner une intuition de la provenance de ce fait \og bien connu \fg. La construction des courbes modulaires en deuxième partie en est un exemple.
+Le point de départ de ce document est une proposition de Jean-Marc Couveignes en 2006 d'utiliser une certaine action d'un groupe de classes sur un ensemble de courbes elliptiques pour construire un protocole d'échange de clés. En quelque sorte, il s'agit de l'analogue du système SIDH pour des courbes elliptiques ordinaires. Cette idée a été proposée la même année par Rostovtsev et Stolbunov, qui décrivent ce protocole plus en détail et en donnent quelques exemples jouets. L'objectif original de ce document est d'étudier ce protocole cryptographique, et d'être capable de comprendre précisément quels doivent être ses paramètres et quelle est son efficacité réelle.
 
-Dans la troisième partie, l'aspect véritablement pratique entre en jeu. Le protocole cryptographique y est exposé, ainsi que les différentes stratégies de calcul utilisées, plus ou moins intelligentes et optimisées. 
+\v
+Avant de pouvoir décrire ce cryptosystème, il faut comprendre les propriétés de structure des isogénies entre courbes elliptiques sur un corps fini, données par la théorie de la \emph{multiplication complexe}. C'est l'objet de la première partie de ce document, qui introduit les propriétés et les concepts fondamentaux pour la suite. Lorsque l'on parle d'isogénies entre des courbes elliptiques, on est également rapidement amené à parler de \emph{courbes modulaires}, qui sont des espaces naturels paramétrisant les courbes elliptiques munies d'une certaine structure. Leur description fait l'objet de la deuxième partie, d'abord sur les nombres complexes où elles sont étroitement reliées aux formes modulaires, puis de façon plus générale. Pour cela, on prendra le point de vue de la géométrie algébrique moderne, qui décrit ces courbes en tant que schémas.
 
-Je remercie vivement \ldots.
+Après ces préparations, on parle du protocole de Couveignes--Rostovtsev--Stolbunov lui-même et du calcul d'isogénies entre courbes elliptiques \og en pratique\fg. Le but de la troisième partie est d'introduire différents algorithmes utilisés pour ce calcul, et de discuter leur coût; on y apprend également ce que représente ce mystérieux graphe de couverture. Comme tous les protocoles cryptographiques, certains paramètres restent à déterminer, et ceux-ci dépendent
+étroitement de la qualité des attaques disponibles contre le protocole. Cette étude est faite en quatrième partie, où l'on montre également que la sécurité du cryptosystème est étroitement liée à des questions fines de structure de certains groupe de classes. De nombreuses réponses à ces questions d'arithmétique restent aujourd'hui inconnues. On discute également de la recherche d'une bonne courbe initiale, dont dépendent directement les performances du protocole.
 
-\newpage
+Enfin, ce stage a été l'occasion d'\emph{implémenter} ce protocole cryptographique à l'aide de logiciels de calcul formel. Ce travail, assez chronophage lorsque l'on débute en programmation sérieuse, est décrit dans la cinquième et dernière partie du document. On obtient ainsi une mesure précise du coût de différentes étapes critiques des algorithmes évoqués ci-dessus, ce qui permet de se faire une idée de leur coût total, et permet également de désigner les meilleurs paramètres initiaux que l'on a pu trouver. À terme, ce code est destiné à devenir un module open-source pour le logiciel de calcul formel Nemo contenant différentes primitives utiles en cryptographie sur courbes elliptiques.
+
+
+
+\v
+
+Ce mémoire a été réalisé au cours du stage de second semestre du Master 2 de Mathématiques fondamentales, à l'université Paris VI. Ce stage s'est déroulé entre mars et août 2017, au sein de l'équipe GRACE (Geometry, Arithmetic, Codes and Encryption) de l'organisme de recherche publique français en mathématiques et informatique, Inria. Une partie du contenu de ce mémoire a fait l'objet d'un poster présenté à la conférence ISSAC (International Symposium on Symbolic and Algebraic Computation) qui a eu lieu au mois de juillet 2017 à Kaiserslautern. Celui-ci a été récompensé du Best Poster Award à cette occasion.
+
+Un grand merci à Daniel Augot et aux membres de l'équipe Grace pour leur excellent accueil, à Jessica Gameiro pour le soutien logistique, à Benoît Stroh, Andrew Sutherland et Jean-Pierre Flori pour des échanges de mails éclairants. Enfin, bien sûr, merci à Luca De Feo et Benjamin Smith pour leur encadrement bienveillant et leurs réponses à mes (nombreuses) questions.
+
+\vspace{1cm}
 
 \tableofcontents
 
@@ -1048,7 +1064,7 @@ On peut donner à cette décomposition un aspect plus visuel à l'aide du concep
 \end{center}
 
 
-On montre ici un graphe d'isogénies sur $\F_{173}$; les sommets sont des $j$-invariants, les arêtes bleues représentent des isogénies de degré 3, et les arêtes rouges des isogénies de degré 7. La décomposition précédente revient simplement à découper un voyage complet dans ce graphe en plusieurs pas. Le graphe de couverture est un graphe d'isogénies sur $\F_503$, avec le degré 3 en bleu, 11 en rouge et 13 en vert. 
+On montre ici un graphe d'isogénies sur $\F_{173}$; les sommets sont des $j$-invariants, les arêtes bleues représentent des isogénies de degré 3, et les arêtes rouges des isogénies de degré 7. La décomposition précédente revient simplement à découper un voyage complet dans ce graphe en plusieurs pas. Le graphe de couverture est un graphe d'isogénies sur $\F_{503}$, avec le degré 3 en bleu, 11 en rouge et 13 en vert. 
 \v
 
 On peut maintenant proposer plusieurs manières d'effectuer un pas dans ce graphe d'isogénies.
@@ -1215,8 +1231,12 @@ ce qui donne, vu l'équation de $E$ :
 $$ \frac{1}{x} G(1/x) T'^2(1/x) =T(1/x) H(T(1/x))$$
 et on obtient l'équation annoncée après un changement de variable.
 \end{proof}
+\v
 
 Remarquons que dans cette description, lorsque $\ell$ est impair, le polynôme $D$ est précisément le carré du polynôme de noyau $K_\phi$. Précisons maintenant comment se déroule le calcul du noyau.
+
+
+\newpage
 
 \begin{algorithm}
 \caption{{\sc Noyau} : Calcul du noyau de l'isogénie}
@@ -1792,6 +1812,7 @@ Afin de pouvoir mesurer les performances du cryptosystème de Rostovtsev et Stol
 \item[•] Et éventuellement d'autres choses en lien avec la cryptographie sur courbes elliptiques.
 \end{itemize}
 
+\v
 Le code est en libre accès à l'adresse \url{github.com/JKieffer95/EllipticCurves.jl}. Pour l'utiliser, il suffit d'installer Julia 0.6 et Nemo, d'ajouter le dossier EllipticCurves dans le répertoire .../.julia/v0.6 et de demander: 
 \begin{verbatim}
 julia> Pkg.add("EllipticCurves")
@@ -1803,15 +1824,168 @@ Le module est alors directement accessible.
 
 \subsection{Mesure de performances}
 
+On a vu qu'il est important de mesurer précisément les performances du calcul d'isogénies. Cela permet en effet de déterminer les performances globales du cryptosystème de Couveignes--Rostovtsev--Stolbunov pour une courbe initiale donnée. On peut ainsi d'une part choisir la meilleure courbe initiale lors de la recherche des paramètres, et d'autre part comparer les performances de ce protocoles à d'autres échanges de clés existants. Toutes les mesures sont effectuées sur $\F_p$ où $p$ est le nombre premier déterminé précédemment, d'une taille de 512 bits; la machine utilisée dispose d'un processeur de 3.20GHz Intel Xeon.
 
+Rappelons les deux méthodes de calcul à notre disposition pour calculer une isogénie de degré $\ell$ au départ d'une courbe $E$:
+\begin{itemize}
+\item[•] Lorsque la courbe elliptique admet un unique sous-groupe d'ordre $\ell$ dont les points sont définis sur une extension de degré $d$, on peut utiliser une multiplication scalaire sur $E$ pour trouver ce sous-groupe, puis utiliser les formules de Vélu;
+\item[•] Dans le cas général, on utilise une équation modulaire de degré $\ell + 1$ dont on cherche les racines, on calcule le noyau de l'isogénie correspondante puis on regarde la valeur propre du Frobenius sur ce noyau.
+\end{itemize}
+Les étapes coûteuses sont alors respectivement
+\begin{itemize}
+\item[•] Une multiplication par $p^d$ (environ) sur $E(\F_{p^d})$,
+\item[•] Une mise à la puissance $p$ modulo un polynôme de degré $\ell + 1$, puis une mise à la puissance $p$ modulo un polynôme de degré $\frac{\ell - 1}{2}$.
+\end{itemize}
+Ce sont ces deux opérations que l'on choisit de mesurer. Tout d'abord, on présente le coût de la multiplication scalaire dans trois cas: les opérations fournies par Sage (sur les modèles de Weierstrass), ainsi que notre implémentation en Nemo pour les modèles de Weierstrass et de Montgomery. Rappelons que l'on s'attend à trouver un coût quadratique en $d$.
+
+\begin{center}
+\begin{tikzpicture}[x = 1.4cm, y=4cm]
+
+\draw[blue] plot file {benchmark_sage_scalarmult.txt};
+\draw[red] plot file {benchmark_weierstrass_scalarmult.txt};
+\draw[darkgreen] plot file {benchmark_montgomery_scalarmult.txt};
+\draw[color=gray!50, very thin] (1,0) grid[xstep = 1, ystep = 0.25] (10, 2);
+\foreach \k in {1,2,...,10}
+ \draw  (\k, -0.1) node  {\small\k};
+ 
+\foreach \t in {0,0.25,...,2}
+ \draw (0.6, \t) node {\small \t};
+ 
+\draw[->] (1,0) -- (1, 2.2);
+\draw[->] (1,0) -- (10.5, 0);
+\draw (11, 0) node {$d$};
+\draw (1, 2.35) node {$t\ (s)$};
+\end{tikzpicture}
+
+\small Performance pour le calcul de $[p^d] P$, avec $P \in E(\F_{p^d})$ en utilisant  \textcolor{blue}{Sage},
+\textcolor{red}{le modèle de Weierstrass} et
+\textcolor{darkgreen}{le modèle de Montgomery}.
+
+\end{center}
+
+Il en ressort qu'utiliser le modèle de Montgomery apporte un gain non négligeable par rapport au modèle classique de Weierstrass. Pour ce dernier, l'écart peut s'expliquer par le fait que le modèle de Weierstrass en Nemo utilise des opérations moins optimisées que celles de Sage. On voit également qu'il est beaucoup plus intéressant de disposer de points de $\ell$-torsion rationnels que sur une extension non triviale, même de degré 3 par exemple.
+
+\v
+D'autre part, on présente les performances du calcul de $X^p$ modulo $Q$ lorsque le degré de $Q$ varie, en utilisant la méthode évidente en Sage et en Nemo; pour comparaison, on montre également les performances de PARI pour calculer les racines d'un polynôme du même degré dans $\F_p$, qui réalise essentiellement le même calcul.
+
+\begin{center}
+\begin{tikzpicture}[x = 0.025cm, y=1.8cm]
+\draw[blue] plot file {benchmark_sage_frob.txt};
+\draw[darkgreen] plot file {benchmark_pari_frob.txt};
+\draw[red] plot file {benchmark_nemo_frob.txt};
+\draw[color=gray!50, very thin] (0,0) grid[xstep = 100, ystep = 0.5] (500, 5);
+\foreach \k in {0,100,...,500}
+ \draw  (\k, -0.2) node  {\small\k};
+ 
+\foreach \t in {0,0.5,...,5}
+ \draw (-20, \t) node {\small \t};
+ 
+\draw[->] (0,0) -- (0, 5.3);
+\draw[->] (0,0) -- (520, 0);
+\draw (550, 0) node {$\ell$};
+\draw (0, 5.5) node {$t\ (s)$};
+\end{tikzpicture}
+
+\small{Performance pour le calcul de $X^p \mod{Q(X)}$, où $\deg(Q) = \ell$ dans $\F_p$, avec 
+\textcolor{blue}{Sage},
+\textcolor{red}{Nemo} et 
+\textcolor{darkgreen}{PARI}.}
+
+\end{center}
+
+On voit sur ce graphique qu'il est difficile d'atteindre les performances d'une bibliothèque C spécialisée.
+
+\v
+Afin de quantifier les performances du cryptosystème, on choisit la meilleure performance pour chacune de ces deux opérations, c'est à dire le modèle de Montgomery pour la multiplication scalaire et le logiciel PARI pour la recherche de racines. Nous pouvons maintenant donner une mesure de temps précise pour chacune des courbes initiales; c'est cette mesure que l'on utilise pour décider de la meilleure courbe initiale.
 
 \subsection{Catalogue de courbes}
 
-Donnons maintenant les meilleures courbes obtenues. Le calcul a été effectué par Sage sur les machines de l'équipe Grace.
+On peut maintenant donner les meilleures courbes obtenues par la méthode de recherche décrite précédemment. Après un premier tri, les meilleures candidates sont comparées grâce aux temps donnés ci-dessus.
+
+Le calcul a été effectué par Sage sur les machines de l'équipe Grace d'Inria, à Saclay. Le temps de calcul total a été d'environ 17000 heures CPU (environ 2 ans, répartis sur différents c\oe urs de différents machines de l'équipe). Rappelons que
+$$ \begin{aligned}
+p = \ &120373407382088450343833839782228011370920294512701979230713977354082515866699 \\
+&38291587857560356890516069961904754171956588530344066457839297755929645858769.
+\end{aligned}$$
+
+Voici donc les cinq meilleurs résultats, où l'on donne les paramètres $a, b$ de $\F_p$ définissant la courbe initiale 
+$E\de y^2 = x^3 + ax + b$.
+
+\begin{enumerate}
+
+\item La courbe lauréate, donnée par les paramètres
+$$\begin{aligned}
+a =\ & 111164648488639530154045798728826155824357214700727018080372266722366593581458 \\
+&61235530764279830938006566253824939581765595814774014481950202045501019370057,\\
+b =\ & 79299948324245435156826219405909019495910509940412398234989651750360146055419 \\
+&69152503725727477980546149790133670177545414851226849642510122057033563808087
+\end{aligned}$$
+donne un temps de parcours total de 241 secondes. Elle possède un point de $\ell$-torsion rationnel pour tout $\ell\in\{3, 5, 7, 11, 13, 17, 103, 523, 821, 947, 1723\}$. Son nombre de points sur $\F_p$ est
+$$\begin{aligned}
+&120373407382088450343833839782228011370920294512701979230713977354082515866700 \\
+&85481138030088461790938201874171652771344144043268298219947026188471598838060.
+\end{aligned}$$
+
+\item La courbe donnée par les paramètres
+$$\begin{aligned}
+a =\ & 43840601250479313001373029130703162545657631628386541829543985783667722196819 \\
+& 83224703081195403305048751140227654592240178420097979549618534551394652828125,\\
+b =\ & 15496029659544806200673781148304612576874915050506487020954702483761967446835\\
+& 37981569065162806573553904845624037365860256326225753166777384039680905324745
+\end{aligned}$$
+donne un temps de parcours total de 255 secondes. Elle possède un point de $\ell$-torsion rationnel pour tout $\ell\in\{3, 5, 7, 11, 13, 617, 823, 911, 2741\}$. Son nombre de points sur $\F_p$ est
+$$\begin{aligned}
+&120373407382088450343833839782228011370920294512701979230713977354082515866701 \\
+&38195889195780276859464571113614769417611266612000180056269739527141220119860.
+\end{aligned}$$
+
+\item La courbe donnée par les paramètres
+$$\begin{aligned}
+a =\ & 29517794513388167079924232272984809284734463332655422100821259368004502646122 \\
+&952457634401960 11377947505687906946702377331005567046387329096732076013487786,\\
+b =\ & 20053142766210512206895831956067687278077475355845207144609905468409809112720 \\ &96530930100587341304378274081554750091335545148023305498915445491413837103327
+\end{aligned}$$
+donne un temps de parcours total de 268 secondes. Elle possède un point de $\ell$-torsion rationnel pour tout $\ell\in\{3, 5, 7, 11, 13, 19, 41, 53, 137, 463, 479, 1487\}$. Son nombre de points sur $\F_p$ est
+$$\begin{aligned}
+&120373407382088450343833839782228011370920294512701979230713977354082515866700 \\ 
+&73203413637440471898330295081671080323874929304183417201801524565834682159200.
+\end{aligned}$$
+
+\item La courbe donnée par les paramètres
+$$\begin{aligned}
+a =\ & 90951896883679247161305392056057501142984677621212827642316340355546948094470 \\
+&24864291306024183700000129771938088507462877895751345076127980672694337232911,\\
+b =\ & 53702533899051600924758507744833413409468531550522028426034775831774723715610 \\
+&33304215623428708757733212555261802174294804948862439221808386692046723052122
+\end{aligned}$$
+donne un temps de parcours total de 273 secondes. Elle possède un point de $\ell$-torsion rationnel pour tout $\ell\in\{3, 5, 7, 11, 13, 37, 43, 127, 347, 457, 1289, 1621\}$. Son nombre de points sur $\F_p$ est
+$$\begin{aligned} 
+&120373407382088450343833839782228011370920294512701979230713977354082515866699 \\
+&55535934625878401362947903345661723969818065903127482030480913154573514334480.
+\end{aligned}$$
+
+\item Enfin, la courbe donnée par les paramètres
+$$\begin{aligned}
+a =\ & 87315792648930225008943587622481440451025081358306503063587707716608806180531 \\
+& 79022484817139989036152987296557434567077843065574780789697405848884702097913,\\
+b =\ & 63166216325315547106996156590059751380252981936070172805289816785905599938288 \\
+& 29632834951338126458626870397768930797859281240868070581323508301210433040195\\
+\end{aligned}$$
+donne un temps de parcours total de 284 secondes. Elle possède un point de $\ell$-torsion rationnel pour tout $\ell\in\{3, 5, 7, 11, 13, 19, 23, 233, 359, 491, 631, 1481, 2579\}$. Son nombre de points sur $\F_p$ est
+$$\begin{aligned}
+&120373407382088450343833839782228011370920294512701979230713977354082515866700 \\
+&82724204500287887625876543581163624210402478479308430356550349544933039974580.
+\end{aligned}$$
 
 
+\end{enumerate}
 
-\subsection{Conclusion}
+
+\v
+Les temps annoncés sont des projections établies à partir des valeurs représentées sur les graphiques précédents; le cryptosystème \og entier\fg\ n'a pas été testé pour ces courbes initiales. Ce temps est celui d'un parcours dans le graphe d'isogénies, c'est à dire un calcul d'action pour un unique élément du groupe de classes sur une unique courbe. Ce calcul doit donc être réalisé deux fois si l'on souhaite effectuer un échange de clé. La meilleure courbe a été obtenue à partir d'un point de $X_1(17)$, les autres à partir d'un point de $X_0(30)$.
+
+\v
+Même avec une courbe initiale ayant de bonnes propriétés, effectuer un échange de clé en utilisant ce protocole nécessite donc une dizaine de minutes environ, ce qui est bien entendu inacceptable: le cryptosystème de Couveignes--Rostovtsev--Stolbunov a donc peu d'intérêt en pratique, comme on pouvait le prévoir au vu de la quantité de calculs nécessaires! Quoi qu'il en soit, on est maintenant capable de dire \emph{à quel point} ce système est inefficace.
 
 \newpage
 
