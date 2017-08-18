@@ -141,8 +141,6 @@
 
 \end{titlepage}
 
-\section{Introduction}
-
 Le point de départ de ce document est une proposition de Jean-Marc Couveignes \cite{Couv} d'utiliser certains espaces principaux homogènes pour un groupe fini donné comme une source de protocoles cryptographiques : la condition étant que connaissant $g$ et $x$, le calcul de $g\cdot x$ soit facile, mais que connaissant $x$ et $g\cdot x$, retrouver $g$ soit une opération coûteuse. Couveignes remarque que l'on rencontre cette situation dans le cadre du calcul d'isogénies entre courbes elliptiques sur un corps fini, et l'objet de ce mémoire est d'étudier cette proposition de protocole cryptographique.
 
 Le but de ce mémoire est donc triple : d'une part introduire le cadre de ce problème et les propriétés des courbes elliptiques sur lesquels il se fonde : cela passe par une présentation  Dans un second temps, détailler et prouver les algorithmes qu'il met en jeu, qui apparaissent souvent disséminés dans la littérature. Enfin, du côté des considérations pratiques, en discuter la complexité, son implémentation, déterminer des paramètres visant à satisfaire les standards de sécurité actuels et comment les obtenir.
@@ -1400,7 +1398,7 @@ Il est également intéressant de disposer d'une courbe ayant beaucoup de nombre
 %Une fois que l'on a trouvé une courbe qui semble intéressante, on calcule son cardinal entièrement à l'aide de l'algorithme de Schoof--Atkin--Elkies \cite{Schoof}. L'idée de cet algorithme polynomial est de calculer la trace du Frobenius modulo plusieurs petits nombres premiers grâce à un calcul comme ci-dessus, puis de récupérer la trace entière grâce au théorème chinois, connaissant les bornes de Hasse. Enfin, on regarde quels nombres premiers sont adaptés parmi les plus grandes valeurs en regardant la factorisation de $X^2 - tX + q$.
 
 \newpage
-\section{Attaques, paramètres et performances}
+\section{Attaques et recherche de paramètres}
 
 Plusieurs paramètres restent à fixer dans le cryptosystème décrit à la section précédente. D'une part, la taille de $k$, qui conditionne la taille du graphe d'isogénies et donc celle du groupe de classes. D'autre part, il reste également à définir quels idéaux utiliser pour se déplacer dans le graphe d'isogénies. Plus précisément, il faut fixer un ensemble $L$ de petits premiers d'Elkies, et une borne $M_\ell$ pour tout $\ell\in L$, pour utiliser la méthode de génération aléatoire suivante dans le groupe de classes:
 \begin{itemize}
@@ -1747,68 +1745,10 @@ On peut aisément inverser ces changements de variables pour vérifier que $q$ e
 \v
 Avec ces équations explicites de $X_0(30)$ et $X_1(17)$ et une base de données de polynômes modulaires, tous les ingrédients sont réunis pour pouvoir implémenter le cryptosystème de Couveignes--Rostovtsev--Stolbunov et la recherche de courbe initiale décrite plus haut.
 
-\subsection{Catalogue de courbes}
-
-Donnons maintenant les meilleures courbes obtenues. Le calcul a été effectué par Sage sur les machines de l'équipe Grace.
-
-
-
-Donnons maintenant les résultats obtenus par différentes méthodes. Une fois les candidats désignés, on calcule le cardinal entièrement à l'aide de l'algorithme SEA, implanté par exemple dans PARI \cite{PARI}. Le principe de ce dernier est de calculer la trace du Frobenius modulo $\ell$ en travaillant modulo les polynômes de division de la courbe, pour des nombres premiers dont le produit est supérieur à $4\sqrt{p}$, puis à retrouver la trace entière entre les bornes de Hasse par le théorème chinois. Lorsque $\ell$ est d'Elkies, on peut gagner du temps en calculant le polynôme de noyau d'une isogénie de degré $\ell$ et la valeur propre du Frobenius $v\in \F_\ell$ associée, puis à récupérer la trace $t = v + p/v \mod\ell.$
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-$$p = 2^{502} + 49$$
-
-On donne une liste de courbes sous forme de Montgomery :
-
-$$E\ :\ y^2 = x^3 + A x^2 + x$$
-
-qui ont des bonnes propriétés.
-
-\begin{enumerate}
-\item Une courbe pour laquelle on a dix premiers $\leq 120$ pour lesquels on peut utiliser la torsion rationnelle :
-$$\begin{aligned}
-a_1 =\ & 729315552663468518500402605869119052890462281082522742 \\
-& 859468783872284240397481195217026275077304977485894385 \\
-& 4970570777116006830331605352557759228257209
-\end{aligned}$$
-\item Une courbe qui a 14 nombres premiers avec des degrés d'extension modérés :
-$$\begin{aligned}
-a_2 =\ & 133341838804869238383216931284940524254637049733151939 \\
-& 187754962716865583333147735978587954228126379795456832 \\
-& 5268646879531429895399551361424391894986266
-\end{aligned}$$
-\item Une courbe qui a 12 premiers pour lesquels on peut utiliser la torsion rationnelle : (non)
-$$\begin{aligned}
-a_3 =\ & 564832868630758045506735044707612343080602902691601047 \\
-& 590112526158976116993799041098269970288625684141753788 \\
-& 4242244982087915458779319438801478285816733
-\end{aligned}$$
-\item Une courbe avec 16 premiers avec des extensions de degrés modérés, dont 10 rationnels :
-$$\begin{aligned}
-a_4 =\ & 121130277156411694343217230283055288213350601021857395 \\
-& 825089516084303047229525156440432661253747992379693413 \\
-& 57415871805293887568309777771549544670721692
-\end{aligned}$$
-\item Une courbe avec 18 premiers avec des degrés modérés, dont 10 rationnels :
-$$\begin{aligned}
-a_5 =\ & 8377883523781066605019538779691857966316879702452531886 \\
-& 815339413567302883201831127809595853562762084636532865 \\
-& 243960105048527932637249276459758642731879
-\end{aligned}$$
-\item Une courbe avec 18 premiers de cette sorte mais des degrés d'extension plus grands :
-$$a_6 = 1202$$
-
-\end{enumerate}
-
-
-\subsection{L'attaque quantique de Jao et Soukharev}
-
-
 
 \newpage
 
-\section{Implémentation}
+\section{Implémentation et performances}
 
 \subsection{Systèmes utilisés}
 
@@ -1841,6 +1781,7 @@ Afin de pouvoir mesurer les performances du cryptosystème de Rostovtsev et Stol
 \item[•] Tirer aléatoirement un point sur une courbe elliptique sur un corps fini.
 \end{itemize}
 
+\v
 À ce point du développement, on dispose des modèles de Weierstrass et de Montgomery, et le calcul d'isogénies fonctionne lorsque le degré de l'isogénie est impair. Afin que ce module puisse être utilisé par ailleurs, nous avons le projet d'y ajouter les choses suivantes:
 
 \begin{itemize}
@@ -1851,39 +1792,28 @@ Afin de pouvoir mesurer les performances du cryptosystème de Rostovtsev et Stol
 \item[•] Et éventuellement d'autres choses en lien avec la cryptographie sur courbes elliptiques.
 \end{itemize}
 
+Le code est en libre accès à l'adresse \url{github.com/JKieffer95/EllipticCurves.jl}. Pour l'utiliser, il suffit d'installer Julia 0.6 et Nemo, d'ajouter le dossier EllipticCurves dans le répertoire .../.julia/v0.6 et de demander: 
+\begin{verbatim}
+julia> Pkg.add("EllipticCurves")
+
+julia> using EllipticCurves
+\end{verbatim}
+Le module est alors directement accessible.
+
 
 \subsection{Mesure de performances}
+
+
+
+\subsection{Catalogue de courbes}
+
+Donnons maintenant les meilleures courbes obtenues. Le calcul a été effectué par Sage sur les machines de l'équipe Grace.
+
+
 
 \subsection{Conclusion}
 
 \newpage
-
-\section{À nettoyer}
-
-
-\subsection{Choix des paramètres}
-
-On donne les meilleurs résultats obtenus par ces programmes. Ces valeurs sont obtenues avec le nombre premier $ p = 2^{500} + 55$ et la courbe $E/\F_p$ donnée par
-$$E\ :\ y^2 = x^3 + 5x^2 + x.$$
-
-$$\begin{matrix}
-\ell & 11 & 13 & 17 & 23 & 37 & 43 & 47 & 53 & 59 \\
-\text{Temps\ Elkies\ (ms)} & 120 & 130 & 210 & 300 & 640 & 740 & 820 & 1000 & 1200 
-\end{matrix}$$
-
-$$\begin{matrix}
-\ell & 67 & 71 & 79 & 83 & 89 & 97 &\qquad & &\\
-\text{Temps\ Elkies\ (ms)} & 1500 & 1550 & 1750 & 1900 & 2100 & 2250 & & &
-\end{matrix}$$
-
-$$\begin{matrix}
-d & 1 & 3 & 4 & 5 & 7 & 9 & 13 & 16 & 19\\
-\text{Temps\ torsion\ (ms)} & 7 & 60 & 96 & 170 & 510 & 740 & 1620 & 2040 & 3600
-\end{matrix}$$
-plus le coût linéaire à ajouter en $d\ell$.
-\newpage
-
-%\nocite{*}
 
 \bibliographystyle{plain}
 
