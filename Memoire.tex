@@ -1802,6 +1802,59 @@ $$a_6 = 1202$$
 \end{enumerate}
 
 
+\subsection{L'attaque quantique de Jao et Soukharev}
+
+
+
+\newpage
+
+\section{Implémentation}
+
+\subsection{Systèmes utilisés}
+
+Nous avons principalement utilisé deux systèmes de calcul formel lors de la mesure des performances de ce protocole cryptographique: Sage \cite{Sage} et Nemo \cite{Nemo}.
+
+Sage (ou SageMath) est un logiciel de calcul formel libre et open-source sous licence GPL. Codé principalement dans le langage Python, sa particularité est de faire appel à de nombreuses bibliothèques C spécialisées dans divers domaines, comme GMP \cite{GMP} pour les opérations arithmétiques de base, Singular pour les polynômes à plusieurs variables, ou des systèmes plus vastes comme FLINT \cite{FLINT}, PARI \cite{PARI} ou NTL \cite{NTL}. Sage est extrêment vaste et couvre de nombreux domaines des mathématiques pures et appliquées, et se veut une alternative à des systèmes de calcul formel payants comme Maple, Mathematica, Magma ou Matlab. Du fait de sa richesse, Sage n'est malheureusement pas toujours bien contrôlé: son installation est parfois difficile (sous Windows notamment), et il souffre de nombreuses fuites de mémoire. D'autre part, le langage Python, bien que très facile d'accès, ne présente pas des performances optimales: cela pose problème lorsqu'une partie coûteuse du calcul n'est pas liée directement vers une bibliothèque C spécialisée.
+
+Nemo est un système de calcul formel pour le langage de programmation Julia, libre et open-souce sous licence BSD. Julia est un langage de programmation jeune qui, contrairement à Python, dispose d'une compilation JIT (pour \og just in time\fg): cela implique qu'il est très facile d'écrire du code qui s'approche des performances de C. Dans le même temps, Julia est un langage de très haut niveau qui présente une syntaxe très naturelle similaire à celle de Python. Un dernier avantage est la présence d'un typage paramétrique, ce qui permet d'écrire un code très générique en gardant de bonnes performances. Par exemple, si ce code générique est finalement appelé sur des entiers 32 bits, le compilateur sera capable de le reconnaître et d'optimiser la gestion de la mémoire pour ce type de données précis.
+
+Comme Sage, Nemo fait appel à des bibliothèques C spécialisées, principalement FLINT. Le système Nemo est très jeune, et est beaucoup plus restreint que Sage; certaines opérations \og basiques\fg\ ne sont pas toujours disponibles. C'est parfois un désavantage, mais cette simplicité permet de mieux contrôler le code que l'on écrit et de comprendre facilement ses performances.
+
+\v
+Sage contenait déjà des outils pour manipuler les courbes elliptiques, ce qui en faisait le système le plus accessible pour écrire les premiers tests. Il dispose également d'une base de données de polynômes modulaires facile d'accès, et d'une interface avec le logiciel de calcul formel PARI pour les calculs coûteux comme la recherche de racines d'un polynôme à coefficients dans $\F_p$. En revanche, il représente les courbes elliptiques sous forme de Weierstrass uniquement, alors qu'utiliser le modèle de Montgomery améliore significativement les performances de la multiplication scalaire. De plus, les opérations sur une courbe elliptique ne font pas appel à une bibliothèque C spécialisée, ce qui impacte les performances. 
+
+Nous avons donc fait le choix de développer un module au-dessus de Nemo, afin de disposer de ces nouvelles fonctionnalités dans un langage, Julia, qui fournit des performances comparables à un code C natif tout en restant un langage de très haut niveau. Ce module a été utilisé pour la mesure de performances; à terme, il devrait devenir un module open-source contenant les grandes primitives nécessaires à la cryptographie sur courbes elliptiques, et pourra être utilisé dans un but pédagogique.
+
+
+\subsection{Contenu}
+
+Afin de pouvoir mesurer les performances du cryptosystème de Rostovtsev et Stolbunov, le module de courbes elliptiques pour Nemo dipose des fonctionnalités suivantes:
+\begin{itemize}
+\item[•] Définir des courbes elliptiques dans divers modèles, sur des corps ou des anneaux
+\item[•] Définir des points sur ces courbes, les ajouter, les multiplier par un entier
+\item[•] Calculer le $j$-invariant, et des isomorphismes entre différents modèles
+\item[•] Définir des isogénies entre courbes et appliquer les formule de Vélu
+\item[•] Avoir accès à une base de données de polynômes modulaires (cela fait appel à un autre module)
+\item[•] Calculer le noyau d'une isogénie par l'algorithme de Bostan--Morain--Salvy--Schost
+\item[•] Calculer la valeur propre du Frobenius sur un sous-groupe
+\item[•] Étendre le corps de base d'une courbe elliptique
+\item[•] Tirer aléatoirement un point sur une courbe elliptique sur un corps fini.
+\end{itemize}
+
+À ce point du développement, on dispose des modèles de Weierstrass et de Montgomery, et le calcul d'isogénies fonctionne lorsque le degré de l'isogénie est impair. Afin que ce module puisse être utilisé par ailleurs, nous avons le projet d'y ajouter les choses suivantes:
+
+\begin{itemize}
+\item[•] D'autres modèles de courbes elliptiques, par exemple le modèle d'Edwards
+\item[•] Le calcul de couplages entre deux points
+\item[•] Le calcul de la cardinalité d'une courbe elliptique, avec un appel au logiciel PARI
+\item[•] Un algorithme de calcul d'isogénie en petite caractéristique
+\item[•] Et éventuellement d'autres choses en lien avec la cryptographie sur courbes elliptiques.
+\end{itemize}
+
+
+\subsection{Mesure de performances}
+
+\subsection{Conclusion}
 
 \newpage
 
@@ -1828,16 +1881,6 @@ d & 1 & 3 & 4 & 5 & 7 & 9 & 13 & 16 & 19\\
 \text{Temps\ torsion\ (ms)} & 7 & 60 & 96 & 170 & 510 & 740 & 1620 & 2040 & 3600
 \end{matrix}$$
 plus le coût linéaire à ajouter en $d\ell$.
-\newpage
-
-\subsection{L'attaque quantique de Jao et Soukharev}
-
-\section{Appendice}
-
-\subsection{Implémentation}
-
-
-
 \newpage
 
 %\nocite{*}
