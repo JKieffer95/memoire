@@ -147,17 +147,17 @@
 
 Le sujet de ce mémoire rentre dans le cadre de la \emph{cryptographie à base d'isogénies} entre courbes elliptiques. Les courbes elliptiques sont des groupes algébriques, et sont donc utilisables comme brique de base pour de nombreux protocoles. L'utilisation de courbes elliptiques en cryptographie est relativement jeune ; la plupart du temps, on utilise une courbe elliptique en cryptographie parce que le problème du logarithme discret pour les points de cette courbe est réputé difficile (plus difficile que dans le groupe multiplicatif d'un corps fini, par exemple).
 
-Dans ce cadre, faire intervenir des isogénies entre courbes elliptiques est une idée récente, qui date du début des années 2000. À l'origine, ces morphismes entre courbes sont plutôt utilisés de manière destructrice, pour ramener une courbe elliptique donnée vers une courbe elliptique plus faible, c'est à dire plus facile à casser. Encore plus récemment, on a commencé à utiliser des isogénies de manière constructive, en proposant des protocoles cryptographiques les utilisant. La tête de pont de ce mouvement est le protocole SIDH, où interviennent des isogénies de petit degré entre courbes elliptiques sur un corps fini.
+Dans ce cadre, faire intervenir des isogénies entre courbes elliptiques est une idée récente, qui date du début des années 2000. À l'origine, ces morphismes entre courbes sont plutôt utilisés de manière destructrice, pour ramener une courbe elliptique donnée vers une courbe elliptique plus faible, c'est à dire plus facile à casser. Encore plus récemment, on a commencé à utiliser des isogénies de manière constructive, en proposant des protocoles cryptographiques les utilisant. La tête de pont de ce mouvement est le protocole SIDH~\cite{...}, où interviennent des isogénies de petit degré entre courbes elliptiques sur un corps fini.
 
-Le point de départ de ce document est une proposition de Jean-Marc Couveignes en 2006 d'utiliser une certaine action d'un groupe de classes sur un ensemble de courbes elliptiques pour construire un protocole d'échange de clés. En quelque sorte, il s'agit de l'analogue du système SIDH pour des courbes elliptiques ordinaires. Cette idée a été proposée la même année par Rostovtsev et Stolbunov, qui décrivent ce protocole plus en détail et en donnent quelques exemples jouets. L'objectif original de ce document est d'étudier ce protocole cryptographique, et d'être capable de comprendre précisément quels doivent être ses paramètres et quelle est son efficacité réelle.
+Le point de départ de ce document est une proposition de Jean-Marc Couveignes en 2006~\cite{...} d'utiliser une certaine action d'un groupe de classes sur un ensemble de courbes elliptiques pour construire un protocole d'échange de clés. En quelque sorte, il s'agit de l'analogue du système SIDH pour des courbes elliptiques ordinaires. Cette idée a été reprise la même année par Rostovtsev et Stolbunov~\cite{...}, qui décrivent ce protocole plus en détail et en donnent quelques exemples jouets. L'objectif original de ce document est d'étudier ce protocole cryptographique, et d'être capable de comprendre précisément quels doivent être ses paramètres et quelle est son efficacité réelle.
 
 \v
 Avant de pouvoir décrire ce cryptosystème, il faut comprendre les propriétés de structure des isogénies entre courbes elliptiques sur un corps fini, données par la théorie de la \emph{multiplication complexe}. C'est l'objet de la première partie de ce document, qui introduit les propriétés et les concepts fondamentaux pour la suite. Lorsque l'on parle d'isogénies entre des courbes elliptiques, on est également rapidement amené à parler de \emph{courbes modulaires}, qui sont des espaces naturels paramétrisant les courbes elliptiques munies d'une certaine structure. Leur description fait l'objet de la deuxième partie, d'abord sur les nombres complexes où elles sont étroitement reliées aux formes modulaires, puis de façon plus générale. Pour cela, on prendra le point de vue de la géométrie algébrique moderne, qui décrit ces courbes en tant que schémas.
 
 Après ces préparations, on parle du protocole de Couveignes--Rostovtsev--Stolbunov lui-même et du calcul d'isogénies entre courbes elliptiques \og en pratique\fg. Le but de la troisième partie est d'introduire différents algorithmes utilisés pour ce calcul, et de discuter leur coût; on y apprend également ce que représente ce mystérieux graphe de couverture. Comme tous les protocoles cryptographiques, certains paramètres restent à déterminer, et ceux-ci dépendent
-étroitement de la qualité des attaques disponibles contre le protocole. Cette étude est faite en quatrième partie, où l'on montre également que la sécurité du cryptosystème est étroitement liée à des questions fines de structure de certains groupe de classes. De nombreuses réponses à ces questions d'arithmétique restent aujourd'hui inconnues. On discute également de la recherche d'une bonne courbe initiale, dont dépendent directement les performances du protocole.
+étroitement de la qualité des attaques disponibles contre le protocole. Cette étude est faite en quatrième partie, où l'on montre également que la sécurité du cryptosystème est étroitement liée à des questions fines de structure de certains groupes de classes. De nombreuses réponses à ces questions d'arithmétique restent aujourd'hui inconnues. On discute également de la recherche d'une bonne courbe initiale, dont dépendent directement les performances du protocole.
 
-Enfin, ce stage a été l'occasion d'\emph{implémenter} ce protocole cryptographique à l'aide de logiciels de calcul formel. Ce travail, assez chronophage lorsque l'on débute en programmation sérieuse, est décrit dans la cinquième et dernière partie du document. On obtient ainsi une mesure précise du coût de différentes étapes critiques des algorithmes évoqués ci-dessus, ce qui permet de se faire une idée de leur coût total, et permet également de désigner les meilleurs paramètres initiaux que l'on a pu trouver. À terme, ce code est destiné à devenir un module open-source pour le logiciel de calcul formel Nemo contenant différentes primitives utiles en cryptographie sur courbes elliptiques.
+Enfin, ce stage a été l'occasion d'\emph{implémenter} ce protocole cryptographique à l'aide de logiciels de calcul formel. Ce travail, assez chronophage lorsque l'on débute en programmation sérieuse, est décrit dans la cinquième et dernière partie du document. On obtient ainsi une mesure précise du coût de différentes étapes critiques des algorithmes évoqués ci-dessus, ce qui permet de se faire une idée de leur coût total, et permet également de désigner les meilleurs paramètres initiaux que l'on a pu trouver. À terme, ce code est destiné à devenir un module open-source pour le logiciel de calcul formel Nemo~\cite{...} contenant différentes primitives utiles en cryptographie sur courbes elliptiques.
 
 
 
@@ -222,7 +222,9 @@ Un \emph{ordre} est un sous-anneau qui est de type fini sur $\Z$ et engendre tou
 
 \textbf{Courbes elliptiques sur un corps fini.} Reprenons les trois cas ci-dessus. Si $k = \F_p$, où $p$ est un nombre premier, on dit que $E$ est \emph{ordinaire} dans le second cas et que $E$ est \emph{supersingulière} dans le troisième, le premier cas étant exclu par la présence du morphisme de Frobenius
 $$\pi_E\de (x,y)\mapsto (x^p, y^p)$$
-qui est de degré $p$, donc n'est pas un élément de $\Z$. On vient d'écrire le Frobenius pour une équation plane de $E$, mais il existe une définition plus intrinsèque, l'idée générale restant de tout mettre à la puissance $p$.
+qui est de degré $p$,
+% Le sujet de la proposition coordonnée ci-dessous est ambigu
+donc n'est pas un élément de $\Z$. On vient d'écrire le Frobenius pour une équation plane de $E$, mais il existe une définition plus intrinsèque, l'idée générale restant de tout mettre à la puissance $p$.
 
 La théorie de Hasse nous dit que $\pi_E$ vérifie une équation de la forme
 $$\pi_E^2 - t \pi_E + p = 0.$$
@@ -235,7 +237,9 @@ qui jouent un rôle important en pratique dans le calcul de $\# E(\F_p)$. On peu
 
 \v
 
-\textbf{Courbes elliptiques en caractéristique zéro}. Tout d'abord, le principe de plongement de Lefschetz permet de ramener les corps de caractéristique zéro au cas complexe. Si $E/\C$ est une courbe elliptique, c'est en particulier une surface de Riemann. On peut montrer qu'il existe $\tau\in \H$, le demi-plan de Poincaré, tel que l'on ait un isomorphisme
+\textbf{Courbes elliptiques en caractéristique zéro}. Tout d'abord, le principe de plongement de Lefschetz permet de ramener les corps de caractéristique zéro au cas complexe. Si $E/\C$ est une courbe elliptique, c'est en particulier une surface de Riemann. On peut montrer qu'il existe $\tau\in \H$,
+% On se demande si c'est τ ou H, le demi-plan de Poincaré. Remplacer ∈ par "dans" est plus clair.
+le demi-plan de Poincaré, tel que l'on ait un isomorphisme
 $$\C/\Lambda_\tau \overset{\sim}{\vers} E.$$
 On a noté ici $\Lambda_\tau = \Z\oplus \Z\tau$, et cet isomorphisme est donné par la fonction $\wp$ de Weierstrass et sa dérivée. Le nombre $\tau$ est unique modulo l'action de $\Gamma(1) = \mathrm{SL}_2(\Z)$ sur $\H$ par homographies. Dans cette description, une fonction sur $E$ à valeurs complexes est simplement une fonction méromorphe sur le plan complexe admettant deux périodes, données par les deux vecteurs d'une base de $\Lambda_\tau$. D'un point de vue historique, l'étude de ces \emph{fonctions elliptiques} (dont un membre éminent est la longueur d'arc d'une ellipse) est le point de départ de celle des courbes elliptiques elles-mêmes. C'est là l'origine d'un nom peut-être malheureux, car une courbe elliptique et une ellipse n'ont pas grand-chose en commun.
 
@@ -279,7 +283,7 @@ De plus, cette dernière action est simplement transitive. Les preuves données 
 
 \subsection{Théorèmes de relèvement}
 
-Une première idée pour atteindre les corps finis est de quotienter un anneau dans un corps de nombres par un idéal. Partant d'une courbe elliptique définie sur $\F_p$, on se demande par exemple si l'on peut considérer un relèvement à $\Z$, sur lesquels les résultats sont connus vu que $\Z\subset\C$, et redescendre tout cela ensuite. 
+Une première idée pour atteindre les corps finis est de quotienter un anneau dans un corps de nombres par un idéal. Partant d'une courbe elliptique définie sur $\F_p$, on se demande par exemple si l'on peut considérer un relèvement à $\Z$, sur lequel les résultats sont connus vu que $\Z\subset\C$, et redescendre tout cela ensuite. 
 
 Le problème inverse est de partir d'une courbe elliptique définie sur $\Q$ et étudier ses réductions modulo $p$. Si l'on se donne par exemple une courbe elliptique $E$ définie sur $\Q$, alors $E$ admet un modèle à coefficients dans $\Z$. Pour réduire $E$ en caractéristique $p$, on cherche d'abord à éliminer toutes les puissances possibles de $p$ pour trouver un \emph{modèle minimal} en $p$. Deux cas se présentent alors : soit la courbe réduite modulo $p$ est lisse (c'est alors une courbe elliptique et on dit que $E$ a \emph{bonne réduction} en $p$), soit elle ne l'est pas (elle dégénère en un n\oe ud ou une pointe et on dit que $E$ a \emph{mauvaise réduction}). Étudier la réduction de courbes définies sur $\Q$, ou plus généralement sur un corps de nombres est une question d'arithmétique vaste.
 
@@ -287,6 +291,7 @@ Le problème inverse est de partir d'une courbe elliptique définie sur $\Q$ et 
 
 Cette question de relèvement est ancienne, et on dispose des théorèmes suivants, dus à Deuring et dont une preuve figure dans \cite{Lang}. On se donne un corps fini $k$ de caractéristique $p$, et on note $x\mapsto\bar{x}$ les réductions modulo $p$. On fixe également un ordre quadratique $\O$, que l'on voit dans $\C$. Si $\O$ est l'anneau d'endomorphismes d'une certaine courbe définie sur $k$, alors on a une égalité d'idéaux
 $$(p) = \frak{p}_1 \frak{p}_2$$
+% En quoi c'est évident que (p) se scinde?
 dans $\O$. Si $E$ a multiplication complexe par $\O$, il existe exactement deux isomorphismes entre $\End(E)$ et $\O$, l'un envoyant le Frobenius de $E$ dans $\frak p_1$, l'autre dans $\frak p_2$. On convient que l'on considère le Frobenius comme un élément de $\frak p_1$: c'est d'une certaine façon l'analogue de l'isomorphisme canonique de la section précédente. Le point important est que cette convention est compatible avec celle de la section précédente, dans le sens où le diagramme
 $$
 \shorthandoff{;:!?}
@@ -295,7 +300,9 @@ $$
  & \End(E) & 
 }
 $$
+% Tu n'as pas défini E^0
 est commutatif, dès que la place $\frak P$ vit au-dessus de $\frak p_1$. On peut toujours être dans cette situation, car $\frak p_1$ et $\frak p_2$ sont simplement conjugués l'un de l'autre.
+% Le lecteur risque de se demander quelle est la définition de "simplement conjugué"
 
 %Noter la réduction autrement qu'avec des barres ?
 
@@ -330,7 +337,7 @@ Ce lemme est en fait vrai dans un cadre plus général qui permet de prendre en 
 \begin{prop}
 
 Cette opération définit une action de $\Cl(\O)$ sur $\Ell_k(\O)$ qui est simplement transitive.
-
+% Quelle opération?
 \end{prop}
 
 \begin{proof}
@@ -379,7 +386,7 @@ $$
 \shorthandoff{;:!?}
 \xymatrix {
 \ell^{-m} T_\ell(E)/ T_\ell(E) \ar[r]_{\ell^m}^{\sim} \ar@{^{(}->}[dd]&
- T_\ell(E)/ l^m T_\ell(E) \ar[r]^{\sim}  & 
+ T_\ell(E)/ \ell^m T_\ell(E) \ar[r]^{\sim}  & 
  E[\ell^m](\bar{k}) \ar@{^{(}->}[dd] \\ 
  \\
  \ell^{-m-1} T_\ell(E)/ T_\ell(E) \ar[r]_{\ell^{m+1}}^{\sim} &
@@ -500,6 +507,7 @@ Comme dans le cas de $Y(1)$, on peut compactifier les courbes $\Gamma \b\H$ pour
 
 
 Le but étant d'utiliser une courbe modulaire pour calculer des isogénies entre courbes elliptiques sur un corps fini, il est important de disposer d'équations pour ce genre de courbes. Mis à part le cas de $X(1)$, qui est isomorphe à la droite projective par le $j$-invariant, il est difficile de déterminer de telles équations à la main.
+% Tu n'as pas défini X(1), il me semble
 
 On aimerait travailler avec des équations planes, quitte à accepter des équations définissant des courbes singulières lorsque l'on est capable de contrôler les points singuliers. Une application birationnelle vers une courbe plane (projective) étant simplement la donnée de deux fonctions sur la courbe qui engendrent son corps de fonctions, on recherche tout d'abord ces dernières (par exemple sous forme de $q$-expansion) puis une équation polynomiale les reliant. La variable $q$ est définie par $q = e^{2i\pi\tau}$ lorsque $\tau$ parcourt $\H$, et la plupart des fonctions modulaires admettent une expression sous forme de série de Laurent en $q$.
 \v
@@ -568,7 +576,9 @@ $$\begin{aligned}
 &\quad + 53274330803424425450420160273356509151232000(X + Y) \\
 &\quad + 141359947154721358697753474691071362751004672000
 \end{aligned}$$
-et l'on s'arrête ici de peur de rapidement doubler la longueur de ce mémoire: le stockage du polynôme modulaire $\Phi_N$ en mémoire a un coût d'environ $\Theta(N^3)$. On peut en fait calculer ces polynômes plus efficacement, comme il est indiqué dans \cite{Elkies}.
+et l'on s'arrête ici de peur de rapidement doubler la longueur de ce mémoire: le stockage du polynôme modulaire $\Phi_N$ en mémoire a un coût d'environ $\Theta(N^3)$.
+% Θ(N³) quoi?
+On peut en fait calculer ces polynômes plus efficacement, comme il est indiqué dans \cite{Elkies}.
 Des bases de données de polynômes modulaires se trouvent dans le logiciel de calcul formel Sage \cite{Sage} (qui contient également une riche base de formes modulaires) jusqu'à environ $N = 100$, ou sur la page web d'Andrew Sutherland (\url{math.mit.edu/~drew}), par exemple.
 
 En pratique, lorsque la taille de ces polynômes devient problématique, on peut utiliser d'autres fonctions modulaires qui donnent de meilleurs résultats que $j(\tau)$ et $j(N\tau)$, par exemple $j(\tau)$ et la fonction de Weber. On ne gagne asymptotiquement qu'un facteur constant, et les mêmes problèmes apparaissent à partir d'environ $N=500$.
@@ -826,7 +836,7 @@ qui forment un 1-cocycle (i.e. ils sont compatibles à la composition). On peut 
 $$\theta(g) \de \M(\Pr,\Qr)\vers \M(\Pr,\Qr)$$
 qui donne un isomorphisme au-dessus de $\M(\Pr,\Qr)$:
 $$g^*(E, \alpha_\univ, \beta_\univ) \overset{\sim}{\vers} (E, \alpha_\univ, g\beta_\univ)$$
-et il suffit s'oublier $\beta_\univ$. La compatibilité avec la composition provient directement de la rigidité de $\Pr$.
+et il suffit d'oublier $\beta_\univ$. La compatibilité avec la composition provient directement de la rigidité de $\Pr$.
 
 Alors $E$ descend car elle est projective, donc propre (c'est le deuxième cas d'application du théorème de Grothendieck, avec les schémas affines). Comme $\Pr$ est relativement affine, $\alpha_\univ$ descend également. On a ainsi rempli le carré cartésien précédent avec un objet $(E_0,\alpha_{\univ, 0})$ sur $\M(\Pr,\Qr)/G$.
 
@@ -1023,7 +1033,9 @@ et ces deux idéaux sont exactement les idéaux de norme $\ell$ dans $\O$. Pour 
 $$\O/\ell\O \simeq \O/\frak l \O \times \O/\bar{\frak l} \O.$$
 L'endomorphisme de Frobenius $\pi$, vu comme endomorphisme du $\F_\ell$-espace vectoriel $E[\ell](\bar{k})$ de dimension 2, admet donc deux valeurs propres (nécessairement distinctes car $\ell$ est d'Elkies) qui sont exactement les éléments $\pi\mod \frak l$ et $\pi\mod \bar{\frak l}$ : on les appelle \emph{valeurs propres du Frobenius} modulo $\ell$. On représentera alors un idéal de norme $\ell$ par le couple $(\ell, v)$ où $v$ est la valeur propre du Frobenius associée. D'un point de vue pratique, les valeurs propres du Frobenius sont les racines dans $\F_\ell$ du polynôme $X^2 - tX + q$ ; on reviendra plus tard sur le calcul de $t$.
 
-Une isogénie de degré $\ell$ définie sur $k$ partant de $E$, à isomorphisme près, est simplement un sous-groupe cyclique de $E(\bar{k})$ de cardinal $\ell$ stable par Galois, c'est à dire le Frobenius. On vient de voir que l'action du Frobenius sur $E[\ell](\bar{k})$ est diagonale, avec des valeurs propres distinctes. On en déduit que les seules isogénies rationnelles de degré $\ell$ partant de $E$ sont celles qui proviennent de l'action du groupe de classes.
+Une isogénie de degré $\ell$ définie sur $k$ partant de $E$, à isomorphisme près, est simplement un sous-groupe cyclique de $E(\bar{k})$ de cardinal $\ell$ stable par Galois, c'est à dire le Frobenius.
+% Ambiguïté sur le référent de "c'est à dire": le sous-groupe, ou Galois?
+On vient de voir que l'action du Frobenius sur $E[\ell](\bar{k})$ est diagonale, avec des valeurs propres distinctes. On en déduit que les seules isogénies rationnelles de degré $\ell$ partant de $E$ sont celles qui proviennent de l'action du groupe de classes.
 \v
 
 \emph{Idéaux fractionnaires et groupe de classes.} On utilisera toujours des idéaux fractionnaires écrits sous la forme $\prod {\frak l}_i^{r_i}$, où les ${\frak l}_i$ sont des idéaux dont la norme est un petit nombre premier d'Elkies. Cela implique, en particulier, que l'on ne travaille qu'avec un sous-groupe du groupe des idéaux fractionnaires.
@@ -1064,7 +1076,7 @@ On peut donner à cette décomposition un aspect plus visuel à l'aide du concep
 \end{center}
 
 
-On montre ici un graphe d'isogénies sur $\F_{173}$; les sommets sont des $j$-invariants, les arêtes bleues représentent des isogénies de degré 3, et les arêtes rouges des isogénies de degré 7. La décomposition précédente revient simplement à découper un voyage complet dans ce graphe en plusieurs pas. Le graphe de couverture est un graphe d'isogénies sur $\F_{503}$, avec le degré 3 en bleu, 11 en rouge et 13 en vert. 
+On montre ici un graphe d'isogénies sur $\F_{173}$; les sommets sont des $j$-invariants, les arêtes bleues représentent des isogénies de degré 3, et les arêtes rouges des isogénies de degré 7. La décomposition précédente revient simplement à découper un \emph{voyage} complet dans ce graphe en plusieurs pas. Le graphe en couverture est un graphe d'isogénies sur $\F_{503}$, avec le degré 3 en bleu, 11 en rouge et 13 en vert. 
 \v
 
 On peut maintenant proposer plusieurs manières d'effectuer un pas dans ce graphe d'isogénies.
@@ -1091,7 +1103,7 @@ $K \gets \textsc{SousGroupe}(F, \frac{\ell-1}{2}, v)$
 
 \end{algorithm}
 
-Seul le but de l'étape~\ref{alg:div:rec} nécessite peut-être une explication : il consiste à retrouver à partir des facteurs irréductibles de $\psi_l$ le polynôme de degré $\frac{\ell-1}{2}$ définissant le sous-groupe cycliques de $E$ qui est le sous-espace propre du Frobenius sur $E[\ell](\bar{k})$ associé à la valeur propre $v$. Cette étape est nécessaire car ces polynômes ne sont pas nécessairement irréductibles, et $\psi_l$ peut avoir beaucoup d'autres facteurs qui ne déterminent pas des sous-groupes mais seulement des sous-ensembles de $E[\ell](\bar{k})$.
+Seul le but de l'étape~\ref{alg:div:rec} nécessite peut-être une explication : il consiste à retrouver à partir des facteurs irréductibles de $\psi_l$ le polynôme de degré $\frac{\ell-1}{2}$ définissant le sous-groupe cyclique de $E$ qui est le sous-espace propre du Frobenius sur $E[\ell](\bar{k})$ associé à la valeur propre $v$. Cette étape est nécessaire car ces polynômes ne sont pas nécessairement irréductibles, et $\psi_l$ peut avoir beaucoup d'autres facteurs qui ne déterminent pas des sous-groupes mais seulement des sous-ensembles de $E[\ell](\bar{k})$.
 
 Examinons maintenant chacune des étapes de l'algorithme~\ref{alg:div}, en commençant par le calcul des polynômes de division.
 
@@ -1140,7 +1152,9 @@ Enfin, on souhaite calculer une équation de la courbe image connaissant $E$ et 
 \begin{lem}[Formules de Vélu]
 Soit $E$ une courbe elliptique donnée par une équation sous forme de Weierstrass
 $$y^2 + a_1 x y + a_3 y = x^3 + a_2 x^2 + a_4 x + a_6,$$
-et soit $K = \sum_{i=0}^n (-1)^{n-i} \sigma_i X^i$ un sous-groupe de $E$, cyclique d'ordre $2n+1$. Notons $b_2, b_4, b_6, b_8$ les $b$-invariants de l'équation de $E$, et 
+et soit $K = \sum_{i=0}^n (-1)^{n-i} \sigma_i X^i$ un sous-groupe de $E$,
+% Un polynôme définissant un sous-groupe, peut-être?
+cyclique d'ordre $2n+1$. Notons $b_2, b_4, b_6, b_8$ les $b$-invariants de l'équation de $E$, et
 $$ t = 6(\sigma_1^2 - 2 \sigma_2) + b_2 \sigma_1 + n b_4,$$
 $$ w = 10 (\sigma_1^3 - 3 \sigma_1 \sigma_2 + 3 \sigma_3) + 2  b_2 (\sigma_1^2 - 2 \sigma_2) + 3 b_4 \sigma_1 + n b_6.$$
 Alors, en notant $E'$ la courbe donnée par les invariants
@@ -1170,15 +1184,15 @@ Comme ci-dessus, on peut réexprimer $\pi$ et $\sigma$ en termes des coefficient
 Sans utiliser ces formules, une autre méthode est disponible : étant donné une courbe sous forme de Montgomery, on peut calculer une équation de Weierstrass de cette courbe, et utiliser les formules de Vélu pour cette courbe. En se souvenant du point de 2-torsion, on peut ensuite retrouver une équation de Montgomery pour la courbe quotient sans extraction de racine carrée.
 
 \v
-D'un point de vue pratique, factoriser entièrement un polynôme de degré $\frac{\ell^2 - 1}{2}$ sur $k$ lorsque $p$ est grand et $\ell$ n'est pas très petit, est une opération trop coûteuse. L'étape de reconstruction du sous-groupe n'est pas non plus gratuite.%; en face de ces coûts, celui des formules de Vélu est tout à fait négligeable.
-Cela pousse préférer une autre méthode à l'aide d'une équation modulaire, ce que l'on décrit maintenant.
+D'un point de vue pratique, factoriser entièrement un polynôme de degré $\frac{\ell^2 - 1}{2}$ sur $k$ lorsque $p$ est grand et $\ell$ n'est pas très petit, est une opération trop coûteuse. L'étape de reconstruction du sous-groupe n'est pas non plus gratuite. %; en face de ces coûts, celui des formules de Vélu est tout à fait négligeable.
+Cela pousse à préférer une autre méthode à l'aide d'une équation modulaire, ce que l'on décrit maintenant.
 
 
 \subsection{Calcul à l'aide d'une équation modulaire}
 
 On a vu que la courbe modulaire $Y_0(\ell)_k$ paramétrise les isogénies cycliques de degré $\ell$ définies sur $k$. Le polynôme modulaire de degré $\ell$ relie les $j$-invariants de ces courbes ; on a vu de plus que les points singuliers sur $k$ de l'application
 $$Y_0(\ell) \vers \A^1 \times \A^1,$$
-dont l'image et définie par le polynôme modulaire, sont nécessairement des réductions modulo $p$ de points singuliers complexes, donc peu nombreux (et dont l'ordre a un petit discriminant). En utilisant ces outils, on obtient l'algorithme suivant pour un calcul d'isogénie, qui est valide lorsque le discriminant de la courbe est supérieur à $\ell^2 + 1$, selon la borne grossière obtenue précédemment.
+dont l'image est définie par le polynôme modulaire, sont nécessairement des réductions modulo $p$ de points singuliers complexes, donc peu nombreux (et dont l'ordre a un petit discriminant). En utilisant ces outils, on obtient l'algorithme suivant pour un calcul d'isogénie, qui est valide lorsque le discriminant de la courbe est supérieur à $\ell^2 + 1$, selon la borne grossière obtenue précédemment.
 
 \begin{algorithm}
 \caption{un pas dans le graphe d'isogénies en utilisant une équation modulaire}
@@ -1203,7 +1217,7 @@ $K_1 \gets \textsc{Noyau}(E, \ell, j_1)$
 De la même façon, on étudie les étapes de l'algorithme l'une après l'autre. On a vu une manière de calculer le polynôme modulaire, mais le plus rapide reste d'utiliser une base de données préfabriquée. Pour le calcul des racines, on utilise à nouveau l'algorithme de Cantor--Zassenhaus, mais le polynôme à factoriser est cette fois de degré seulement $\ell + 1$. Enfin, l'algorithme {\sc ValeurPropre} est analogue à la reconstruction du sous-groupe dans l'algorithme 1, mais le calcul du Frobenius est effectué modulo un unique polynôme de degré $\frac{\ell-1}{2}$. 
 
 \v
-Examinons maintenant le calcul du noyau. Soit $\phi\de E\vers E'$ une isogénie. On a une application $k$-linéaire \og pullback\fg, des formes différentielles sans pôle de $E'$ vers celle de $E$:
+Examinons maintenant le calcul du noyau. Soit $\phi\de E\vers E'$ une isogénie. On a une application $k$-linéaire \og pullback\fg, des formes différentielles sans pôle de $E'$ vers celles de $E$:
 $$\phi^*\de H^0(E', \Omega^1)\vers H^0(E, \Omega^1).$$
 Rappelons que $E$ et $E'$ sont de genre 1, donc ces espaces sont de dimension 1. On sait que cette application est nulle si et seulement si $\phi$ est non séparable. Si l'on fixe une équation de Weierstrass pour $E$ et $E'$, on dispose de 1-formes privilégiées et donc d'un isomorphisme (non canonique, donc)
 $$\Hom(H^0(E', \Omega^1), H^0(E, \Omega^1))\simeq k.$$
@@ -1298,7 +1312,9 @@ On lance alors l'algorithme d'Euclide étendu avec $U$ et $X^{2\ell + 1}$, que l
 Enfin, pour le calcul de racine carrée, on utilise la remarque suivante : si $D = K^2$ où $K$ est un polynôme séparable, alors $K$ et $\mathrm{pgcd}(D, D')$ sont associés. En effet, on a $D' = 2 K K'$ et pgcd$(K, K')$ = 1 puisque $K$ est séparable.
 \v
 
-Le coût principal de l'algorithme~\ref{alg:mod} est partagé entre le calcul des racines et l'algorithme {\sc CompareDirection}, qui impliquent tous deux de calculer une puissance $p$-ième modulo un polynôme de degré de l'ordre de $\ell$. C'est une amélioration importante d'un point de vue pratique par rapport au $\ell^2$ précédent. Cependant, on peut proposer encore mieux dans certains cas particuliers.
+Le coût principal de l'algorithme~\ref{alg:mod} est partagé entre le calcul des racines et l'algorithme {\sc CompareDirection},
+% Je n'ai pas vu cet algo. Changement de nom?
+qui impliquent tous deux de calculer une puissance $p$-ième modulo un polynôme de degré de l'ordre de $\ell$. C'est une amélioration importante d'un point de vue pratique par rapport au $\ell^2$ précédent. Cependant, on peut proposer encore mieux dans certains cas particuliers.
 
 \subsection{Calcul à l'aide de torsion rationnelle}
 
@@ -1322,7 +1338,9 @@ $E' \gets \textsc{Quotient}(E, K)$
 
 \end{algorithm}
 
-Remarquons qu'en dehors de la recherche du point de torsion, cette méthode est très peu coûteuse. Le coût de la construction du sous-groupe est linéaire en $\ell$, mais indépendant de $p$, et le quotient final est simplement un appel aux formules de Vélu, ce qui est quasiment instantané. La recherche d'un point de torsion rationnel ne pose pas non plus beaucoup de problèmes:
+Remarquons qu'en dehors de la recherche du point de torsion, cette méthode est très peu coûteuse. Le coût de la construction du sous-groupe est linéaire en $\ell$, mais indépendant de $p$,
+% Ça dépend quand même de log p... tu n'as pas dit en quoi tu mesures les complexités
+et le quotient final est simplement un appel aux formules de Vélu, ce qui est quasiment instantané. La recherche d'un point de torsion rationnel ne pose pas non plus beaucoup de problèmes:
 
 \begin{algorithm}
 \caption{{\sc PointDeTorsion} : calcul d'un point de torsion rationnel}
@@ -1349,7 +1367,7 @@ Le coût principal de la recherche d'un point de torsion est la multiplication s
 
 L'algorithme~\ref{alg:tors} n'est utilisable que pour les nombres premiers $\ell$ pour lesquels 1 est valeur propre. Intuitivement, il y a environ une chance sur $\ell - 1$ que cela survienne pour une courbe choisie \og au hasard \fg : c'est donc plutôt rare. On peut donner une variante lorsque les points de $\ell$-torsion ne sont pas nécessairement $k$-rationnels, mais seulement définis sur une extension de $k$ de petit degré. Il faut alors multiplier un point choisi au hasard par $\frac{C'}{\ell}$, où $C'$ est le cardinal de la courbe sur cette extension (qui peut se calculer directement à partir de $C$ par la théorie de Hasse). Lorsque l'extension est de degré $d$, $C'$ est de l'ordre de $p^d$. Associé au fait qu'il est plus coûteux de manipuler des points définis sur une extension, le coût de cet algorithme étendu devient quadratique en $d$: en pratique, il n'est intéressant que lorsque $d<10$ environ. De plus, le fait que $\ell$ soit d'Elkies n'empêche plus les deux sous-groupes d'apparaître simultanément, ce qui ajoute une nouvelle restriction.
 
-En pratique, il est rare qu'une courbe admette beaucoup de nombres premiers pour lesquels l'algorithme \ref{alg:tors} ou une variante peut être utilisé. Pour profiter pleinement l'accélération permise par cette méthode, il faut donc choisir des courbes exceptionnelles, qui ont plus de points de torsion rationnelle de petit ordre que la moyenne.
+En pratique, il est rare qu'une courbe admette beaucoup de nombres premiers pour lesquels l'algorithme \ref{alg:tors} ou une variante peut être utilisé. Pour profiter pleinement de l'accélération permise par cette méthode, il faut donc choisir des courbes exceptionnelles, qui ont plus de points de torsion rationnelle de petit ordre que la moyenne.
 
 \v
 D'autre part, l'algorithme \ref{alg:tors} permet de voyager dans le graphe d'isogénies uniquement dans la direction associée à la valeur propre 1, et non dans la direction de l'autre valeur propre. On peut proposer trois astuces:
@@ -1433,7 +1451,7 @@ Pour quantifier cette sécurité, on parle de \emph{bits}. On dit qu'un protocol
 
 
 \subsection{L'attaque classique}
-
+% Mais qu'est-ce qu'une attaque? En crypto, ça peut vouloir dire plein de choses différentes.
 
 Commençons donc par décrire les attaques existantes. Rappelons les données du problème:
 \begin{itemize}
@@ -1444,13 +1462,13 @@ Commençons donc par décrire les attaques existantes. Rappelons les données du
 Une façon d'attaquer le protocole est de chercher à déterminer $a$ à partir des données publiques $E_0$ et $E_a$. Autrement dit, il s'agit de chercher une isogénie entre deux courbes données; en termes de graphe d'isogénies, il s'agit de retrouver un chemin dans un graphe reliant deux points donnés.
 
 \v
-Pour cela, on peut construire une attaque fondée sur le \og birthday paradox\fg. Cette attaque a été proposée par Galbraith dans \cite{Galbraith}, qui est la référence principale de cette section et dont sont tirés tous les résultats cités ici. Le résultat principal en est le suivant:
+Pour cela, on peut construire une attaque fondée sur le \og paradoxe des anniversaires\fg. Cette attaque a été proposée par Galbraith dans \cite{Galbraith}, qui est la référence principale de cette section et dont sont tirés tous les résultats cités ici. Le résultat principal en est le suivant:
 
 \begin{thm}
 Soient $E_1, E_2$ des courbes elliptiques ordinaires définies sur $\F_p$ telles que $\#E_1(\F_p) = \#E_2(\F_p)$. En admettant l'hypothèse de Riemann pour les corps quadratiques, et sous heuristiques, il existe un algorithme probabiliste construisant une isogénie rationnelle entre $E_1$ et $E_2$. Le coût de cet algorithme est dans le pire des cas $O(p^{3/2}\ln(p))$ en temps et $O(p \ln(p))$ en espace.
 \end{thm}
 
-Le principe de cet algorithme est de construire deux arbres dans le graphe d'isogénies enraciné l'un en $E_1$, l'autre en $E_2$. Pour construire ces arbres, on calcule l'action d'un groupe de classes avec les algorithmes de la section précédente. Lorsque deux branches entrent en collision, on dispose d'un chemin entre $E_1$ et $E_2$, ce qui survient avec une bonne probabilité une fois que le nombre de branches est de l'ordre de $\sqrt{h}$, où $h$ est le nombre de classes. L'hypothèse de Riemann intervient ici pour s'assurer de pouvoir parcourir tout le groupe de classes avec des idéaux dont la norme est inférieure à une borne explicite. Cet algorithme repose de plus sur une hypothèse heuristique, à savoir que les branches de chaque arbre ne se recouvrent pas trop: autrement dit, les produits de la forme
+Le principe de cet algorithme est de construire deux arbres dans le graphe d'isogénies enracinés l'un en $E_1$, l'autre en $E_2$. Pour construire ces arbres, on calcule l'action d'un groupe de classes avec les algorithmes de la section précédente. Lorsque deux branches entrent en collision, on dispose d'un chemin entre $E_1$ et $E_2$, ce qui survient avec une bonne probabilité une fois que le nombre de branches est de l'ordre de $\sqrt{h}$, où $h$ est le nombre de classes. L'hypothèse de Riemann intervient ici pour s'assurer de pouvoir parcourir tout le groupe de classes avec des idéaux dont la norme est inférieure à une borne explicite. Cet algorithme repose de plus sur une hypothèse heuristique, à savoir que les branches de chaque arbre ne se recouvrent pas trop: autrement dit, les produits de la forme
 $$\prod_{i = 1}^n {\frak l}_i^{a_i}, \quad a_i\in \{-1,0,1\}$$
 se répartissent de manière raisonnablement uniforme dans le groupe de classes pour une grande proportion de suites $({\frak l}_i)$.
 
@@ -1507,7 +1525,7 @@ $$\frac{\log(h_i)}{\log(\sqrt{|D_i|})} \underset{i\to\infty}{\vers} 1.$$
 Ce résultat était en réalité connu avant les travaux de Brauer et Siegel, qui l'ont généralisé à des corps de nombres généraux. Stark a ensuite donné des versions effectives de ce théorème, ce qui amène à la conclusion (heuristique) suivante: si $K$ est un corps quadratique de discriminant $D_K$ et de nombre de classes $h_K$, et si $D_K$ est de l'ordre de $2^{512}$, alors $h_K$ est au moins de l'ordre de $2^{250}$; autrement dit, l'anneau d'entiers de $K$ fournit une bonne sécurité au vu de l'attaque précédente.
 
 \v
-Dans notre contexte, $K$ est obtenu comme le quotient $\Q[\pi]/(\pi^2  - t\pi + p)$. Le discriminant de l'ordre $Z[\pi]$ de $K$, engendré par l'endomorphisme de Frobenius, est $D = t^2 - 4 p$ et est donc en général de l'ordre de grandeur de $p$. Le discriminant $D_K$ de $K$ (qui est celui de $\O_K$) est alors l'entier dans facteur carré qui apparaît dans la décomposition $D = c^2 D_K,$ et $c$ est le conducteur de $\Z[\pi]$. Ainsi, déterminer le discriminant de $K$ revient à déterminer le facteur carré maximal de $D$.
+Dans notre contexte, $K$ est obtenu comme le quotient $\Q[\pi]/(\pi^2  - t\pi + p)$. Le discriminant de l'ordre $Z[\pi]$ de $K$, engendré par l'endomorphisme de Frobenius, est $D = t^2 - 4 p$ et est donc en général de l'ordre de grandeur de $p$. Le discriminant $D_K$ de $K$ (qui est celui de $\O_K$) est alors l'entier sans facteur carré qui apparaît dans la décomposition $D = c^2 D_K,$ et $c$ est le conducteur de $\Z[\pi]$. Ainsi, déterminer le discriminant de $K$ revient à déterminer le facteur carré maximal de $D$.
 
 Lorsque $D$ est un entier de l'ordre de 512 bits, factoriser $D$ est une opération difficile. Cela signifie que pour un discriminant donné, nous ne sommes pas capables de déterminer le discriminant $D_K$ de l'anneau d'entiers de $K$ à moins d'y consacrer des ressources non négligeables.
 
@@ -1536,7 +1554,9 @@ termine dans un sous-ensemble fini $S$ de $\Ell_{\F_p}(\O)$ avec probabilité au
 
 L'hypothèse de Riemann intervient ici car les autres vecteurs propres de l'opérateur d'adjacence $A$, lorsque $G$ est le graphe de Cayley d'un groupe $H$, sont des caractères de $H$.
 
-On peut faire deux remarques sur ce résultat. Premièrement, on ne veut certainement pas calculer des isogénies de degré $(\log p)^2$, mais seulement $\log(p)$. Lorsque l'on durcit cette contrainte sur les idéaux considérés, le résultat ci-dessus ne s'applique plus, mais il semble plausible qu'une propriété d'expansion soit toujours vérifiée. Deuxièmement, on ne considèrera pas véritablement des marches alétoires uniformes dans le graphe ci-dessus: en effet, les isogénies de degré plus élevé sont en général plus difficiles à évaluer que les isogénies de petit degré. Ainsi, on aimerait effectuer plus de pas dans le graphe en utilisant les petits degrés que les grands, pour minimiser le coût total de l'opération.
+On peut faire deux remarques sur ce résultat. Premièrement, on ne veut certainement pas calculer des isogénies de degré $(\log p)^2$, mais seulement $\log(p)$.
+% Pourquoi log(p) et pas moins?
+Lorsque l'on durcit cette contrainte sur les idéaux considérés, le résultat ci-dessus ne s'applique plus, mais il semble plausible qu'une propriété d'expansion soit toujours vérifiée. Deuxièmement, on ne considèrera pas véritablement des marches alétoires uniformes dans le graphe ci-dessus: en effet, les isogénies de degré plus élevé sont en général plus difficiles à évaluer que les isogénies de petit degré. Ainsi, on aimerait effectuer plus de pas dans le graphe en utilisant les petits degrés que les grands, pour minimiser le coût total de l'opération.
 
 On propose donc une hypothèse optimiste, mais intuitivement plausible, sur la répartition des produits d'idéaux dans notre cadre. 
 
@@ -1708,7 +1728,7 @@ La situation se complique légèrement, en revanche, si l'on veut connaître une
 Comme dans le cas de $X_0(30)$, on recherche une équation de $X_1(N)$ sous forme de courbe plane valable sur le corps des nombres complexes, et on espère que cette équation est à coefficients entiers et donne bien une équation de $X_1(N)_{\F_p}$ une fois réduite modulo $p$. On recherche donc deux formes modulaires $f$, $g$ de niveau $\Gamma_1(N)$, et un polynôme $\Phi_N^{(f, g)}$ à coefficients entiers tel que
 $$\Phi_N^{(f, g)}(f, g) = 0.$$
 
-On suit ici l'article \cite{Baaziz}. On note $\wp(z, \Lambda_\tau)$ la fonction $\wp$ de Weierstrass associé au réseau $\Lambda_\tau = \Z\oplus\Z \tau.$
+On suit ici l'article \cite{Baaziz}. On note $\wp(z, \Lambda_\tau)$ la fonction $\wp$ de Weierstrass associée au réseau $\Lambda_\tau = \Z\oplus\Z \tau.$
 
 \begin{thm}
 On définit deux fonctions méromorphes de la variable complexe :
@@ -1742,7 +1762,7 @@ $P$ étant un point de $N$-torsion, on a bien $\psi_N(1+g(a), f(a), f(a)) = 0$. 
 Il reste à montrer que $f$ et $g$ engendrent le corps des fonctions de $X_1(N)_\C$. Pour cela, il suffit de trouver un ouvert non vide $U$ de la surface de Riemann compacte $X_1(N)_\C$ tel que $(f, g)$ sépare les points sur $U$. Or, c'est le cas sur l'ouvert affine $Y_1(N)$, car le lemme donne un représentant d'un tel point en fonction uniquement de $f$ et $g$.
 \end{proof}
 
-Le fait que $f$ et $g$ engendrent le corps des fonctions montrent que l'application rationnelle
+Le fait que $f$ et $g$ engendrent le corps des fonctions montre que l'application rationnelle
 $$X_1(N)_\C \overset{(f,\ g)}{\vers} \left\{(u, v)\in \P^2(\C) \de \psi_N(1+v, u, u) = 0\right\}$$
 est un isomorphisme birationnel sur son image : on a donc obtenu un modèle plan de la courbe modulaire $X_1(N)$.
 
@@ -1824,7 +1844,7 @@ Le module est alors directement accessible.
 
 \subsection{Mesure de performances}
 
-On a vu qu'il est important de mesurer précisément les performances du calcul d'isogénies. Cela permet en effet de déterminer les performances globales du cryptosystème de Couveignes--Rostovtsev--Stolbunov pour une courbe initiale donnée. On peut ainsi d'une part choisir la meilleure courbe initiale lors de la recherche des paramètres, et d'autre part comparer les performances de ce protocoles à d'autres échanges de clés existants. Toutes les mesures sont effectuées sur $\F_p$ où $p$ est le nombre premier déterminé précédemment, d'une taille de 512 bits; la machine utilisée dispose d'un processeur de 3.20GHz Intel Xeon.
+On a vu qu'il est important de mesurer précisément les performances du calcul d'isogénies. Cela permet en effet de déterminer les performances globales du cryptosystème de Couveignes--Rostovtsev--Stolbunov pour une courbe initiale donnée. On peut ainsi d'une part choisir la meilleure courbe initiale lors de la recherche des paramètres, et d'autre part comparer les performances de ce protocole à d'autres échanges de clés existants. Toutes les mesures sont effectuées sur $\F_p$ où $p$ est le nombre premier déterminé précédemment, d'une taille de 512 bits; la machine utilisée dispose d'un processeur de 3.20GHz Intel Xeon.
 
 Rappelons les deux méthodes de calcul à notre disposition pour calculer une isogénie de degré $\ell$ au départ d'une courbe $E$:
 \begin{itemize}
